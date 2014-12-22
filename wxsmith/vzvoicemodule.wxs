@@ -1,0 +1,249 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<wxsmith>
+	<object class="wxPanel" name="vzVoiceModule">
+		<id_arg>0</id_arg>
+		<object class="wxFlexGridSizer" variable="FlexGridSizer6" member="no">
+			<rows>2</rows>
+			<object class="sizeritem">
+				<object class="wxStaticText" name="ID_STATICTEXT1" variable="m_pLblWaveform" member="yes">
+					<label>Waveform</label>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxStaticText" name="ID_STATICTEXT12" variable="m_pLblDetune" member="yes">
+					<label>Detune</label>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxStaticText" name="ID_STATICTEXT14" variable="m_pLblAmpEnv" member="yes">
+					<label>Amplitude Envelope</label>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxStaticText" name="ID_STATICTEXT15" variable="m_pLblDepth" member="yes">
+					<label>Depth</label>
+				</object>
+				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxStaticText" name="ID_STATICTEXT13" variable="m_pLblAmpSens" member="yes">
+					<label>Amp Sensitivity</label>
+				</object>
+				<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxStaticText" name="ID_STATICTEXT31" variable="m_pLblVelocity" member="yes">
+					<label>Velocity</label>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxStaticText" name="ID_STATICTEXT16" variable="m_pLblKeyFollow" member="yes">
+					<label>Key Follow</label>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxFlexGridSizer" variable="FlexGridSizer10" member="no">
+					<cols>1</cols>
+					<object class="sizeritem">
+						<object class="wxChoice" name="ID_CHOICE3" variable="m_pCmbWaveform" member="yes">
+							<content>
+								<item>Sine</item>
+								<item>Saw 1</item>
+								<item>Saw 2</item>
+								<item>Saw 3</item>
+								<item>Saw 4</item>
+								<item>Saw 5</item>
+								<item>Noise 1</item>
+								<item>Noise 2</item>
+							</content>
+							<selection>0</selection>
+							<handler function="OnCmbWaveformSelect" entry="EVT_CHOICE" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+					<object class="sizeritem">
+						<object class="wxStaticText" name="ID_STATICTEXT2" variable="m_pLblTitle" member="yes">
+							<label>Mx</label>
+							<font>
+								<size>12</size>
+								<style>normal</style>
+								<weight>normal</weight>
+								<underlined>0</underlined>
+								<family>swiss</family>
+								<face>Sans</face>
+							</font>
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+					<object class="sizeritem">
+						<object class="wxCheckBox" name="ID_CHECKBOX1" variable="m_pChkEnable" member="yes">
+							<label>Enable</label>
+							<checked>1</checked>
+							<handler function="OnChkEnableM1Click" entry="EVT_CHECKBOX" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+					<orient>wxVERTICAL</orient>
+					<object class="sizeritem">
+						<object class="wxSlider" name="ID_SLIDER8" variable="m_pSliderDetune" member="yes">
+							<min>-128</min>
+							<max>127</max>
+							<size>58,49</size>
+							<handler function="OnSliderDetuneCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+						</object>
+						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+					<object class="sizeritem">
+						<object class="wxSlider" name="ID_SLIDER25" variable="m_pSliderDetuneFine" member="yes">
+							<value>32</value>
+							<max>63</max>
+							<handler function="OnSliderDetuneFineCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+						</object>
+						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="Custom" name="ID_CUSTOM1" subclass="EnvelopeEditor" variable="m_pGraphAmp" member="yes">
+					<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),$(NAME));</creating_code>
+					<include_file>envelopeeditor.h</include_file>
+					<local_include>1</local_include>
+					<style>ENV__STYLE__DCA__ENV</style>
+					<size>296,82</size>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxSlider" name="ID_SLIDER11" variable="m_pSliderEnvDepth" member="yes">
+					<value>99</value>
+					<max>99</max>
+					<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+					<handler function="OnSliderEnvDepthCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+				</object>
+				<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxSlider" name="ID_SLIDER10" variable="m_pSliderAmpSens" member="yes">
+					<value>7</value>
+					<max>7</max>
+					<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+					<handler function="OnSliderAmpSensCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+				</object>
+				<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">
+					<cols>1</cols>
+					<growablerows>1</growablerows>
+					<object class="sizeritem">
+						<object class="wxChoice" name="ID_CHOICE4" variable="m_pCmbCurve" member="yes">
+							<content>
+								<item>Curve 1</item>
+								<item>Curve 2</item>
+								<item>Curve 3</item>
+								<item>Curve 4</item>
+								<item>Curve 5</item>
+								<item>Curve 6</item>
+								<item>Curve 7</item>
+								<item>Curve 8</item>
+							</content>
+							<selection>0</selection>
+							<handler function="OnCmbCurveSelect" entry="EVT_CHOICE" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+					<object class="sizeritem">
+						<object class="wxSlider" name="ID_SLIDER9" variable="m_pSliderVelSensitivity" member="yes">
+							<max>31</max>
+							<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+							<handler function="OnSliderVelSensitivityCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+						</object>
+						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
+					<cols>1</cols>
+					<growablecols>0</growablecols>
+					<growablerows>1</growablerows>
+					<object class="sizeritem">
+						<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="m_pBmpKeyboard" member="yes">
+							<bitmap code="keyboard_xpm" />
+						</object>
+						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+					<object class="sizeritem">
+						<object class="Custom" name="ID_CUSTOM2" subclass="EnvelopeEditor" variable="m_pEnvEditorKeyFollow" member="yes">
+							<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),$(NAME));</creating_code>
+							<include_file>envelopeeditor.h</include_file>
+							<local_include>1</local_include>
+							<style>ENV__STYLE__DCA__KF</style>
+							<size>296,-1</size>
+						</object>
+						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+				</object>
+				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+		</object>
+	</object>
+</wxsmith>
