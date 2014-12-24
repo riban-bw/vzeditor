@@ -353,7 +353,6 @@ sysexFrame::sysexFrame(wxWindow* parent,wxWindowID id)
             wxMessageBox(wxString::Format("User data directory (%s) is missing and cannot be created. This may result in reduced functionality and errors", "Error", sFilename.c_str()));
     }
     sFilename += "/vz.tmp";
-    wxLogDebug("Persistent filename: %s", sFilename.c_str());
     if(wxFileExists(sFilename))
         OpenPatch(sFilename);
 }
@@ -564,13 +563,6 @@ void sysexFrame::OnMidiReceive(wxCommandEvent& event)
                                 }
                             }
                         }
-//                        for(int i=0; i < pMsg->Length(); ++i, ++pData)
-//                        {
-//                            if(i != 0 && i % 16 == 0) sMsg += _T("\n\t\t");
-//                            sMsg += wxString::Format(_T("%02X "), *pData);
-//                        }
-//                        sMsg += _T("\n");
-//                        wxLogDebug("%s", sMsg.c_str());
                         delete pMsg; // do not forget!!
                         break;
                     }
@@ -636,7 +628,6 @@ void sysexFrame::SendVoice()
 
     wxMidiSysExMessage msg(pSysexMsg);
     m_pMidiOut->Write(&msg);
-    wxLogDebug("Tremelo depth=%d, rate=%d, delay=%d, waveform=%d", m_aVoice[319], m_aVoice[320], m_aVoice[321], m_aVoice[318]);
 }
 
 void sysexFrame::UpdateVoice()
@@ -789,7 +780,7 @@ void sysexFrame::OpenPatch(wxString sFilename)
 
 void sysexFrame::OnSliderLevelCmdScrollChanged(wxScrollEvent& event)
 {
-    m_aVoice[174] = 99 - event.GetInt();
+    m_aVoice[174] = 0x7F - event.GetInt();
     AutoUpdateVoice();
 }
 

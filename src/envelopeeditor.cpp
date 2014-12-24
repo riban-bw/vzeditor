@@ -1,5 +1,7 @@
 #include "envelopeeditor.h"
 
+wxDEFINE_EVENT(wxEVT_ENVED, wxCommandEvent);
+
 BEGIN_EVENT_TABLE(EnvelopeEditor, wxScrolledWindow)
     EVT_PAINT       (EnvelopeEditor::OnPaint)
     EVT_LEFT_DOWN   (EnvelopeEditor::OnLeftDown)
@@ -10,35 +12,30 @@ BEGIN_EVENT_TABLE(EnvelopeEditor, wxScrolledWindow)
 END_EVENT_TABLE()
 
 static const int NODE_RADIUS = 4;
+static const int MAX_RATE = 80; //quantity of seconds for maximum fade
 
 EnvelopeEditor::EnvelopeEditor(wxWindow* parent, wxWindowID winid, const wxPoint& pos, const wxSize& size, long style, const wxString& name) :
     wxScrolledWindow(parent, winid, pos, size, style, name),
     m_nSelectedNode(-1),
-    m_nMaxNodes(8)
+    m_nStyle(style)
 {
+    SetMinY(0);
+    SetMaxY(0x7F);
     switch(style)
     {
         case ENV_STYLE_DCA_ENV:
             m_nMaxNodes = 8;
-            m_nAxisScaler = 1;
             break;
         case ENV_STYLE_DCA_KF:
             m_nMaxNodes = 6;
-            m_nAxisScaler = 2;
             break;
         case ENV_STYLE_DCO_ENV:
             m_nMaxNodes = 8;
-            m_nAxisScaler = 1;
             break;
         case ENV_STYLE_DCO_KF:
             m_nMaxNodes = 6;
-            m_nAxisScaler = 2;
             break;
     }
-    m_vNodes.push_back(new wxPoint(0, 10));
-//    m_vNodes.push_back(new wxPoint(20, 10));
-//    m_vNodes.push_back(new wxPoint(20, 10));
-//    m_vNodes.push_back(new wxPoint(20, 0));
 }
 
 EnvelopeEditor::~EnvelopeEditor()
@@ -47,32 +44,33 @@ EnvelopeEditor::~EnvelopeEditor()
         delete m_vNodes[nNode];
 }
 
-void EnvelopeEditor::PlotGraph(wxDC& dc)
+void EnvelopeEditor::PlotEnvelope(wxDC& dc)
 {
     //!@todo Add sustain level
-    //!@todo Add Velocity rate (additional parameter for each node)
-    //!@todo Map data to graph
-    //!@todo Make graph scaleable, with values relative to data
-    m_nAxis = dc.GetSize().y / m_nAxisScaler;
+    //!@todo Add Velocity position (additional parameter for each node)
+
     wxPen pen1(*wxBLACK, 1);
     wxPen pen2(*wxGREEN, 2);
     dc.SetPen(pen1);
-    int x, y;
+    int x = 0;
+    int y = dc.GetSize().y;
+    m_fScaleY = float(y) / m_nRange; //!@todo Put this in resize handler
 
-    wxPoint ptLast(0, m_nAxis);
+    wxPoint ptLast(x, y); //x value is absoulte x postition, y value is level
     for(unsigned int nNode = 0; nNode < m_vNodes.size(); ++nNode)
     {
-        x = ptLast.x + m_vNodes[nNode]->x;
-        y = m_nAxis - m_vNodes[nNode]->y;
+        x = m_vNodes[nNode]->GetPosition();
+        y = m_fScaleY * (m_nMaxY - m_vNodes[nNode]->GetValue());
         dc.DrawLine(ptLast.x, ptLast.y, x,  y);
         ptLast = wxPoint(x, y);
     }
-    dc.DrawLine(ptLast.x, ptLast.y, GetVirtualSize().x, y);
-    ptLast = wxPoint(0, m_nAxis);
+    dc.DrawLine(ptLast.x, ptLast.y, dc.GetSize().x, y);
+
+    ptLast = wxPoint(0, 0);
     for(unsigned int nNode = 0; nNode < m_vNodes.size(); ++nNode)
     {
-        int x = ptLast.x + m_vNodes[nNode]->x;
-        int y = m_nAxis - m_vNodes[nNode]->y;
+        x = m_vNodes[nNode]->GetPosition();
+        y = m_fScaleY * (m_nMaxY - m_vNodes[nNode]->GetValue());
         dc.SetPen((m_nSelectedNode == (int)nNode)?pen2:pen1);
         dc.DrawCircle(x, y, NODE_RADIUS);
         ptLast = wxPoint(x, y);
@@ -85,17 +83,17 @@ void EnvelopeEditor::OnPaint(wxPaintEvent& event)
     wxPaintDC dc(this);
     DoPrepareDC(dc);
     dc.Clear();
-    PlotGraph(dc);
+    PlotEnvelope(dc);
 }
 
 void EnvelopeEditor::OnLeftDown(wxMouseEvent& event)
 {
     m_nSelectedNode = -1;
-    wxPoint ptLast(0, 0);
+    wxPoint ptNode(0, 0);
     for(unsigned int nNode = 0; nNode < m_vNodes.size(); ++nNode)
     {
-        ptLast = wxPoint(ptLast.x + m_vNodes[nNode]->x, m_nAxis - m_vNodes[nNode]->y);
-        wxPoint ptWindow = event.GetPosition() - ptLast;
+        ptNode = wxPoint(m_vNodes[nNode]->GetPosition(), (m_nRange - m_vNodes[nNode]->GetValue()) * m_fScaleY);
+        wxPoint ptWindow = event.GetPosition() - ptNode;
         if(((abs(ptWindow.x) <= NODE_RADIUS)) && ((abs(ptWindow.y) <= NODE_RADIUS)))
         {
             m_nSelectedNode = nNode;
@@ -107,8 +105,11 @@ void EnvelopeEditor::OnLeftDown(wxMouseEvent& event)
 
 void EnvelopeEditor::OnLeftUp(wxMouseEvent& event)
 {
-    m_nSelectedNode = -1;
+    if(-1 == m_nSelectedNode)
+        return;
     Refresh();
+    SendUpdate(m_nSelectedNode);
+    m_nSelectedNode = -1;
 }
 
 void EnvelopeEditor::OnMouseMotion(wxMouseEvent& event)
@@ -118,13 +119,16 @@ void EnvelopeEditor::OnMouseMotion(wxMouseEvent& event)
     if(event.GetPosition().x > GetVirtualSize().x || event.GetPosition().x < 0 || event.GetPosition().y > GetVirtualSize().y || event.GetPosition().y < 0)
         return; //Moved outside window
 
-    int x = 0;
-    for(int nNode = 0; nNode < m_nSelectedNode; ++ nNode)
-        x += m_vNodes[nNode]->x;
-    if(event.GetPosition().x < x)
-        return; //Can't drag curve behind previous node
-    m_vNodes[m_nSelectedNode]->x = event.GetPosition().x - x;
-    m_vNodes[m_nSelectedNode]->y = m_nAxis - event.GetPosition().y;
+    int nMinX = 0;
+    int nMaxX = GetVirtualSize().x;
+    if(m_nSelectedNode > 0)
+        nMinX = GetPosition(m_nSelectedNode - 1);
+    if(m_nSelectedNode < (int)GetNodeCount() - 1)
+        nMaxX = GetPosition(m_nSelectedNode + 1);
+    if((event.GetPosition().x < nMinX) || (event.GetPosition().x > nMaxX) || (((ENV_STYLE_DCA_ENV == m_nStyle) | (ENV_STYLE_DCO_ENV == m_nStyle)) & (event.GetPosition().x > nMinX + m_nMaxY)))
+        return; //Can't drag curve behind previous or after next node
+    m_vNodes[m_nSelectedNode]->SetPosition(event.GetPosition().x);
+    m_vNodes[m_nSelectedNode]->SetValue(m_nMinY + (m_nRange - event.GetPosition().y / m_fScaleY));
     Refresh();
 }
 
@@ -135,49 +139,126 @@ void EnvelopeEditor::OnSize(wxSizeEvent& event)
 
 void EnvelopeEditor::OnLeftDoubleClick(wxMouseEvent& event)
 {
-    int nDelete = -1;
-    int nInsert = -1;
-    wxPoint ptLast(0, 0);
-    int nInsertX = 0;
+    if(ENV_STYLE_DCA_KF == m_nStyle || ENV_STYLE_DCO_KF == m_nStyle)
+        return; //Always 6 nodes for key follow
+    wxPoint ptNode(0, 0);
     for(unsigned int nNode = 0; nNode < m_vNodes.size(); ++nNode)
     {
-        if(-1 != nDelete)
+        ptNode = wxPoint(m_vNodes[nNode]->GetPosition(), (m_nRange - m_vNodes[nNode]->GetValue()) * m_fScaleY);
+        wxPoint ptWindow = event.GetPosition() - ptNode;
+        if(((abs(ptWindow.x) <= NODE_RADIUS)) && ((abs(ptWindow.y) <= NODE_RADIUS)))
         {
-            delete(m_vNodes[nNode]);
-        }
-        else
-        {
-            ptLast = wxPoint(ptLast.x + m_vNodes[nNode]->x, m_nAxis - m_vNodes[nNode]->y);
-            wxPoint ptWindow = event.GetPosition() - ptLast;
-            if(((abs(ptWindow.x) <= NODE_RADIUS)) && ((abs(ptWindow.y) <= NODE_RADIUS)))
-            {
-                delete(m_vNodes[nNode]);
-                nDelete = nNode;
-            }
-            else if(ptLast.x < event.GetPosition().x)
-            {
-                nInsert = nNode;
-                nInsertX = ptLast.x;
-            }
-        }
-    }
-
-    if(-1 == nDelete)
-    {
-        //Add a node
-        if(m_vNodes.size() >= m_nMaxNodes)
+            //Clicked within range of existing node
+            delete m_vNodes[nNode];
+            std::vector<EnvelopeNode*>::iterator it = m_vNodes.begin() + nNode;
+            m_vNodes.erase(it);
+            Refresh();
             return;
-        int x = event.GetPosition().x - nInsertX;
-        int y = m_nAxis - event.GetPosition().y;
-        std::vector<wxPoint*>::iterator it = m_vNodes.begin() + nInsert + 1;
-        m_vNodes.insert(it, new wxPoint(x, y));
+        }
     }
-    else
-    {
-        //Delete all nodes from one clicked on
-        std::vector<wxPoint*>::iterator it = m_vNodes.begin() + nDelete;
-        m_vNodes.erase(it, m_vNodes.end());
-    }
+    int nLevel = m_nRange - event.GetPosition().y / m_fScaleY;
+    int nPosition = event.GetPosition().x;
+    AddNode(nPosition, nLevel);
     Refresh();
+}
 
+void EnvelopeEditor::SendUpdate(int nIndex)
+{
+    wxCommandEvent event(wxEVT_ENVED, GetId());
+    event.SetInt(nIndex);
+    event.SetEventObject(this);
+    ProcessWindowEvent(event);
+}
+
+void EnvelopeEditor::SetMinY(int nMin)
+{
+    m_nMinY = nMin;
+    m_nRange = abs(m_nMaxY - m_nMinY);
+}
+
+void EnvelopeEditor::SetMaxY(int nMax)
+{
+    m_nMaxY = nMax;
+    m_nRange = abs(m_nMaxY - m_nMinY);
+}
+
+int EnvelopeEditor::GetRate(unsigned int nNode)
+{
+    if(nNode + 1 > GetNodeCount())
+        return 0;
+    int nLastX = 0;
+    if(nNode > 0)
+        nLastX = GetPosition(nNode - 1);
+    return 0x7F - (GetPosition(nNode) - nLastX);
+}
+
+int EnvelopeEditor::GetPosition(unsigned int nNode)
+{
+    if(nNode > GetNodeCount() - 1)
+        return 0;
+    return m_vNodes[nNode]->GetPosition();
+}
+
+int EnvelopeEditor::GetValue(unsigned int nNode)
+{
+    if(nNode > GetNodeCount() - 1)
+        return 0;
+    return m_vNodes[nNode]->GetValue();
+}
+
+void EnvelopeEditor::AddNode(int nPosition, int nValue, bool bVelocity, bool bSustain)
+{
+    if(m_vNodes.size() >= m_nMaxNodes)
+        return; //Can't add more nodes
+
+    bool bAdd = true;
+    for(unsigned int nNode = 0; nNode < GetNodeCount(); ++nNode)
+    {
+        if(m_vNodes[nNode]->GetPosition() < nPosition)
+            continue;
+        if(bAdd)
+        {
+            m_vNodes.insert(m_vNodes.begin() + nNode, new EnvelopeNode(nPosition, nValue, bVelocity, bSustain));
+            bAdd = false;
+        }
+        SendUpdate(nNode);
+    }
+    if(bAdd)
+    {
+        m_vNodes.push_back(new EnvelopeNode(nPosition, nValue, bVelocity, bSustain)); //If we are here then we are at end of nodes
+        SendUpdate(GetNodeCount() - 1);
+    }
+}
+
+void EnvelopeEditor::AddNodeRate(int nRate, int nValue, bool bVelocity, bool bSustain)
+{
+    if(m_vNodes.size() >= m_nMaxNodes)
+        return; //Can't add more nodes
+    wxLogDebug("EnvelopeEditor::AddNodeRate nRate=%d, nValue=%d", nRate, nValue);
+    int nLastX = 0;
+    if(GetNodeCount() > 0)
+        nLastX = GetPosition(GetNodeCount() - 1);
+    int nNewX = nLastX + m_nMaxY - nRate;
+    AddNode(nNewX, nValue, bVelocity, bSustain);
+}
+
+bool EnvelopeEditor::IsVelocity(unsigned int nNode)
+{
+    if(nNode >= GetNodeCount())
+        return false;
+    return m_vNodes[nNode]->IsVelocity();
+}
+
+bool EnvelopeEditor::IsSustain(unsigned int nNode)
+{
+    if(nNode >= GetNodeCount())
+        return false;
+    return m_vNodes[nNode]->IsSustain();
+}
+
+void EnvelopeEditor::Clear()
+{
+    for(unsigned int nNode = 0; nNode < GetNodeCount(); ++nNode)
+        delete m_vNodes[nNode];
+    m_vNodes.clear();
 }

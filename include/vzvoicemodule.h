@@ -37,7 +37,6 @@ class vzVoiceModule: public wxPanel
 		wxChoice* m_pCmbWaveform;
 		wxStaticBitmap* m_pBmpKeyboard;
 		wxStaticText* m_pLblVelocity;
-		EnvelopeEditor* m_pGraphAmp;
 		wxStaticText* m_pLblDetune;
 		wxSlider* m_pSliderAmpSens;
 		wxStaticText* m_pLblKeyFollow;
@@ -50,6 +49,7 @@ class vzVoiceModule: public wxPanel
 		wxStaticText* m_pLblAmpSens;
 		wxSlider* m_pSliderVelSensitivity;
 		wxSlider* m_pSliderDetune;
+		EnvelopeEditor* m_pEnvEditorAmp;
 		wxStaticText* m_pLblTitle;
 		wxCheckBox* m_pChkEnable;
 		//*)
@@ -69,19 +69,19 @@ class vzVoiceModule: public wxPanel
 		static const long ID_CHECKBOX1;
 		static const long ID_SLIDER8;
 		static const long ID_SLIDER25;
-		static const long ID_CUSTOM1;
+		static const long ID_ENVAMP;
 		static const long ID_SLIDER11;
 		static const long ID_SLIDER10;
 		static const long ID_CHOICE4;
 		static const long ID_SLIDER9;
 		static const long ID_STATICBITMAP1;
-		static const long ID_CUSTOM2;
+		static const long ID_ENVKF;
 		//*)
 
 	private:
 
 		//(*Handlers(vzVoiceModule)
-		void OnChkEnableM1Click(wxCommandEvent& event);
+		void OnChkEnableClick(wxCommandEvent& event);
 		void OnCmbWaveformSelect(wxCommandEvent& event);
 		void OnSliderDetuneCmdScrollChanged(wxScrollEvent& event);
 		void OnSliderDetuneFineCmdScrollChanged(wxScrollEvent& event);
@@ -90,6 +90,8 @@ class vzVoiceModule: public wxPanel
 		void OnCmbCurveSelect(wxCommandEvent& event);
 		void OnSliderVelSensitivityCmdScrollChanged(wxScrollEvent& event);
 		//*)
+		void OnAmpEnv(wxCommandEvent& event);
+		void OnKFEnv(wxCommandEvent& event);
 
         unsigned int m_nIndex; //Module index 0 - 7
 		wxByte* m_pVoiceData; //Pointer to the voice data

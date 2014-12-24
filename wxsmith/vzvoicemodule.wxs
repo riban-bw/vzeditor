@@ -4,6 +4,8 @@
 		<id_arg>0</id_arg>
 		<object class="wxFlexGridSizer" variable="FlexGridSizer6" member="no">
 			<rows>2</rows>
+			<growablecols>2,6</growablecols>
+			<growablerows>1</growablerows>
 			<object class="sizeritem">
 				<object class="wxStaticText" name="ID_STATICTEXT1" variable="m_pLblWaveform" member="yes">
 					<label>Waveform</label>
@@ -76,7 +78,6 @@
 								<item>Noise 2</item>
 							</content>
 							<selection>0</selection>
-							<handler function="OnCmbWaveformSelect" entry="EVT_CHOICE" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
@@ -102,7 +103,7 @@
 						<object class="wxCheckBox" name="ID_CHECKBOX1" variable="m_pChkEnable" member="yes">
 							<label>Enable</label>
 							<checked>1</checked>
-							<handler function="OnChkEnableM1Click" entry="EVT_CHECKBOX" />
+							<handler function="OnChkEnableClick" entry="EVT_CHECKBOX" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
@@ -143,7 +144,7 @@
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
-				<object class="Custom" name="ID_CUSTOM1" subclass="EnvelopeEditor" variable="m_pGraphAmp" member="yes">
+				<object class="Custom" name="ID_ENVAMP" subclass="EnvelopeEditor" variable="m_pEnvEditorAmp" member="yes">
 					<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),$(NAME));</creating_code>
 					<include_file>envelopeeditor.h</include_file>
 					<local_include>1</local_include>
@@ -193,7 +194,6 @@
 								<item>Curve 8</item>
 							</content>
 							<selection>0</selection>
-							<handler function="OnCmbCurveSelect" entry="EVT_CHOICE" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
@@ -228,7 +228,7 @@
 						<option>1</option>
 					</object>
 					<object class="sizeritem">
-						<object class="Custom" name="ID_CUSTOM2" subclass="EnvelopeEditor" variable="m_pEnvEditorKeyFollow" member="yes">
+						<object class="Custom" name="ID_ENVKF" subclass="EnvelopeEditor" variable="m_pEnvEditorKeyFollow" member="yes">
 							<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),$(NAME));</creating_code>
 							<include_file>envelopeeditor.h</include_file>
 							<local_include>1</local_include>

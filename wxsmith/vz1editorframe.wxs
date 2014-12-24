@@ -211,8 +211,8 @@
 										</object>
 										<object class="sizeritem">
 											<object class="wxSlider" name="ID_SLIDER26" variable="m_pSliderLevel" member="yes">
-												<value>99</value>
-												<max>99</max>
+												<value>127</value>
+												<max>127</max>
 												<handler function="OnSliderLevelCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 											</object>
 											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

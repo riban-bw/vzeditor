@@ -6,11 +6,51 @@
 class EnvelopeNode
 {
     public:
-        int m_nLevel;
-        int m_nRate;
+        EnvelopeNode(int nPosition, int nValue, bool bVelocity, bool bSustain) :
+            m_nPosition(nPosition),
+            m_nValue(nValue),
+            m_bVelocity(bVelocity),
+            m_bSustain(bSustain)
+        {}
+
+        /** @brief  Get the node position
+        *   @return <i>int</i> Node Position
+        */
+        int GetPosition() { return m_nPosition; }
+
+        /** @brief  Get the node value (value)
+        *   @return <i>int</i> Node value
+        */
+        int GetValue() { return m_nValue; }
+
+        /** @brief  Set the node position
+        *   @param  nPosition
+        */
+        void SetPosition(int nPosition) { m_nPosition = nPosition; }
+
+        /** @brief  Set the node value
+        *   @param  nPosition Value
+        */
+        void SetValue(int nValue) { m_nValue = nValue; }
+
+        /** @brief  Check whether node uses key velocity
+        *   @return <i>bool</i> True if key velocity contributes to this node
+        */
+        bool IsVelocity() { return m_bVelocity; }
+
+        /** @brief  Check whether node is sustain point
+        *   @return <i>bool</i> True if node is sustain point
+        */
+        bool IsSustain() { return m_bSustain; }
+
+    private:
+        int m_nPosition; //node position
+        int m_nValue; //node value
         bool m_bVelocity; // True if key velocity affects envelope
         bool m_bSustain; // True if this is the sustain stage of the envelolpe
 };
+
+wxDECLARE_EVENT(wxEVT_ENVED, wxCommandEvent);
 
 static const long ENV_STYLE_DCA_ENV = 0;
 static const long ENV_STYLE_DCO_ENV = 1;
@@ -33,11 +73,23 @@ class EnvelopeEditor : public wxScrolledWindow
 
         virtual ~EnvelopeEditor();
 
-        /** @brief  Adds a node to the envelope curve
-        *   @param  nLevel is the gain of this node
-        *   @param  nRate is the slope of the curve
+        /** @brief  Adds a node to the envelope curve using postion
+        *   @param  nPosition Position of node
+        *   @param  nValue Value of node
+        *   @param  bVelocity True of key velocity affects this
+        *   @param  bSustain True of this node is sustain point
+        *   @note   Node is inserted at approriate position, based on nPosition
         */
-        void AddNode(int nLevel, int nRate);
+        void AddNode(int nPosition, int nValue, bool bVelocity = false, bool bSustain = false);
+
+        /** @brief  Adds a node to the envelope curve using rate
+        *   @param  nRate Slope of the curve
+        *   @param  nValue Value of node
+        *   @param  bVelocity True of key velocity affects this
+        *   @param  bSustain True of this node is sustain point
+        *   @note   Node is added to end
+        */
+        void AddNodeRate(int nRate, int nValue, bool bVelocity = false, bool bSustain = false);
 
         /** @brief  Removes the last node of the curve
         */
@@ -53,32 +105,78 @@ class EnvelopeEditor : public wxScrolledWindow
         */
         unsigned int GetMaxNodes() { return m_nMaxNodes; }
 
-        /** @brief  Sets the position of the X-axis
-        *   @param  nAxis Postion of X-axis
+        /** @brief  Gets the quantity of nodes
+        *   @return <unsigned int> Quantity of nodes
         */
-        void SetAxis(int nAxis) { m_nAxis = nAxis; }
+        unsigned int GetNodeCount() { return m_vNodes.size(); }
 
-        /** @brief  Gets the position of the X-axis
-        *   @return <i>int</i> Position of X-axis
+        /** @brief  Sets the minimum value on the y-axis
+        *   @param  nMin Minimum value
+        *   @todo   Change y-axis to float?
         */
-        int GetAxis() { return m_nAxis; }
+        void SetMinY(int nMin);
+
+        /** @brief  Sets the maximum value on the y-axis
+        *   @param  nMax Maximum value
+        *   @todo   Change y-axis to float?
+        */
+        void SetMaxY(int nMax);
+
+        /** @brief  Get the node rate
+        *   @param  nNode Index of node
+        *   @return <i>int</i> Rate of change since last node
+        */
+        int GetRate(unsigned int nNode);
+
+        /** @brief  Get the position from a node
+        *   @param  nNode Index of node
+        *   @return <i>int</i> Node position
+        */
+        int GetPosition(unsigned int nNode);
+
+        /** @brief  Get the value from a node
+        *   @param  nNode Index of node
+        *   @return <i>int</i> Node value
+        */
+        int GetValue(unsigned int nNode);
+
+        /** @brief  Is a node affected by key velocity
+        *   @param  nNode Index of the node
+        *   @return <i>bool</i> True if node is affected by key velocity
+        */
+        bool IsVelocity(unsigned int nNode);
+
+        /** @brief  Is a node the sustain point
+        *   @param  nNode Index of the node
+        *   @return <i>bool</i> True if node is sustain point
+        */
+        bool IsSustain(unsigned int nNode);
+
+        /** @brief  Removes all nodes
+        */
+        void Clear();
 
     protected:
 
     private:
-        void PlotGraph(wxDC& dc);
+        void PlotEnvelope(wxDC& dc);
         void OnPaint(wxPaintEvent &WXUNUSED(event));
         void OnLeftDown(wxMouseEvent& event);
         void OnLeftUp(wxMouseEvent& event);
         void OnLeftDoubleClick(wxMouseEvent& event);
         void OnMouseMotion(wxMouseEvent& event);
         void OnSize(wxSizeEvent& event);
+        void SendUpdate(int nIndex);
 
         int m_nSelectedNode; //Currently selected node (used for mouse click and drag)
-        int m_nAxis; //Position of Y axis within control
-        int m_nAxisScaler; //Scale of X-axis offset
+        int m_nMinY; //Minimum y-axis value
+        int m_nMaxY; //Maximum y-axis value
+        int m_nRange; //max-min
+        int m_nZero; //position of x-axis
+        int m_nStyle; //Control style
         unsigned int m_nMaxNodes; //Maximum number of nodes allowed
-        std::vector<wxPoint*> m_vNodes; //Vector of nodes
+        float m_fScaleY; //Current y-axis scaling
+        std::vector<EnvelopeNode*> m_vNodes; //Vector of nodes
 
     DECLARE_EVENT_TABLE();
 };

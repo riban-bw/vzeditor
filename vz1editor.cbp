@@ -62,7 +62,7 @@
 				<gui name="wxWidgets" src="src/vz1editorapp.cpp" main="vz1editorFrame" init_handlers="necessary" language="CPP" />
 				<resources>
 					<wxFrame wxs="wxsmith/vz1editorframe.wxs" src="src/vz1editormain.cpp" hdr="include/vz1editormain.h" fwddecl="0" i18n="1" name="vz1editorFrame" language="CPP" />
-					<wxPanel wxs="wxsmith/vzvoicemodule.wxs" src="vzvoicemodule.cpp" hdr="vzvoicemodule.h" fwddecl="0" i18n="1" name="vzVoiceModule" language="CPP" />
+					<wxPanel wxs="wxsmith/vzvoicemodule.wxs" src="src/vzvoicemodule.cpp" hdr="include/vzvoicemodule.h" fwddecl="0" i18n="1" name="vzVoiceModule" language="CPP" />
 				</resources>
 			</wxsmith>
 			<debugger />

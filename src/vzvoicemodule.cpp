@@ -22,13 +22,13 @@ const long vzVoiceModule::ID_STATICTEXT2 = wxNewId();
 const long vzVoiceModule::ID_CHECKBOX1 = wxNewId();
 const long vzVoiceModule::ID_SLIDER8 = wxNewId();
 const long vzVoiceModule::ID_SLIDER25 = wxNewId();
-const long vzVoiceModule::ID_CUSTOM1 = wxNewId();
+const long vzVoiceModule::ID_ENVAMP = wxNewId();
 const long vzVoiceModule::ID_SLIDER11 = wxNewId();
 const long vzVoiceModule::ID_SLIDER10 = wxNewId();
 const long vzVoiceModule::ID_CHOICE4 = wxNewId();
 const long vzVoiceModule::ID_SLIDER9 = wxNewId();
 const long vzVoiceModule::ID_STATICBITMAP1 = wxNewId();
-const long vzVoiceModule::ID_CUSTOM2 = wxNewId();
+const long vzVoiceModule::ID_ENVKF = wxNewId();
 //*)
 
 wxDEFINE_EVENT(wxEVT_VZ_MODULE, wxCommandEvent);
@@ -51,6 +51,9 @@ vzVoiceModule::vzVoiceModule(wxWindow* parent, unsigned int nId, long lStyle) :
 
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	FlexGridSizer6 = new wxFlexGridSizer(2, 0, 0, 0);
+	FlexGridSizer6->AddGrowableCol(2);
+	FlexGridSizer6->AddGrowableCol(6);
+	FlexGridSizer6->AddGrowableRow(1);
 	m_pLblWaveform = new wxStaticText(this, ID_STATICTEXT1, _("Waveform"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
 	FlexGridSizer6->Add(m_pLblWaveform, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	m_pLblDetune = new wxStaticText(this, ID_STATICTEXT12, _("Detune"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT12"));
@@ -90,8 +93,8 @@ vzVoiceModule::vzVoiceModule(wxWindow* parent, unsigned int nId, long lStyle) :
 	m_pSliderDetuneFine = new wxSlider(this, ID_SLIDER25, 32, 0, 63, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER25"));
 	BoxSizer1->Add(m_pSliderDetuneFine, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer6->Add(BoxSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pGraphAmp = new EnvelopeEditor(this,ID_CUSTOM1,wxDefaultPosition,wxSize(296,82),ENV_STYLE_DCA_ENV,_T("ID_CUSTOM1"));
-	FlexGridSizer6->Add(m_pGraphAmp, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	m_pEnvEditorAmp = new EnvelopeEditor(this,ID_ENVAMP,wxDefaultPosition,wxSize(296,82),ENV_STYLE_DCA_ENV,_T("ID_ENVAMP"));
+	FlexGridSizer6->Add(m_pEnvEditorAmp, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	m_pSliderEnvDepth = new wxSlider(this, ID_SLIDER11, 99, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER11"));
 	FlexGridSizer6->Add(m_pSliderEnvDepth, 1, wxALL|wxEXPAND|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	m_pSliderAmpSens = new wxSlider(this, ID_SLIDER10, 7, 0, 7, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER10"));
@@ -116,22 +119,22 @@ vzVoiceModule::vzVoiceModule(wxWindow* parent, unsigned int nId, long lStyle) :
 	FlexGridSizer1->AddGrowableRow(1);
 	m_pBmpKeyboard = new wxStaticBitmap(this, ID_STATICBITMAP1, keyboard_xpm, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
 	FlexGridSizer1->Add(m_pBmpKeyboard, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pEnvEditorKeyFollow = new EnvelopeEditor(this,ID_CUSTOM2,wxDefaultPosition,wxSize(296,-1),ENV_STYLE_DCA_KF,_T("ID_CUSTOM2"));
+	m_pEnvEditorKeyFollow = new EnvelopeEditor(this,ID_ENVKF,wxDefaultPosition,wxSize(296,-1),ENV_STYLE_DCA_KF,_T("ID_ENVKF"));
 	FlexGridSizer1->Add(m_pEnvEditorKeyFollow, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer6->Add(FlexGridSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(FlexGridSizer6);
 	FlexGridSizer6->Fit(this);
 	FlexGridSizer6->SetSizeHints(this);
 
-	Connect(ID_CHOICE3,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&vzVoiceModule::OnCmbWaveformSelect);
-	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&vzVoiceModule::OnChkEnableM1Click);
+	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&vzVoiceModule::OnChkEnableClick);
 	Connect(ID_SLIDER8,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderDetuneCmdScrollChanged);
 	Connect(ID_SLIDER25,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderDetuneFineCmdScrollChanged);
 	Connect(ID_SLIDER11,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderEnvDepthCmdScrollChanged);
 	Connect(ID_SLIDER10,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderAmpSensCmdScrollChanged);
-	Connect(ID_CHOICE4,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&vzVoiceModule::OnCmbCurveSelect);
 	Connect(ID_SLIDER9,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderVelSensitivityCmdScrollChanged);
 	//*)
+	Connect(ID_ENVAMP, wxEVT_ENVED, (wxObjectEventFunction)&vzVoiceModule::OnAmpEnv);
+	Connect(ID_ENVKF, wxEVT_ENVED, (wxObjectEventFunction)&vzVoiceModule::OnKFEnv);
 //	if(VZVOICE_STYLE_NOTITLE == lStyle)
 //    {
 //        m_pLblAmpEnv->Hide();
@@ -173,41 +176,42 @@ void vzVoiceModule::UpdateVoice()
     m_pSliderDetune->SetValue((m_pVoiceData[6 + 2 * m_nIndex] & 0xFC) >> 2); //!@todo Course detune not working correctly
     //!@todo Pitch fix and detune range (x1, 1/16)
 
+    m_pEnvEditorAmp->Clear();
     unsigned int nEnvSteps = (m_pVoiceData[165 + m_nIndex] & 0x70) >> 4;
-    for(unsigned int nStep = 0; nStep < nEnvSteps; ++nStep)
+    for(unsigned int nStep = 0; nStep <= nEnvSteps; ++nStep)
     {
         int nRate = m_pVoiceData[21 + m_nIndex + 18 * nStep] & 0x7F;
-        bool bKeyVelRate = (0x80 == (m_pVoiceData[21 + m_nIndex + 18 * nStep] & 0x80));
+        bool bKeyVelocity = (0x80 == (m_pVoiceData[21 + m_nIndex + 18 * nStep] & 0x80));
         int nLevel = m_pVoiceData[30 + m_nIndex + 18 * nStep] & 0x7F;
         bool bSustain = (0x80 == (m_pVoiceData[30 + m_nIndex + 18 * nStep] & 0x80));
-        //!@todo Set envelopes
+        m_pEnvEditorAmp->AddNodeRate(nRate, nLevel, bKeyVelocity, bSustain);
     }
 
     m_pSliderAmpSens->SetValue(m_pVoiceData[165 + m_nIndex] & 0x07);
 
     int nEnvDepth = m_pVoiceData[175 + m_nIndex] & 0x7F;
-    m_pSliderEnvDepth->SetValue(99 - nEnvDepth);
+    m_pSliderEnvDepth->SetValue(0x7F - nEnvDepth);
     bool bEnable = (0x80 != (m_pVoiceData[175 + m_nIndex] & 0x80));
     m_pChkEnable->SetValue(bEnable); //!@todo call enable module
+    m_pEnvEditorKeyFollow->Clear();
     for(unsigned int nStep = 0; nStep < 6; ++nStep)
     {
-        int nKfLevel = m_pVoiceData[184 + 12 * m_nIndex + 2 * nStep] & 0x7F;
-        int nKfKey = m_pVoiceData[185 + 12 * m_nIndex + 2 * nStep] & 0x7F;
-        //!@todo Set key follow
+        int nKfKey = m_pVoiceData[184 + 12 * m_nIndex + 2 * nStep] & 0x7F;
+        int nKfLevel = m_pVoiceData[185 + 12 * m_nIndex + 2 * nStep] & 0x7F;
+        m_pEnvEditorKeyFollow->AddNode(nKfKey, nKfLevel, false, false);
     }
     int nVelSens = m_pVoiceData[304 + m_nIndex] & 0x1F;
     int nVelCurve = (m_pVoiceData[304 + m_nIndex] & 0xE0) >> 5; //!@todo Show velocity curves as graphics
     m_pSliderVelSensitivity->SetValue(nVelSens);
     m_pCmbCurve->SetSelection(nVelCurve);
-
 }
 
-void vzVoiceModule::OnChkEnableM1Click(wxCommandEvent& event)
+void vzVoiceModule::OnChkEnableClick(wxCommandEvent& event)
 {
     m_pCmbCurve->Enable(event.IsChecked());
     m_pCmbWaveform->Enable(event.IsChecked());
     m_pEnvEditorKeyFollow->Enable(event.IsChecked());
-    m_pGraphAmp->Enable(event.IsChecked());
+    m_pEnvEditorAmp->Enable(event.IsChecked());
     m_pSliderAmpSens->Enable(event.IsChecked());
     m_pSliderDetune->Enable(event.IsChecked());
     m_pSliderDetuneFine->Enable(event.IsChecked());
@@ -296,4 +300,21 @@ void vzVoiceModule::OnSliderVelSensitivityCmdScrollChanged(wxScrollEvent& event)
     SendUpdate();
 }
 
-//!@todo Add hander for envelopes
+void vzVoiceModule::OnAmpEnv(wxCommandEvent& event)
+{
+    if(!m_pVoiceData || m_nIndex > 7)
+        return;
+    m_pVoiceData[165 + m_nIndex] = (m_pVoiceData[165 + m_nIndex] & 0x0F) | ((m_pEnvEditorAmp->GetNodeCount() - 1) << 4);
+    m_pVoiceData[21 + event.GetInt() * 18 + m_nIndex] = m_pEnvEditorAmp->GetRate(event.GetInt()) | ((m_pEnvEditorAmp->IsVelocity(event.GetInt())?1:0) << 7);
+    wxLogDebug("vzVoiceModule::OnAmpEnv M%d, Node %d, Rate %d, Value %d", m_nIndex, event.GetInt(), m_pEnvEditorAmp->GetRate(event.GetInt()), m_pEnvEditorAmp->GetValue(event.GetInt()));
+    m_pVoiceData[30 + event.GetInt() * 18 + m_nIndex] = m_pEnvEditorAmp->GetValue(event.GetInt()) | ((m_pEnvEditorAmp->IsSustain(event.GetInt())?1:0) << 7);
+}
+
+void vzVoiceModule::OnKFEnv(wxCommandEvent& event)
+{
+    if(!m_pVoiceData || m_nIndex > 7)
+        return;
+    unsigned int nReg = 184 + event.GetInt() + 6 * m_nIndex;
+    m_pVoiceData[nReg] = m_pEnvEditorKeyFollow->GetPosition(event.GetInt());
+    m_pVoiceData[nReg + 1] = m_pEnvEditorKeyFollow->GetValue(event.GetInt());
+}
