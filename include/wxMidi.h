@@ -2,8 +2,8 @@
 // wxMidi: A MIDI interface based on PortMidi, the Portable Real-Time MIDI Library
 // --------------------------------------------------------------------------------
 //
-// Author:      Cecilio Salmeron
-// Copyright:   (c) 2005-2011 Cecilio Salmeron
+// Author:      Cecilio Salmeron <s.cecilio@gmail.com>
+// Copyright:   (c) 2005-2015 Cecilio Salmeron
 // Licence:     wxWidgets licence, version 3.1 or later at your choice.
 //=====================================================================================
 #ifdef __GNUG__
@@ -34,37 +34,55 @@
 #include "portmidi.h"
 #include "porttime.h"
 
+//other
+#include <time.h>
+
 
 //Constants
-#define wxMIDI_VERSION		_T("1.5")
+#define wxMIDI_VERSION		_T("2.0-beta")
+#define wxMIDI_MAJOR		2
+#define wxMIDI_MINOR		0
+
 #define wxMidiDeviceID		PmDeviceID
 #define wxMidiTimestamp		PmTimestamp
 #define wxMidiPmMessage		PmMessage
 #define wxMidiPmEvent		PmEvent
 
 
+typedef enum
+{
+    //AWARE: When adding more error codes, remember to update method
+    //       wxMidiSystem::GetErrorText()
 
-typedef enum {
 	wxMIDI_NO_ERROR = 0,
 
 	//error codes from portmidi. Name changed from pmXxxx to wxMIDI_ERROR_Xxxx
     wxMIDI_ERROR_HostError = -10000,
-    wxMIDI_ERROR_InvalidDeviceId, /* out of range or output device when input is requested or vice versa */
+    wxMIDI_ERROR_InvalidDeviceId,  /** out of range or
+                                    * output device when input is requested or
+                                    * input device when output is requested or
+                                    * device is already opened
+                                    */
     wxMIDI_ERROR_InsufficientMemory,
     wxMIDI_ERROR_BufferTooSmall,
     wxMIDI_ERROR_BufferOverflow,
-    wxMIDI_ERROR_BadPtr,
-    wxMIDI_ERROR_BadData, /* illegal midi data, e.g. missing EOX */
+    wxMIDI_ERROR_BadPtr,          /** PortMidiStream parameter is NULL or
+                                   * stream is not opened or
+                                   * stream is output when input is required or
+                                   * stream is input when output is required */
+
+    wxMIDI_ERROR_BadData,        /** illegal midi data, e.g. missing EOX */
     wxMIDI_ERROR_InternalError,
-    wxMIDI_ERROR_BufferMaxSize, /* buffer is already as large as it can be */
+    wxMIDI_ERROR_BufferMaxSize,  /** buffer is already as large as it can be */
 
 	//Additional error codes not in portmidi
-	wxMIDI_ERROR_AlreadyListening,
+	wxMIDI_ERROR_AlreadyListening = -10100,
 	wxMIDI_ERROR_CreateThread,
 	wxMIDI_ERROR_StartThread,
 	wxMIDI_ERROR_BadSysExMsg_Start,
-	wxMIDI_ERROR_BadSysExMsg_Length,
-	wxMIDI_ERROR_NoDataAvailable
+	//wxMIDI_ERROR_BadSysExMsg_Length,      //2.0. No longer used. Removed unnecessary limit.
+	wxMIDI_ERROR_NoDataAvailable,
+	wxMIDI_ERROR_TimeOut,
 } wxMidiError;
 
 
@@ -193,18 +211,18 @@ public:
 
 	// information
 	wxMidiError Error() { return m_nError; }
-	int Length() { return m_nSize; }
+	long Length() { return m_nSize; }
 
 	//two steps construction
 	void SetBuffer(wxByte* pBuffer) { m_pMessage = pBuffer; }
-	void SetLength(int lenght) { m_nSize = lenght; }
+	void SetLength(long lenght) { m_nSize = lenght; }
 
 
 private:
 	wxByte*			m_pMessage;
 	wxMidiTimestamp	m_timestamp;
 	wxMidiError		m_nError;
-	int				m_nSize;
+	long   		    m_nSize;
 };
 
 class wxMidiDevice
@@ -280,10 +298,31 @@ class wxMidiInDevice : public wxMidiDevice
 {
 public:
 
-	wxMidiInDevice(wxMidiDeviceID nDevice);
+    /** timeout parameter specifies the maximum wait time without
+        receiving more data for aborting an incomplete SysEx message
+        reception. This will happen if a SysEx message reception is
+        interrupted (i.e. the MIDI cable is accidentally unplugged).
+    */
+	wxMidiInDevice(wxMidiDeviceID nDevice, double timeoutSeconds=5.0);
+
 	~wxMidiInDevice();
 
-	wxMidiError Open(void *DriverInfo = NULL);
+    /** The portmidi library doesn't allow for dynamic buffer allocation.
+        Therefore, you should allocate enough space for the largest SysEx
+        message you expect to receive. As each slot of a portmidi buffer
+        holds 4 SysEx bytes, buffersize parameter must be something like
+        the maximum SysEx message length in bytes divided by 4.
+        The default value allows to receive at least 16KB long SysEx
+        messages.
+
+        portmidi uses an 'int' for specifying buffer size. This introduces
+        an apparent limitation to approx. 128KB SysEx messages (32KB x 4).
+        But as MIDI data transfer rate is 3.8 KB/sec, in principle wxMidi
+        will read arriving bytes much faster. So, in practice, the default
+        value for the portmidi buffersize should not cause any limitation
+        for receiving SysEx messages of any length.
+    */
+	wxMidiError Open(void *DriverInfo = NULL, int buffersize=4096);
 
 	wxMidiError Read(wxMidiPmEvent *buffer, long* length);
 	wxMidiMessage* Read(wxMidiError* pError);
@@ -302,9 +341,22 @@ public:
 
 private:
 	bool MoveDataToSysExBuffer(PmMessage message);
+    bool too_much_time_without_receiving_bytes();
+    bool too_much_reads_without_receiving_bytes();
+    bool should_report_timeout();
+    //helpers
+    inline void reset_timeout_counters() { m_timeCounter=time_t(0); m_numNullReads=0; }
+    inline bool use_time_algorithm() { return m_fUseTimeAlgorithm; }
+    inline void switch_to_alternate_algorithm() { m_fUseTimeAlgorithm = false; }
 
 
 	wxMidiThread*	m_pThread;		//thread for polling
+
+	//for reporting timeout errors
+	bool            m_fUseTimeAlgorithm;
+	time_t          m_timeCounter;      //time when first read failure observed
+	double          m_timeoutSeconds;   //max time without receiving data before reporting timeout
+	int             m_numNullReads;     //number of reads without receiving data
 
 	//buffer for sysex messages
 	long	m_SizeOfSysexBuffer;

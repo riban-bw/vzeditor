@@ -158,7 +158,8 @@ class sysexFrame: public wxFrame
         void OnModuleEvent(wxCommandEvent &event);
         void CloseInput();
         void CloseOutput();
-        void SendVoice();
+        void SendVoice(); //Sends voice data via sysex message
+        void SendOk(); //Sends sysex message OK
         void UpdateVoice();
         void AutoUpdateVoice();
         void SetVzMode(unsigned int nMode); //Send sysex message to set VZ operational mode

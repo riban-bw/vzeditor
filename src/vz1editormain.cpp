@@ -437,7 +437,7 @@ void sysexFrame::OnMidiReceive(wxCommandEvent& event)
                             //Header long enough
                             if(0xF0 == pData[0] && 0x44 == pData[1] && 0x03 == pData[2] && 0x00 == pData[3] && 0x70 == (pData[4] & 0xF0))
                             {
-                                wxLogDebug("Sysex message from Casio - length = %d", pMsg->Length());
+                                wxLogDebug("Sysex message from Casio - length = %ld", pMsg->Length());
                                 switch(pData[5])
                                 {
                                     case 0x00: //Tone data
@@ -516,7 +516,7 @@ void sysexFrame::OnMidiReceive(wxCommandEvent& event)
                                                 wxLogDebug("Combination Mode");
                                                 break;
                                             case 0x02:
-                                                wxLogDebug("OPerationa Memory Mode");
+                                                wxLogDebug("Operationa Memory Mode");
                                                 break;
                                             case 0x03:
                                                 wxLogDebug("Multichannel Mode");
@@ -537,7 +537,22 @@ void sysexFrame::OnMidiReceive(wxCommandEvent& event)
                                     }
                                     case 0x70: //Save/Load Open
                                     {
-                                        wxLogDebug("Save / Load Open");
+                                        switch(pData[6])
+                                        {
+                                            case 0x00:
+                                                wxLogDebug("Save / Load Open 64 tones");
+                                                break;
+                                            case 0x01:
+                                                wxLogDebug("Save / Load Open 64 operations");
+                                                break;
+                                            case 0x02:
+                                                wxLogDebug("Save / Load Open 64 tones + 64 operations");
+                                                break;
+                                            default:
+                                                wxLogDebug("Save/ Load Open - bad data type");
+
+                                        }
+                                        SendOk();
                                         break;
                                     }
                                     case 0x71: //Save/Load Close
@@ -603,10 +618,6 @@ void sysexFrame::SendVoice()
     wxString sName = m_pTxtVoiceName->GetValue();
     m_pTxtVoiceName->SetValue(sName.MakeUpper());
     m_pTxtVoiceName->Refresh();
-    if(!m_pMidiOut)
-        return;
-
-
 
     //Now send the voice data
     wxByte pSysexMsg[681] = {
@@ -628,6 +639,22 @@ void sysexFrame::SendVoice()
 
     wxMidiSysExMessage msg(pSysexMsg);
     m_pMidiOut->Write(&msg);
+}
+
+void sysexFrame::SendOk()
+{
+    if(!m_pMidiOut)
+        return;
+
+    //Now send the voice data
+    wxByte pSysexMsg[7] = {
+		0xF0,				//start of sysex message
+		0x44, 0x03, 0x00, 0x70, //casio
+		0x72,               //OK
+		0xF7               //end of sysex message
+	};
+	wxMidiSysExMessage msg(pSysexMsg);
+	m_pMidiOut->Write(&msg);
 }
 
 void sysexFrame::UpdateVoice()

@@ -306,7 +306,7 @@ void vzVoiceModule::OnAmpEnv(wxCommandEvent& event)
         return;
     m_pVoiceData[165 + m_nIndex] = (m_pVoiceData[165 + m_nIndex] & 0x0F) | ((m_pEnvEditorAmp->GetNodeCount() - 1) << 4);
     m_pVoiceData[21 + event.GetInt() * 18 + m_nIndex] = m_pEnvEditorAmp->GetRate(event.GetInt()) | ((m_pEnvEditorAmp->IsVelocity(event.GetInt())?1:0) << 7);
-    wxLogDebug("vzVoiceModule::OnAmpEnv M%d, Node %d, Rate %d, Value %d", m_nIndex, event.GetInt(), m_pEnvEditorAmp->GetRate(event.GetInt()), m_pEnvEditorAmp->GetValue(event.GetInt()));
+//    wxLogDebug("vzVoiceModule::OnAmpEnv M%d, Node %d, Rate %d, Value %d", m_nIndex, event.GetInt(), m_pEnvEditorAmp->GetRate(event.GetInt()), m_pEnvEditorAmp->GetValue(event.GetInt()));
     m_pVoiceData[30 + event.GetInt() * 18 + m_nIndex] = m_pEnvEditorAmp->GetValue(event.GetInt()) | ((m_pEnvEditorAmp->IsSustain(event.GetInt())?1:0) << 7);
 }
 

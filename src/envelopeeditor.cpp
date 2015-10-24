@@ -234,7 +234,7 @@ void EnvelopeEditor::AddNodeRate(int nRate, int nValue, bool bVelocity, bool bSu
 {
     if(m_vNodes.size() >= m_nMaxNodes)
         return; //Can't add more nodes
-    wxLogDebug("EnvelopeEditor::AddNodeRate nRate=%d, nValue=%d", nRate, nValue);
+//    wxLogDebug("EnvelopeEditor::AddNodeRate nRate=%d, nValue=%d", nRate, nValue);
     int nLastX = 0;
     if(GetNodeCount() > 0)
         nLastX = GetPosition(GetNodeCount() - 1);
