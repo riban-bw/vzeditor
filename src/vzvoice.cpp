@@ -7,7 +7,7 @@ vzvoice::vzvoice()
     m_bModified = false;
 }
 
-vzvoice::vzvoice(const unsigned char* pData)
+vzvoice::vzvoice(wxByte* pData)
 {
     SetSysEx(pData);
 }
@@ -21,24 +21,24 @@ bool vzvoice::IsModified()
     return m_bModified;
 }
 
-void vzvoice::GetSysEx(unsigned char* pData)
+void vzvoice::GetSysEx(wxByte* pData)
 {
     memcpy(pData, m_acSysEx, VZ_VOICE_SIZE);
 }
 
-unsigned char* vzvoice::GetSysEx()
+wxByte* vzvoice::GetSysEx()
 {
     return m_acSysEx;
 }
 
-bool vzvoice::SetSysEx(const unsigned char* pData)
+bool vzvoice::SetSysEx(wxByte* pData)
 {
     memcpy(m_acSysEx, pData, VZ_VOICE_SIZE);
     m_bModified = Validate(true);
     return m_bModified;
 }
 
-bool vzvoice::ValidateByte(unsigned char* pByte, unsigned char nByte, bool bFix)
+bool vzvoice::ValidateByte(wxByte* pByte, wxByte nByte, bool bFix)
 {
     bool bInvalid = (nByte != *pByte);
     if(bFix)
@@ -56,18 +56,17 @@ bool vzvoice::Validate(bool bFix)
     m_bModified |= ValidateByte(m_acSysEx + 4, 0x70, bFix); //!@todo Allow different MIDI channel [0xF0 - 0xFF]
     m_bModified |= ValidateByte(m_acSysEx + 5, 0x00, bFix);
     m_bModified |= ValidateByte(m_acSysEx + 6, 0x40, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
-    m_bModified |= ValidateByte(m_acSysEx + VZ_VOICE_PAYLOAD_SIZE + 7, 0 - Checksum(m_acSysEx + 7, VZ_VOICE_PAYLOAD_SIZE), bFix);
+    m_bModified |= ValidateByte(m_acSysEx + VZ_VOICE_PAYLOAD_SIZE + 7, Checksum(m_acSysEx + 7, VZ_VOICE_PAYLOAD_SIZE), bFix);
     m_bModified |= ValidateByte(m_acSysEx + VZ_VOICE_PAYLOAD_SIZE + 8, 0xF7, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
     return m_bModified;
 }
 
-unsigned char vzvoice::Checksum(unsigned char* pData, unsigned int nSize, unsigned char nChecksum)
+wxByte vzvoice::Checksum(wxByte* pData, unsigned int nSize, wxByte nChecksum)
 {
-    //"@todo Checksum not working - should we check all data or just payload? - Made 7-bit: check again
-    unsigned char nSum = nChecksum;
-    for(unsigned int nIndex = 0; nIndex < nSize; ++nIndex)
-        nSum += *(pData + nIndex);
-    return nSum & 0x7F;
+    wxByte nSum = nChecksum;
+    for(unsigned int nIndex = 0; nIndex < nSize; nIndex+=2)
+        nSum += DecodeByte(pData + nIndex);
+    return (0 - nSum) & 0x7F;
 }
 
 

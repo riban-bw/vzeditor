@@ -41,7 +41,7 @@ class vzvoice
         *   @param  Data Pointer to a buffer containing raw SysEx voice data
         *   @note   Initiailses any invalid values to defaults and sets modified field
         */
-        vzvoice(const unsigned char* pData);
+        vzvoice(wxByte* pData);
 
         /** @brief  Default destruct vz1voice object
         */
@@ -57,19 +57,19 @@ class vzvoice
         /** @brief  Get the raw SysEx data
         *   @param  pData Pointer to buffer to store raw SyseEx data
         */
-        void GetSysEx(unsigned char* pData);
+        void GetSysEx(wxByte* pData);
 
         /** @brief  Get the raw SysEx data
-        *   @retval (unsigned char*) Pointer to buffer with raw SyseEx data
+        *   @retval wxByte* Pointer to buffer with raw SyseEx data
         */
-        unsigned char* GetSysEx();
+        wxByte* GetSysEx();
 
         /** @brief  Set the raw SysEx data
         *   @param  pData Pointer to a buffer containing raw SysEx voice data
         *   @retval bool True if any data is invalid and initialised
         *   @note   Data is validated before populating the voice data
         */
-        bool SetSysEx(const unsigned char* pData);
+        bool SetSysEx(wxByte* pData);
 
         /** @brief  Validate a single byte
         *   @param  pByte Pointer to the byte to validate
@@ -77,7 +77,7 @@ class vzvoice
         *   @param  bFix True to correct invalid data
         *   @retval bool True if data invalid
         */
-        bool ValidateByte(unsigned char* pByte, unsigned char nByte, bool bFix);
+        bool ValidateByte(wxByte* pByte, wxByte nByte, bool bFix);
 
         /** @brief  Validates raw SysEx voice data
         *   @param  bFix True to initalise invalid data
@@ -89,10 +89,10 @@ class vzvoice
         *   @param  pData Pointer to the data to validate
         *   @param  nSize Quantity of bytes to validate
         *   @param  nChecksum Checksum to validate [Default: 0 - calculate checksum]
-        *   @retval unsigned char Calculated value of checksum (zero if valid checksum)
+        *   @retval wxByte Calculated value of checksum (zero if valid checksum)
         *   @note   Pass zero checksum to calculate a checksum. Pass a checksum to check data (zero return for valid data)
         */
-        unsigned char Checksum(unsigned char* pData, unsigned int nSize, unsigned char nChecksum = 0);
+        wxByte Checksum(wxByte* pData, unsigned int nSize, wxByte nChecksum = 0);
 
         /** @brief  Gets the voice name
         *   @retval wxString Name of the voice
