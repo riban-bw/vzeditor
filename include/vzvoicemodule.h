@@ -1,14 +1,14 @@
 #pragma once
 
 //(*Headers(vzVoiceModule)
-#include <wx/checkbox.h>
-#include <wx/sizer.h>
-#include <wx/panel.h>
-#include <wx/slider.h>
-#include <wx/stattext.h>
-#include <wx/choice.h>
-#include <wx/statbmp.h>
 #include "envelopeeditor.h"
+#include <wx/checkbox.h>
+#include <wx/choice.h>
+#include <wx/panel.h>
+#include <wx/sizer.h>
+#include <wx/slider.h>
+#include <wx/statbmp.h>
+#include <wx/stattext.h>
 //*)
 
 const static long VZVOICE_STYLE_NOTITLE = 0;
@@ -33,49 +33,51 @@ class vzVoiceModule: public wxPanel
 		void UpdateVoice();
 
 		//(*Declarations(vzVoiceModule)
-		wxSlider* m_pSliderEnvDepth;
-		wxChoice* m_pCmbWaveform;
-		wxStaticBitmap* m_pBmpKeyboard;
-		wxStaticText* m_pLblVelocity;
-		wxStaticText* m_pLblDetune;
-		wxSlider* m_pSliderAmpSens;
-		wxStaticText* m_pLblKeyFollow;
-		EnvelopeEditor* m_pEnvEditorKeyFollow;
-		wxStaticText* m_pLblWaveform;
-		wxSlider* m_pSliderDetuneFine;
-		wxStaticText* m_pLblAmpEnv;
-		wxChoice* m_pCmbCurve;
-		wxStaticText* m_pLblDepth;
-		wxStaticText* m_pLblAmpSens;
-		wxSlider* m_pSliderVelSensitivity;
-		wxSlider* m_pSliderDetune;
 		EnvelopeEditor* m_pEnvEditorAmp;
-		wxStaticText* m_pLblTitle;
+		EnvelopeEditor* m_pEnvEditorKeyFollow;
+		wxCheckBox* CheckBox1;
 		wxCheckBox* m_pChkEnable;
+		wxCheckBox* m_pChkExtPhase;
+		wxCheckBox* m_pChkFixedFreq;
+		wxCheckBox* m_pChkX16;
+		wxChoice* m_pCmbCurve;
+		wxChoice* m_pCmbWaveform;
+		wxSlider* m_pSliderAmpSens;
+		wxSlider* m_pSliderDetuneFine;
+		wxSlider* m_pSliderDetuneOctave;
+		wxSlider* m_pSliderEnvDepth;
+		wxSlider* m_pSliderVelSensitivity;
+		wxStaticBitmap* m_pBmpKeyboard;
+		wxStaticText* StaticText1;
+		wxStaticText* StaticText3;
+		wxStaticText* m_pLblDepth;
+		wxStaticText* m_pLblTitle;
+		wxStaticText* m_pLblWaveform;
 		//*)
 
 	protected:
 
 		//(*Identifiers(vzVoiceModule)
-		static const long ID_STATICTEXT1;
-		static const long ID_STATICTEXT12;
-		static const long ID_STATICTEXT14;
-		static const long ID_STATICTEXT15;
-		static const long ID_STATICTEXT13;
-		static const long ID_STATICTEXT31;
-		static const long ID_STATICTEXT16;
-		static const long ID_CHOICE3;
 		static const long ID_STATICTEXT2;
-		static const long ID_CHECKBOX1;
+		static const long ID_CHKENABLE;
+		static const long ID_CHKEXTPHASE;
+		static const long ID_STATICTEXT1;
+		static const long ID_CHOICE3;
+		static const long ID_STATICTEXT3;
 		static const long ID_SLIDER8;
-		static const long ID_SLIDER25;
+		static const long ID_STATICTEXT5;
+		static const long ID_SLIDER1;
+		static const long ID_CHECKBOX2;
+		static const long ID_CHECKBOX3;
 		static const long ID_ENVAMP;
+		static const long ID_STATICTEXT15;
 		static const long ID_SLIDER11;
-		static const long ID_SLIDER10;
-		static const long ID_CHOICE4;
-		static const long ID_SLIDER9;
+		static const long ID_CHECKBOX4;
 		static const long ID_STATICBITMAP1;
 		static const long ID_ENVKF;
+		static const long ID_CHOICE4;
+		static const long ID_SLIDER9;
+		static const long ID_SLIDER10;
 		//*)
 
 	private:

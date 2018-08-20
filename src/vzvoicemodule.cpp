@@ -2,33 +2,34 @@
 #include "../media/keyboard.xpm"
 
 //(*InternalHeaders(vzVoiceModule)
-#include <wx/string.h>
-#include <wx/intl.h>
-#include <wx/font.h>
 #include <wx/bitmap.h>
+#include <wx/font.h>
 #include <wx/image.h>
+#include <wx/intl.h>
+#include <wx/string.h>
 //*)
 
 //(*IdInit(vzVoiceModule)
-const long vzVoiceModule::ID_STATICTEXT1 = wxNewId();
-const long vzVoiceModule::ID_STATICTEXT12 = wxNewId();
-const long vzVoiceModule::ID_STATICTEXT14 = wxNewId();
-const long vzVoiceModule::ID_STATICTEXT15 = wxNewId();
-const long vzVoiceModule::ID_STATICTEXT13 = wxNewId();
-const long vzVoiceModule::ID_STATICTEXT31 = wxNewId();
-const long vzVoiceModule::ID_STATICTEXT16 = wxNewId();
-const long vzVoiceModule::ID_CHOICE3 = wxNewId();
 const long vzVoiceModule::ID_STATICTEXT2 = wxNewId();
-const long vzVoiceModule::ID_CHECKBOX1 = wxNewId();
+const long vzVoiceModule::ID_CHKENABLE = wxNewId();
+const long vzVoiceModule::ID_CHKEXTPHASE = wxNewId();
+const long vzVoiceModule::ID_STATICTEXT1 = wxNewId();
+const long vzVoiceModule::ID_CHOICE3 = wxNewId();
+const long vzVoiceModule::ID_STATICTEXT3 = wxNewId();
 const long vzVoiceModule::ID_SLIDER8 = wxNewId();
-const long vzVoiceModule::ID_SLIDER25 = wxNewId();
+const long vzVoiceModule::ID_STATICTEXT5 = wxNewId();
+const long vzVoiceModule::ID_SLIDER1 = wxNewId();
+const long vzVoiceModule::ID_CHECKBOX2 = wxNewId();
+const long vzVoiceModule::ID_CHECKBOX3 = wxNewId();
 const long vzVoiceModule::ID_ENVAMP = wxNewId();
+const long vzVoiceModule::ID_STATICTEXT15 = wxNewId();
 const long vzVoiceModule::ID_SLIDER11 = wxNewId();
-const long vzVoiceModule::ID_SLIDER10 = wxNewId();
-const long vzVoiceModule::ID_CHOICE4 = wxNewId();
-const long vzVoiceModule::ID_SLIDER9 = wxNewId();
+const long vzVoiceModule::ID_CHECKBOX4 = wxNewId();
 const long vzVoiceModule::ID_STATICBITMAP1 = wxNewId();
 const long vzVoiceModule::ID_ENVKF = wxNewId();
+const long vzVoiceModule::ID_CHOICE4 = wxNewId();
+const long vzVoiceModule::ID_SLIDER9 = wxNewId();
+const long vzVoiceModule::ID_SLIDER10 = wxNewId();
 //*)
 
 wxDEFINE_EVENT(wxEVT_VZ_MODULE, wxCommandEvent);
@@ -43,32 +44,47 @@ vzVoiceModule::vzVoiceModule(wxWindow* parent, unsigned int nId, long lStyle) :
     m_pVoiceData(NULL)
 {
 	//(*Initialize(vzVoiceModule)
-	wxFlexGridSizer* FlexGridSizer1;
-	wxFlexGridSizer* FlexGridSizer9;
-	wxFlexGridSizer* FlexGridSizer6;
-	wxFlexGridSizer* FlexGridSizer10;
 	wxBoxSizer* BoxSizer1;
+	wxBoxSizer* BoxSizer2;
+	wxFlexGridSizer* FlexGridSizer1;
+	wxFlexGridSizer* FlexGridSizer2;
+	wxFlexGridSizer* FlexGridSizer3;
+	wxFlexGridSizer* FlexGridSizer4;
+	wxFlexGridSizer* FlexGridSizer5;
+	wxFlexGridSizer* FlexGridSizer6;
+	wxFlexGridSizer* FlexGridSizer7;
+	wxFlexGridSizer* FlexGridSizer9;
+	wxStaticBoxSizer* StaticBoxSizer1;
+	wxStaticBoxSizer* StaticBoxSizer2;
+	wxStaticBoxSizer* StaticBoxSizer3;
+	wxStaticBoxSizer* StaticBoxSizer4;
+	wxStaticBoxSizer* StaticBoxSizer5;
+	wxStaticBoxSizer* StaticBoxSizer6;
 
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
-	FlexGridSizer6 = new wxFlexGridSizer(2, 0, 0, 0);
+	FlexGridSizer6 = new wxFlexGridSizer(1, 0, 0, 0);
 	FlexGridSizer6->AddGrowableCol(2);
-	FlexGridSizer6->AddGrowableCol(6);
-	FlexGridSizer6->AddGrowableRow(1);
+	FlexGridSizer6->AddGrowableCol(4);
+	FlexGridSizer6->AddGrowableRow(0);
+	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
+	m_pLblTitle = new wxStaticText(this, ID_STATICTEXT2, _("Mx"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+	wxFont m_pLblTitleFont(12,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_BOLD,false,_T("Arial"),wxFONTENCODING_DEFAULT);
+	m_pLblTitle->SetFont(m_pLblTitleFont);
+	BoxSizer2->Add(m_pLblTitle, 1, wxALL, 5);
+	m_pChkEnable = new wxCheckBox(this, ID_CHKENABLE, _("Enable"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHKENABLE"));
+	m_pChkEnable->SetValue(true);
+	m_pChkEnable->SetToolTip(_("Enable module"));
+	BoxSizer2->Add(m_pChkEnable, 1, wxALL|wxEXPAND, 5);
+	m_pChkExtPhase = new wxCheckBox(this, ID_CHKEXTPHASE, _("Ext Phase"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHKEXTPHASE"));
+	m_pChkExtPhase->SetValue(false);
+	m_pChkExtPhase->Disable();
+	m_pChkExtPhase->SetToolTip(_("External phase"));
+	BoxSizer2->Add(m_pChkExtPhase, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer6->Add(BoxSizer2, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("DCO"));
+	FlexGridSizer4 = new wxFlexGridSizer(0, 1, 0, 0);
 	m_pLblWaveform = new wxStaticText(this, ID_STATICTEXT1, _("Waveform"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
-	FlexGridSizer6->Add(m_pLblWaveform, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pLblDetune = new wxStaticText(this, ID_STATICTEXT12, _("Detune"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT12"));
-	FlexGridSizer6->Add(m_pLblDetune, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pLblAmpEnv = new wxStaticText(this, ID_STATICTEXT14, _("Amplitude Envelope"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT14"));
-	FlexGridSizer6->Add(m_pLblAmpEnv, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pLblDepth = new wxStaticText(this, ID_STATICTEXT15, _("Depth"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT15"));
-	FlexGridSizer6->Add(m_pLblDepth, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pLblAmpSens = new wxStaticText(this, ID_STATICTEXT13, _("Amp Sensitivity"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT13"));
-	FlexGridSizer6->Add(m_pLblAmpSens, 1, wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL, 5);
-	m_pLblVelocity = new wxStaticText(this, ID_STATICTEXT31, _("Velocity"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT31"));
-	FlexGridSizer6->Add(m_pLblVelocity, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pLblKeyFollow = new wxStaticText(this, ID_STATICTEXT16, _("Key Follow"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT16"));
-	FlexGridSizer6->Add(m_pLblKeyFollow, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer10 = new wxFlexGridSizer(0, 1, 0, 0);
+	FlexGridSizer4->Add(m_pLblWaveform, 1, wxALL|wxEXPAND, 5);
 	m_pCmbWaveform = new wxChoice(this, ID_CHOICE3, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE3"));
 	m_pCmbWaveform->SetSelection( m_pCmbWaveform->Append(_("Sine")) );
 	m_pCmbWaveform->Append(_("Saw 1"));
@@ -78,27 +94,64 @@ vzVoiceModule::vzVoiceModule(wxWindow* parent, unsigned int nId, long lStyle) :
 	m_pCmbWaveform->Append(_("Saw 5"));
 	m_pCmbWaveform->Append(_("Noise 1"));
 	m_pCmbWaveform->Append(_("Noise 2"));
-	FlexGridSizer10->Add(m_pCmbWaveform, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pLblTitle = new wxStaticText(this, ID_STATICTEXT2, _("Mx"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
-	wxFont m_pLblTitleFont(12,wxFONTFAMILY_SWISS,wxFONTSTYLE_NORMAL,wxFONTWEIGHT_NORMAL,false,_T("Sans"),wxFONTENCODING_DEFAULT);
-	m_pLblTitle->SetFont(m_pLblTitleFont);
-	FlexGridSizer10->Add(m_pLblTitle, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pChkEnable = new wxCheckBox(this, ID_CHECKBOX1, _("Enable"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
-	m_pChkEnable->SetValue(true);
-	FlexGridSizer10->Add(m_pChkEnable, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer6->Add(FlexGridSizer10, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	BoxSizer1 = new wxBoxSizer(wxVERTICAL);
-	m_pSliderDetune = new wxSlider(this, ID_SLIDER8, 0, -128, 127, wxDefaultPosition, wxSize(58,49), 0, wxDefaultValidator, _T("ID_SLIDER8"));
-	BoxSizer1->Add(m_pSliderDetune, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pSliderDetuneFine = new wxSlider(this, ID_SLIDER25, 32, 0, 63, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER25"));
-	BoxSizer1->Add(m_pSliderDetuneFine, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer6->Add(BoxSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	m_pCmbWaveform->SetToolTip(_("DCO Waveform"));
+	FlexGridSizer4->Add(m_pCmbWaveform, 1, wxALL|wxEXPAND, 5);
+	StaticText1 = new wxStaticText(this, ID_STATICTEXT3, _("Detune Course"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+	FlexGridSizer4->Add(StaticText1, 1, wxALL|wxEXPAND, 5);
+	m_pSliderDetuneOctave = new wxSlider(this, ID_SLIDER8, 0, -128, 127, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER8"));
+	m_pSliderDetuneOctave->SetToolTip(_("Detune DCO in semitone steps"));
+	FlexGridSizer4->Add(m_pSliderDetuneOctave, 1, wxALL|wxEXPAND, 5);
+	StaticText3 = new wxStaticText(this, ID_STATICTEXT5, _("Detune Fine"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
+	FlexGridSizer4->Add(StaticText3, 1, wxALL|wxEXPAND, 5);
+	m_pSliderDetuneFine = new wxSlider(this, ID_SLIDER1, 32, 0, 63, wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_SLIDER1"));
+	m_pSliderDetuneFine->SetToolTip(_("Detune DCO in 1.6 cent steps"));
+	FlexGridSizer4->Add(m_pSliderDetuneFine, 1, wxALL|wxEXPAND, 5);
+	BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
+	m_pChkFixedFreq = new wxCheckBox(this, ID_CHECKBOX2, _("Fixed Freq"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX2"));
+	m_pChkFixedFreq->SetValue(false);
+	m_pChkFixedFreq->SetToolTip(_("DCO Fixed frequency"));
+	BoxSizer1->Add(m_pChkFixedFreq, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	m_pChkX16 = new wxCheckBox(this, ID_CHECKBOX3, _("x16"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX3"));
+	m_pChkX16->SetValue(false);
+	m_pChkX16->SetToolTip(_("DCO frequency detune multiplier"));
+	BoxSizer1->Add(m_pChkX16, 1, wxALL|wxEXPAND, 5);
+	FlexGridSizer4->Add(BoxSizer1, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer1->Add(FlexGridSizer4, 0, wxALIGN_LEFT, 0);
+	FlexGridSizer6->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("DCA"));
+	FlexGridSizer2 = new wxFlexGridSizer(1, 0, 0, 0);
+	FlexGridSizer2->AddGrowableCol(0);
+	FlexGridSizer2->AddGrowableRow(1);
+	StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Amplitude Envelope"));
+	FlexGridSizer7 = new wxFlexGridSizer(1, 0, 0, 0);
+	FlexGridSizer7->AddGrowableCol(0);
+	FlexGridSizer7->AddGrowableRow(1);
 	m_pEnvEditorAmp = new EnvelopeEditor(this,ID_ENVAMP,wxDefaultPosition,wxSize(296,82),ENV_STYLE_DCA_ENV,_T("ID_ENVAMP"));
-	FlexGridSizer6->Add(m_pEnvEditorAmp, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer7->Add(m_pEnvEditorAmp, 2, wxALL|wxEXPAND, 5);
+	FlexGridSizer3 = new wxFlexGridSizer(0, 1, 0, 0);
+	FlexGridSizer3->AddGrowableRow(0);
+	m_pLblDepth = new wxStaticText(this, ID_STATICTEXT15, _("Env Depth"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT15"));
+	FlexGridSizer3->Add(m_pLblDepth, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	m_pSliderEnvDepth = new wxSlider(this, ID_SLIDER11, 99, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER11"));
-	FlexGridSizer6->Add(m_pSliderEnvDepth, 1, wxALL|wxEXPAND|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pSliderAmpSens = new wxSlider(this, ID_SLIDER10, 7, 0, 7, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER10"));
-	FlexGridSizer6->Add(m_pSliderAmpSens, 1, wxALL|wxEXPAND|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	m_pSliderEnvDepth->SetToolTip(_("DCA Amplitued envelope depth"));
+	FlexGridSizer3->Add(m_pSliderEnvDepth, 1, wxALL|wxEXPAND|wxFIXED_MINSIZE, 5);
+	CheckBox1 = new wxCheckBox(this, ID_CHECKBOX4, _("Range"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX4"));
+	CheckBox1->SetValue(false);
+	FlexGridSizer3->Add(CheckBox1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer7->Add(FlexGridSizer3, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer3->Add(FlexGridSizer7, 0, wxALIGN_LEFT, 0);
+	FlexGridSizer2->Add(StaticBoxSizer3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	StaticBoxSizer4 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Key Follow"));
+	FlexGridSizer1 = new wxFlexGridSizer(0, 1, 0, 0);
+	FlexGridSizer1->AddGrowableCol(0);
+	FlexGridSizer1->AddGrowableRow(1);
+	m_pBmpKeyboard = new wxStaticBitmap(this, ID_STATICBITMAP1, keyboard_xpm, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
+	FlexGridSizer1->Add(m_pBmpKeyboard, 1, wxALL|wxEXPAND, 5);
+	m_pEnvEditorKeyFollow = new EnvelopeEditor(this,ID_ENVKF,wxDefaultPosition,wxSize(296,-1),ENV_STYLE_DCA_KF,_T("ID_ENVKF"));
+	FlexGridSizer1->Add(m_pEnvEditorKeyFollow, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer4->Add(FlexGridSizer1, 0, wxEXPAND, 0);
+	FlexGridSizer2->Add(StaticBoxSizer4, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer5 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Key Velocity"));
 	FlexGridSizer9 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer9->AddGrowableRow(1);
 	m_pCmbCurve = new wxChoice(this, ID_CHOICE4, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE4"));
@@ -110,28 +163,32 @@ vzVoiceModule::vzVoiceModule(wxWindow* parent, unsigned int nId, long lStyle) :
 	m_pCmbCurve->Append(_("Curve 6"));
 	m_pCmbCurve->Append(_("Curve 7"));
 	m_pCmbCurve->Append(_("Curve 8"));
+	m_pCmbCurve->SetToolTip(_("DCA key velocity curve"));
 	FlexGridSizer9->Add(m_pCmbCurve, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	m_pSliderVelSensitivity = new wxSlider(this, ID_SLIDER9, 0, 0, 31, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER9"));
-	FlexGridSizer9->Add(m_pSliderVelSensitivity, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer6->Add(FlexGridSizer9, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer1 = new wxFlexGridSizer(0, 1, 0, 0);
-	FlexGridSizer1->AddGrowableCol(0);
-	FlexGridSizer1->AddGrowableRow(1);
-	m_pBmpKeyboard = new wxStaticBitmap(this, ID_STATICBITMAP1, keyboard_xpm, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_STATICBITMAP1"));
-	FlexGridSizer1->Add(m_pBmpKeyboard, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pEnvEditorKeyFollow = new EnvelopeEditor(this,ID_ENVKF,wxDefaultPosition,wxSize(296,-1),ENV_STYLE_DCA_KF,_T("ID_ENVKF"));
-	FlexGridSizer1->Add(m_pEnvEditorKeyFollow, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer6->Add(FlexGridSizer1, 1, wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	m_pSliderVelSensitivity->SetToolTip(_("DCA key velocity sensitivity"));
+	FlexGridSizer9->Add(m_pSliderVelSensitivity, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer5->Add(FlexGridSizer9, 0, wxEXPAND, 0);
+	FlexGridSizer2->Add(StaticBoxSizer5, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer6 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Sensitivity"));
+	FlexGridSizer5 = new wxFlexGridSizer(0, 1, 0, 0);
+	FlexGridSizer5->AddGrowableRow(0);
+	m_pSliderAmpSens = new wxSlider(this, ID_SLIDER10, 7, 0, 7, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER10"));
+	m_pSliderAmpSens->SetToolTip(_("DCA Sensititivy to external modulation"));
+	FlexGridSizer5->Add(m_pSliderAmpSens, 1, wxALL|wxEXPAND|wxFIXED_MINSIZE, 5);
+	StaticBoxSizer6->Add(FlexGridSizer5, 0, wxEXPAND, 0);
+	FlexGridSizer2->Add(StaticBoxSizer6, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer2->Add(FlexGridSizer2, 0, wxEXPAND, 0);
+	FlexGridSizer6->Add(StaticBoxSizer2, 1, wxALL|wxEXPAND, 5);
 	SetSizer(FlexGridSizer6);
 	FlexGridSizer6->Fit(this);
 	FlexGridSizer6->SetSizeHints(this);
 
-	Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&vzVoiceModule::OnChkEnableClick);
 	Connect(ID_SLIDER8,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderDetuneCmdScrollChanged);
-	Connect(ID_SLIDER25,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderDetuneFineCmdScrollChanged);
+	Connect(ID_SLIDER1,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderDetuneFineCmdScrollChanged);
 	Connect(ID_SLIDER11,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderEnvDepthCmdScrollChanged);
-	Connect(ID_SLIDER10,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderAmpSensCmdScrollChanged);
 	Connect(ID_SLIDER9,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderVelSensitivityCmdScrollChanged);
+	Connect(ID_SLIDER10,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&vzVoiceModule::OnSliderAmpSensCmdScrollChanged);
 	//*)
 	Connect(ID_ENVAMP, wxEVT_ENVED, (wxObjectEventFunction)&vzVoiceModule::OnAmpEnv);
 	Connect(ID_ENVKF, wxEVT_ENVED, (wxObjectEventFunction)&vzVoiceModule::OnKFEnv);

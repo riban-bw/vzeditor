@@ -61,7 +61,7 @@
 						<option>1</option>
 					</object>
 				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<option>1</option>
 			</object>
@@ -76,96 +76,52 @@
 								<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 									<orient>wxVERTICAL</orient>
 									<object class="sizeritem">
-										<object class="Custom" name="0" subclass="vzVoiceModule" variable="m_pModule1" member="yes">
+										<object class="Custom" name="0" subclass="vzLine" variable="m_pLine1" member="yes">
 											<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID), $(STYLE));</creating_code>
-											<include_file>vzvoicemodule.h</include_file>
+											<include_file>vzline.h</include_file>
 											<local_include>1</local_include>
 											<style>VZVOICE__STYLE__TITLE</style>
 										</object>
-										<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<flag>wxALL|wxEXPAND</flag>
 										<border>5</border>
 										<option>1</option>
 									</object>
 									<object class="sizeritem">
-										<object class="Custom" name="1" subclass="vzVoiceModule" variable="m_pModule3" member="yes">
+										<object class="Custom" name="ID_LINE2" subclass="vzLINE" variable="m_pLine2" member="yes">
 											<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-											<include_file>vzvoicemodule.h</include_file>
+											<include_file>vzline.h</include_file>
 											<local_include>1</local_include>
 											<style>VZVOICE__STYLE__NOTITLE</style>
 										</object>
-										<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<flag>wxALL|wxEXPAND</flag>
 										<border>5</border>
 										<option>1</option>
 									</object>
 									<object class="sizeritem">
-										<object class="Custom" name="2" subclass="vzVoiceModule" variable="m_pModule2" member="yes">
+										<object class="Custom" name="ID_LINE3" subclass="vzLine" variable="m_pLine3" member="yes">
 											<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-											<include_file>vzvoicemodule.h</include_file>
+											<include_file>vzline.h</include_file>
 											<local_include>1</local_include>
 											<style>VZVOICE__STYLE__NOTITLE</style>
 										</object>
-										<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<flag>wxALL|wxEXPAND</flag>
 										<border>5</border>
 										<option>1</option>
 									</object>
 									<object class="sizeritem">
-										<object class="Custom" name="3" subclass="vzVoiceModule" variable="m_pModule4" member="yes">
+										<object class="Custom" name="ID_LINE4" subclass="vzLine" variable="m_pLine4" member="yes">
 											<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-											<include_file>vzvoicemodule.h</include_file>
+											<include_file>vxline.h</include_file>
 											<local_include>1</local_include>
 											<style>VZVOICE__STYLE__NOTITLE</style>
 										</object>
-										<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-										<border>5</border>
-										<option>1</option>
-									</object>
-									<object class="sizeritem">
-										<object class="Custom" name="4" subclass="vzVoiceModule" variable="m_pModule5" member="yes">
-											<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-											<include_file>vzvoicemodule.h</include_file>
-											<local_include>1</local_include>
-											<style>VZVOICE__STYLE__NOTITLE</style>
-										</object>
-										<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-										<border>5</border>
-										<option>1</option>
-									</object>
-									<object class="sizeritem">
-										<object class="Custom" name="5" subclass="vzVoiceModule" variable="m_pModule6" member="yes">
-											<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-											<include_file>vzvoicemodule.h</include_file>
-											<local_include>1</local_include>
-											<style>VZVOICE__STYLE__NOTITLE</style>
-										</object>
-										<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-										<border>5</border>
-										<option>1</option>
-									</object>
-									<object class="sizeritem">
-										<object class="Custom" name="6" subclass="vzVoiceModule" variable="m_pModule7" member="yes">
-											<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-											<include_file>vzvoicemodule.h</include_file>
-											<local_include>1</local_include>
-											<style>VZVOICE__STYLE__NOTITLE</style>
-										</object>
-										<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-										<border>5</border>
-										<option>1</option>
-									</object>
-									<object class="sizeritem">
-										<object class="Custom" name="7" subclass="vzVoiceModule" variable="m_pModule8" member="yes">
-											<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-											<include_file>vzvoicemodule.h</include_file>
-											<local_include>1</local_include>
-											<style>VZVOICE__STYLE__NOTITLE</style>
-										</object>
-										<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<flag>wxALL|wxEXPAND</flag>
 										<border>5</border>
 										<option>1</option>
 									</object>
 								</object>
 							</object>
-							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<flag>wxALL|wxEXPAND</flag>
 							<border>5</border>
 							<option>1</option>
 						</object>
@@ -188,12 +144,12 @@
 												<size>125,27</size>
 												<handler function="OnTxtVoiceNameText" entry="EVT_TEXT" />
 											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
 									</object>
-									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
 									<option>1</option>
 								</object>
@@ -213,79 +169,91 @@
 											<object class="wxSlider" name="ID_SLIDER26" variable="m_pSliderLevel" member="yes">
 												<value>127</value>
 												<max>127</max>
-												<handler function="OnSliderLevelCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-											<border>5</border>
-											<option>1</option>
-										</object>
-										<object class="sizeritem">
-											<object class="wxStaticText" name="ID_STATICTEXT10" variable="StaticText10" member="yes">
-												<label>Octave</label>
-											</object>
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-											<border>5</border>
-											<option>1</option>
-										</object>
-										<object class="sizeritem">
-											<object class="wxSlider" name="ID_SLIDER7" variable="m_pSliderOctave" member="yes">
-												<min>-2</min>
-												<max>2</max>
-												<style>wxSL_HORIZONTAL</style>
-												<handler function="OnSliderOctaveCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
-											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-											<border>5</border>
-											<option>1</option>
-										</object>
-										<object class="sizeritem">
-											<object class="wxStaticText" name="ID_STATICTEXT11" variable="StaticText11" member="yes">
-												<label>Velocity&#x0A;Sensitivity</label>
-												<style>wxALIGN_CENTRE</style>
-											</object>
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-											<border>5</border>
-											<option>1</option>
-										</object>
-										<object class="sizeritem">
-											<object class="wxSlider" name="ID_SLIDER8" variable="m_pSliderVelSens" member="yes">
-												<max>31</max>
-												<style>wxSL_HORIZONTAL</style>
-												<handler function="OnSliderVelSensCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
-											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-											<border>5</border>
-											<option>1</option>
-										</object>
-										<object class="sizeritem">
-											<object class="wxStaticText" name="ID_STATICTEXT12" variable="m_pLblVelCurve" member="yes">
-												<label>Curve</label>
-											</object>
-											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-											<border>5</border>
-											<option>1</option>
-										</object>
-										<object class="sizeritem">
-											<object class="wxChoice" name="ID_CHOICE4" variable="m_pCmbVelCurve" member="yes">
-												<content>
-													<item>Curve 1</item>
-													<item>Curve 2</item>
-													<item>Curve 3</item>
-													<item>Curve 4</item>
-													<item>Curve 5</item>
-													<item>Curve 6</item>
-													<item>Curve 7</item>
-													<item>Curve 8</item>
-												</content>
-												<selection>0</selection>
-												<handler function="OnCmbVelCurveSelect" entry="EVT_CHOICE" />
-											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
 									</object>
-									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizer3" member="no">
+										<label>DCO</label>
+										<object class="sizeritem">
+											<object class="wxFlexGridSizer" variable="FlexGridSizer6" member="no">
+												<cols>2</cols>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT10" variable="StaticText10" member="yes">
+														<label>Octave</label>
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxSlider" name="ID_SLIDER7" variable="m_pSliderOctave" member="yes">
+														<min>-2</min>
+														<max>2</max>
+														<style>wxSL_HORIZONTAL</style>
+													</object>
+													<flag>wxALL|wxEXPAND</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT11" variable="StaticText11" member="yes">
+														<label>Velocity&#x0A;Sensitivity</label>
+														<style>wxALIGN_CENTRE</style>
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxSlider" name="ID_SLIDER8" variable="m_pSliderVelSens" member="yes">
+														<max>31</max>
+														<style>wxSL_HORIZONTAL</style>
+													</object>
+													<flag>wxALL|wxEXPAND</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxStaticText" name="ID_STATICTEXT12" variable="m_pLblVelCurve" member="yes">
+														<label>Curve</label>
+													</object>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+												<object class="sizeritem">
+													<object class="wxChoice" name="ID_CHOICE4" variable="m_pCmbVelCurve" member="yes">
+														<content>
+															<item>Curve 1</item>
+															<item>Curve 2</item>
+															<item>Curve 3</item>
+															<item>Curve 4</item>
+															<item>Curve 5</item>
+															<item>Curve 6</item>
+															<item>Curve 7</item>
+															<item>Curve 8</item>
+														</content>
+														<selection>0</selection>
+													</object>
+													<flag>wxALL|wxEXPAND</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
 									<option>1</option>
 								</object>
@@ -306,7 +274,7 @@
 														<default>-1</default>
 														<handler function="OnRadioTremeloMultiSelect" entry="EVT_RADIOBOX" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -347,7 +315,7 @@
 														<style>wxRA_HORIZONTAL</style>
 														<handler function="OnRadioTremeloWaveformSelect" entry="EVT_RADIOBOX" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -359,7 +327,7 @@
 														<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 														<handler function="OnSliderTremeloDepthCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -371,7 +339,7 @@
 														<style>wxSL_VERTICAL|wxSL_TOP|wxSL_INVERSE</style>
 														<handler function="OnSliderTremeloRateCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -382,17 +350,17 @@
 														<style>wxSL_VERTICAL|wxSL_TOP|wxSL_INVERSE</style>
 														<handler function="OnSliderTremeloDelayCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
 											</object>
-											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
 									</object>
-									<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
 									<option>1</option>
 								</object>
@@ -413,7 +381,7 @@
 														<default>-1</default>
 														<handler function="OnRadioVibratoMultiSelect" entry="EVT_RADIOBOX" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -454,7 +422,7 @@
 														<style>wxRA_HORIZONTAL</style>
 														<handler function="OnRadioVibratoWaveformSelect" entry="EVT_RADIOBOX" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -464,7 +432,7 @@
 														<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 														<handler function="OnSliderVibratoDepthCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -474,7 +442,7 @@
 														<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 														<handler function="OnSliderVibratoRateCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -484,12 +452,12 @@
 														<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 														<handler function="OnSliderVibratoDelayCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 													</object>
-													<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
 											</object>
-											<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
@@ -499,13 +467,13 @@
 									<option>1</option>
 								</object>
 							</object>
-							<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<flag>wxALL|wxEXPAND</flag>
 							<border>5</border>
 							<option>1</option>
 						</object>
 					</object>
 				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<option>1</option>
 			</object>

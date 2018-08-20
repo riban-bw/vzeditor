@@ -3,244 +3,345 @@
 	<object class="wxPanel" name="vzVoiceModule">
 		<id_arg>0</id_arg>
 		<object class="wxFlexGridSizer" variable="FlexGridSizer6" member="no">
-			<rows>2</rows>
-			<growablecols>2,6</growablecols>
-			<growablerows>1</growablerows>
+			<rows>1</rows>
+			<growablecols>2,4</growablecols>
+			<growablerows>0</growablerows>
 			<object class="sizeritem">
-				<object class="wxStaticText" name="ID_STATICTEXT1" variable="m_pLblWaveform" member="yes">
-					<label>Waveform</label>
-				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxStaticText" name="ID_STATICTEXT12" variable="m_pLblDetune" member="yes">
-					<label>Detune</label>
-				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxStaticText" name="ID_STATICTEXT14" variable="m_pLblAmpEnv" member="yes">
-					<label>Amplitude Envelope</label>
-				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxStaticText" name="ID_STATICTEXT15" variable="m_pLblDepth" member="yes">
-					<label>Depth</label>
-				</object>
-				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxStaticText" name="ID_STATICTEXT13" variable="m_pLblAmpSens" member="yes">
-					<label>Amp Sensitivity</label>
-				</object>
-				<flag>wxALL|wxALIGN_RIGHT|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxStaticText" name="ID_STATICTEXT31" variable="m_pLblVelocity" member="yes">
-					<label>Velocity</label>
-				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxStaticText" name="ID_STATICTEXT16" variable="m_pLblKeyFollow" member="yes">
-					<label>Key Follow</label>
-				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxFlexGridSizer" variable="FlexGridSizer10" member="no">
-					<cols>1</cols>
-					<object class="sizeritem">
-						<object class="wxChoice" name="ID_CHOICE3" variable="m_pCmbWaveform" member="yes">
-							<content>
-								<item>Sine</item>
-								<item>Saw 1</item>
-								<item>Saw 2</item>
-								<item>Saw 3</item>
-								<item>Saw 4</item>
-								<item>Saw 5</item>
-								<item>Noise 1</item>
-								<item>Noise 2</item>
-							</content>
-							<selection>0</selection>
-						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
+				<object class="wxBoxSizer" variable="BoxSizer2" member="no">
+					<orient>wxVERTICAL</orient>
 					<object class="sizeritem">
 						<object class="wxStaticText" name="ID_STATICTEXT2" variable="m_pLblTitle" member="yes">
 							<label>Mx</label>
 							<font>
 								<size>12</size>
 								<style>normal</style>
-								<weight>normal</weight>
+								<weight>bold</weight>
 								<underlined>0</underlined>
 								<family>swiss</family>
-								<face>Sans</face>
+								<face>Arial</face>
 							</font>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<flag>wxALL</flag>
 						<border>5</border>
 						<option>1</option>
 					</object>
 					<object class="sizeritem">
-						<object class="wxCheckBox" name="ID_CHECKBOX1" variable="m_pChkEnable" member="yes">
+						<object class="wxCheckBox" name="ID_CHKENABLE" variable="m_pChkEnable" member="yes">
 							<label>Enable</label>
 							<checked>1</checked>
-							<handler function="OnChkEnableClick" entry="EVT_CHECKBOX" />
+							<tooltip>Enable module</tooltip>
+						</object>
+						<flag>wxALL|wxEXPAND</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+					<object class="sizeritem">
+						<object class="wxCheckBox" name="ID_CHKEXTPHASE" variable="m_pChkExtPhase" member="yes">
+							<label>Ext Phase</label>
+							<enabled>0</enabled>
+							<tooltip>External phase</tooltip>
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
 						<option>1</option>
 					</object>
 				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
-				<object class="wxBoxSizer" variable="BoxSizer1" member="no">
-					<orient>wxVERTICAL</orient>
+				<object class="wxStaticBoxSizer" variable="StaticBoxSizer1" member="no">
+					<label>DCO</label>
 					<object class="sizeritem">
-						<object class="wxSlider" name="ID_SLIDER8" variable="m_pSliderDetune" member="yes">
-							<min>-128</min>
-							<max>127</max>
-							<size>58,49</size>
-							<handler function="OnSliderDetuneCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+						<object class="wxFlexGridSizer" variable="FlexGridSizer4" member="no">
+							<cols>1</cols>
+							<object class="sizeritem">
+								<object class="wxStaticText" name="ID_STATICTEXT1" variable="m_pLblWaveform" member="yes">
+									<label>Waveform</label>
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxChoice" name="ID_CHOICE3" variable="m_pCmbWaveform" member="yes">
+									<content>
+										<item>Sine</item>
+										<item>Saw 1</item>
+										<item>Saw 2</item>
+										<item>Saw 3</item>
+										<item>Saw 4</item>
+										<item>Saw 5</item>
+										<item>Noise 1</item>
+										<item>Noise 2</item>
+									</content>
+									<selection>0</selection>
+									<tooltip>DCO Waveform</tooltip>
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText1" member="yes">
+									<label>Detune Course</label>
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxSlider" name="ID_SLIDER8" variable="m_pSliderDetuneOctave" member="yes">
+									<min>-128</min>
+									<max>127</max>
+									<tooltip>Detune DCO in semitone steps</tooltip>
+									<handler function="OnSliderDetuneCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText3" member="yes">
+									<label>Detune Fine</label>
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxSlider" name="ID_SLIDER1" variable="m_pSliderDetuneFine" member="yes">
+									<value>32</value>
+									<max>63</max>
+									<tooltip>Detune DCO in 1.6 cent steps</tooltip>
+									<handler function="OnSliderDetuneFineCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+									<object class="sizeritem">
+										<object class="wxCheckBox" name="ID_CHECKBOX2" variable="m_pChkFixedFreq" member="yes">
+											<label>Fixed Freq</label>
+											<tooltip>DCO Fixed frequency</tooltip>
+										</object>
+										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+									<object class="sizeritem">
+										<object class="wxCheckBox" name="ID_CHECKBOX3" variable="m_pChkX16" member="yes">
+											<label>x16</label>
+											<tooltip>DCO frequency detune multiplier</tooltip>
+										</object>
+										<flag>wxALL|wxEXPAND</flag>
+										<border>5</border>
+										<option>1</option>
+									</object>
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
 						</object>
-						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
-					<object class="sizeritem">
-						<object class="wxSlider" name="ID_SLIDER25" variable="m_pSliderDetuneFine" member="yes">
-							<value>32</value>
-							<max>63</max>
-							<handler function="OnSliderDetuneFineCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
-						</object>
-						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
+						<flag>wxALIGN_LEFT</flag>
 					</object>
 				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
-				<object class="Custom" name="ID_ENVAMP" subclass="EnvelopeEditor" variable="m_pEnvEditorAmp" member="yes">
-					<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),$(NAME));</creating_code>
-					<include_file>envelopeeditor.h</include_file>
-					<local_include>1</local_include>
-					<style>ENV__STYLE__DCA__ENV</style>
-					<size>296,82</size>
-				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxSlider" name="ID_SLIDER11" variable="m_pSliderEnvDepth" member="yes">
-					<value>99</value>
-					<max>99</max>
-					<style>wxSL_VERTICAL|wxSL_INVERSE</style>
-					<handler function="OnSliderEnvDepthCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
-				</object>
-				<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxSlider" name="ID_SLIDER10" variable="m_pSliderAmpSens" member="yes">
-					<value>7</value>
-					<max>7</max>
-					<style>wxSL_VERTICAL|wxSL_INVERSE</style>
-					<handler function="OnSliderAmpSensCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
-				</object>
-				<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">
-					<cols>1</cols>
-					<growablerows>1</growablerows>
+				<object class="wxStaticBoxSizer" variable="StaticBoxSizer2" member="no">
+					<label>DCA</label>
 					<object class="sizeritem">
-						<object class="wxChoice" name="ID_CHOICE4" variable="m_pCmbCurve" member="yes">
-							<content>
-								<item>Curve 1</item>
-								<item>Curve 2</item>
-								<item>Curve 3</item>
-								<item>Curve 4</item>
-								<item>Curve 5</item>
-								<item>Curve 6</item>
-								<item>Curve 7</item>
-								<item>Curve 8</item>
-							</content>
-							<selection>0</selection>
+						<object class="wxFlexGridSizer" variable="FlexGridSizer2" member="no">
+							<rows>1</rows>
+							<growablecols>0</growablecols>
+							<growablerows>1</growablerows>
+							<object class="sizeritem">
+								<object class="wxStaticBoxSizer" variable="StaticBoxSizer3" member="no">
+									<label>Amplitude Envelope</label>
+									<object class="sizeritem">
+										<object class="wxFlexGridSizer" variable="FlexGridSizer7" member="no">
+											<rows>1</rows>
+											<growablecols>0</growablecols>
+											<growablerows>1</growablerows>
+											<object class="sizeritem">
+												<object class="Custom" name="ID_ENVAMP" subclass="EnvelopeEditor" variable="m_pEnvEditorAmp" member="yes">
+													<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),$(NAME));</creating_code>
+													<include_file>envelopeeditor.h</include_file>
+													<local_include>1</local_include>
+													<style>ENV__STYLE__DCA__ENV</style>
+													<size>296,82</size>
+													<tooltip>Amplitude envelope</tooltip>
+												</object>
+												<flag>wxALL|wxEXPAND</flag>
+												<border>5</border>
+												<option>2</option>
+											</object>
+											<object class="sizeritem">
+												<object class="wxFlexGridSizer" variable="FlexGridSizer3" member="no">
+													<cols>1</cols>
+													<growablerows>0</growablerows>
+													<object class="sizeritem">
+														<object class="wxStaticText" name="ID_STATICTEXT15" variable="m_pLblDepth" member="yes">
+															<label>Env Depth</label>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+													<object class="sizeritem">
+														<object class="wxSlider" name="ID_SLIDER11" variable="m_pSliderEnvDepth" member="yes">
+															<value>99</value>
+															<max>99</max>
+															<tooltip>DCA Amplitued envelope depth</tooltip>
+															<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+															<handler function="OnSliderEnvDepthCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+														</object>
+														<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+													<object class="sizeritem">
+														<object class="wxCheckBox" name="ID_CHECKBOX4" variable="CheckBox1" member="yes">
+															<label>Range</label>
+														</object>
+														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<border>5</border>
+														<option>1</option>
+													</object>
+												</object>
+												<flag>wxALL|wxEXPAND</flag>
+												<border>5</border>
+												<option>1</option>
+											</object>
+										</object>
+										<flag>wxALIGN_LEFT</flag>
+									</object>
+								</object>
+								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxStaticBoxSizer" variable="StaticBoxSizer4" member="no">
+									<label>Key Follow</label>
+									<object class="sizeritem">
+										<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
+											<cols>1</cols>
+											<growablecols>0</growablecols>
+											<growablerows>1</growablerows>
+											<object class="sizeritem">
+												<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="m_pBmpKeyboard" member="yes">
+													<bitmap code="keyboard_xpm" />
+												</object>
+												<flag>wxALL|wxEXPAND</flag>
+												<border>5</border>
+												<option>1</option>
+											</object>
+											<object class="sizeritem">
+												<object class="Custom" name="ID_ENVKF" subclass="EnvelopeEditor" variable="m_pEnvEditorKeyFollow" member="yes">
+													<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),$(NAME));</creating_code>
+													<include_file>envelopeeditor.h</include_file>
+													<local_include>1</local_include>
+													<style>ENV__STYLE__DCA__KF</style>
+													<size>296,-1</size>
+													<tooltip>Key follow envelope</tooltip>
+												</object>
+												<flag>wxALL|wxEXPAND</flag>
+												<border>5</border>
+												<option>1</option>
+											</object>
+										</object>
+										<flag>wxEXPAND</flag>
+									</object>
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxStaticBoxSizer" variable="StaticBoxSizer5" member="no">
+									<label>Key Velocity</label>
+									<object class="sizeritem">
+										<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">
+											<cols>1</cols>
+											<growablerows>1</growablerows>
+											<object class="sizeritem">
+												<object class="wxChoice" name="ID_CHOICE4" variable="m_pCmbCurve" member="yes">
+													<content>
+														<item>Curve 1</item>
+														<item>Curve 2</item>
+														<item>Curve 3</item>
+														<item>Curve 4</item>
+														<item>Curve 5</item>
+														<item>Curve 6</item>
+														<item>Curve 7</item>
+														<item>Curve 8</item>
+													</content>
+													<selection>0</selection>
+													<tooltip>DCA key velocity curve</tooltip>
+												</object>
+												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+												<border>5</border>
+												<option>1</option>
+											</object>
+											<object class="sizeritem">
+												<object class="wxSlider" name="ID_SLIDER9" variable="m_pSliderVelSensitivity" member="yes">
+													<max>31</max>
+													<tooltip>DCA key velocity sensitivity</tooltip>
+													<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+													<handler function="OnSliderVelSensitivityCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+												</object>
+												<flag>wxALL|wxEXPAND</flag>
+												<border>5</border>
+												<option>1</option>
+											</object>
+										</object>
+										<flag>wxEXPAND</flag>
+									</object>
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
+							<object class="sizeritem">
+								<object class="wxStaticBoxSizer" variable="StaticBoxSizer6" member="no">
+									<label>Sensitivity</label>
+									<object class="sizeritem">
+										<object class="wxFlexGridSizer" variable="FlexGridSizer5" member="no">
+											<cols>1</cols>
+											<growablerows>0</growablerows>
+											<object class="sizeritem">
+												<object class="wxSlider" name="ID_SLIDER10" variable="m_pSliderAmpSens" member="yes">
+													<value>7</value>
+													<max>7</max>
+													<tooltip>DCA Sensititivy to external modulation</tooltip>
+													<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+													<handler function="OnSliderAmpSensCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+												</object>
+												<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE</flag>
+												<border>5</border>
+												<option>1</option>
+											</object>
+										</object>
+										<flag>wxEXPAND</flag>
+									</object>
+								</object>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
+								<option>1</option>
+							</object>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
-					<object class="sizeritem">
-						<object class="wxSlider" name="ID_SLIDER9" variable="m_pSliderVelSensitivity" member="yes">
-							<max>31</max>
-							<style>wxSL_VERTICAL|wxSL_INVERSE</style>
-							<handler function="OnSliderVelSensitivityCmdScrollChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
-						</object>
-						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
+						<flag>wxEXPAND</flag>
 					</object>
 				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-				<border>5</border>
-				<option>1</option>
-			</object>
-			<object class="sizeritem">
-				<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
-					<cols>1</cols>
-					<growablecols>0</growablecols>
-					<growablerows>1</growablerows>
-					<object class="sizeritem">
-						<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="m_pBmpKeyboard" member="yes">
-							<bitmap code="keyboard_xpm" />
-						</object>
-						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
-					<object class="sizeritem">
-						<object class="Custom" name="ID_ENVKF" subclass="EnvelopeEditor" variable="m_pEnvEditorKeyFollow" member="yes">
-							<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE),$(STYLE),$(NAME));</creating_code>
-							<include_file>envelopeeditor.h</include_file>
-							<local_include>1</local_include>
-							<style>ENV__STYLE__DCA__KF</style>
-							<size>296,-1</size>
-						</object>
-						<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
-				</object>
-				<flag>wxALL|wxEXPAND|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<option>1</option>
 			</object>
