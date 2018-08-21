@@ -14,7 +14,7 @@ Envelope::~Envelope()
         delete m_vEnvelopeSteps[nStep];
 }
 
-bool Envelope::SetStepLevel(wxByte nStep, unsigned int nLevel)
+bool Envelope::SetLevel(wxByte nStep, unsigned int nLevel)
 {
     if(nStep >= GetSteps())
         return false;
@@ -23,14 +23,14 @@ bool Envelope::SetStepLevel(wxByte nStep, unsigned int nLevel)
     return true;
 }
 
-unsigned int Envelope::GetStepLevel(wxByte nStep)
+unsigned int Envelope::GetLevel(wxByte nStep)
 {
     if(nStep >= GetSteps())
         return 0;
     return m_vEnvelopeSteps[nStep]->level;
 }
 
-bool Envelope::SetStepRate(wxByte nStep, unsigned int nRate)
+bool Envelope::SetRate(wxByte nStep, unsigned int nRate)
 {
     if(nStep >= GetSteps())
         return false;
@@ -39,7 +39,7 @@ bool Envelope::SetStepRate(wxByte nStep, unsigned int nRate)
     return true;
 }
 
-unsigned int Envelope::GetStepRate(wxByte nStep)
+unsigned int Envelope::GetRate(wxByte nStep)
 {
     if(nStep >= GetSteps())
         return 0;

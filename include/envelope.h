@@ -34,26 +34,26 @@ class Envelope
         *   @param nLevel Step level
         *   @retval bool True on success
         */
-        bool SetStepLevel(wxByte nStep, unsigned int nLevel);
+        bool SetLevel(wxByte nStep, unsigned int nLevel);
 
         /** @brief  Get step level
         *   @param nStep Step index
         *   @retval unsigned int Value of step level
         */
-        unsigned int GetStepLevel(wxByte nStep);
+        unsigned int GetLevel(wxByte nStep);
 
         /** @brief  Set step rate
         *   @param nStep Step index
         *   @param nRate Step rate
         *   @retval bool True on success
         */
-        bool SetStepRate(wxByte nStep, unsigned int nRate);
+        bool SetRate(wxByte nStep, unsigned int nRate);
 
         /** @brief  Get step rate
         *   @param nStep Step index
         *   @retval unsigned int Value of step rate
         */
-        unsigned int GetStepRate(wxByte nStep);
+        unsigned int GetRate(wxByte nStep);
 
         /** @brief  Set sustain step
         *   @param nStep Step index

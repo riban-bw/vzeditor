@@ -1,6 +1,7 @@
 #ifndef KEYFOLLOW_H
 #define KEYFOLLOW_H
 
+#include "wx/wx.h"
 #include <vector>
 
 using namespace std;
@@ -9,59 +10,59 @@ using namespace std;
 
 struct KeyFollow_Step
 {
-    unsigned int key = 60; //!< MIDI note value for the key in this step
-    unsigned int level = 0; //!< Level of this step
+    wxByte key = 60; //!< MIDI note value for the key in this step
+    wxByte level = 0; //!< Level of this step
 };
 
 class KeyFollow
 {
     public:
-        /** Construct KeyFollow object
-        *   @param  nSteps Quantity of steps
-        *   @param  bDCO True for DCO envelope
+        /** @brief  Construct KeyFollow object
+        *   @param  nSteps Quantity of steps [Default: 6]
+        *   @param  bDCO True for DCO envelope [Default: false]
         */
-        KeyFollow(unsigned int nSteps, bool bDCO);
+        KeyFollow(wxByte nSteps = 6, bool bDCO = false);
 
-        /** Destruct KeyFollow object
+        /** @brief  Destruct KeyFollow object
         */
         virtual ~KeyFollow();
 
-        /** Get the quantity of steps in the envelope
-        *   @retval unsigned int Quantity of steps
+        /** @brief  Get the quantity of steps in the envelope
+        *   @retval wxByte Quantity of steps
         */
-        unsigned int GetSteps() { return m_vKFsteps.size(); }
+        wxByte GetSteps() { return m_vKFsteps.size(); }
 
-        /** Get the key at specified step
+        /** @brief  Get the key at specified step
         *   @param  nStep Step index
-        *   @retval unsigned int Key for this step
+        *   @retval wxByte Key for this step
         */
-        unsigned int GetKey(unsigned int nStep);
+        wxByte GetKey(wxByte nStep);
 
-        /** Set step key
+        /** @brief  Set step key
         *   @param  nStep Step to update
         *   @param  nKey Key value for this step
         *   @retval bool True on success
         */
-        bool SetKey(unsigned int nStep, unsigned int nKey);
+        bool SetKey(wxByte nStep, wxByte nKey);
 
-        /** Get the level at specified step
+        /** @brief  Get the level at specified step
         *   @param  nStep Step index
-        *   @retval unsigned int Level for this step
+        *   @retval wxByte Level for this step
         */
-        unsigned int GetLevel(unsigned int nStep);
+        wxByte GetLevel(wxByte nStep);
 
-        /** Set level key
+        /** @brief  Set level key
         *   @param  nStep Step to update
         *   @param  nLevel Level value for this step
         *   @retval bool True on success
         */
-        bool SetLevel(unsigned int nStep, unsigned int nLevel);
+        bool SetLevel(wxByte nStep, wxByte nLevel);
 
     protected:
 
     private:
         vector<KeyFollow_Step*> m_vKFsteps; //!< Vector of key follow steps
-        unsigned int m_nMaxValue; //!< Maximum value for each step
+        wxByte m_nMaxValue; //!< Maximum value for each step
 };
 
 #endif // KEYFOLLOW_H
