@@ -7,7 +7,7 @@
  * License:
  **************************************************************/
 
-#include "VZ_EditorMain.h"
+#include "vzeditormain.h"
 #include <wx/msgdlg.h>
 #include <wx/file.h>
 
@@ -121,7 +121,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer2;
     wxStaticBoxSizer* StaticBoxSizer3;
 
-    Create(parent, wxID_ANY, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+    Create(parent, wxID_ANY, _("riban Casio VZ-x Voice Editor and Library"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     m_pSizerMain = new wxFlexGridSizer(0, 1, 0, 0);
     m_pSizerMain->AddGrowableCol(0);
     m_pSizerMain->AddGrowableRow(1);
@@ -309,6 +309,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     SetStatusBar(StatusBar1);
     m_pSizerMain->Fit(this);
     m_pSizerMain->SetSizeHints(this);
+    Center();
 
     Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnInPortSelect);
     Connect(ID_CHOICE2,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnOutPortSelect);

@@ -1,6 +1,8 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxFrame" name="VZ_EditorFrame">
+		<title>riban Casio VZ-x Voice Editor and Library</title>
+		<centered>1</centered>
 		<id_arg>0</id_arg>
 		<object class="wxFlexGridSizer" variable="m_pSizerMain" member="yes">
 			<cols>1</cols>

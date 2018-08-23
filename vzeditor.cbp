@@ -64,30 +64,29 @@
 			<Add library="portmidi" />
 			<Add directory="lib" />
 		</Linker>
-		<Unit filename="include/VZ_EditorApp.h" />
-		<Unit filename="include/VZ_EditorMain.h" />
 		<Unit filename="include/envelope.h" />
 		<Unit filename="include/keyfollow.h" />
 		<Unit filename="include/portmidi.h" />
 		<Unit filename="include/porttime.h" />
+		<Unit filename="include/sortablelist.h" />
+		<Unit filename="include/vzeditorapp.h" />
+		<Unit filename="include/vzeditormain.h" />
 		<Unit filename="include/vzline.h" />
 		<Unit filename="include/vzvoice.h" />
 		<Unit filename="include/wxMidi.h" />
-		<Unit filename="include/sortablelist.h" />
 		<Unit filename="resource.rc">
 			<Option compilerVar="WINDRES" />
 		</Unit>
-		<Unit filename="src/VZ_EditorApp.cpp" />
-		<Unit filename="src/VZ_EditorMain.cpp" />
 		<Unit filename="src/envelope.cpp" />
 		<Unit filename="src/keyfollow.cpp" />
 		<Unit filename="src/sortablelist.cpp" />
+		<Unit filename="src/vzeditorapp.cpp" />
+		<Unit filename="src/vzeditormain.cpp" />
 		<Unit filename="src/vzline.cpp" />
 		<Unit filename="src/vzvoice.cpp" />
 		<Unit filename="src/wxMidi.cpp" />
 		<Unit filename="src/wxMidiDatabase.cpp" />
-		<Unit filename="wxsmith/VZVoiceWidget.wxs" />
-		<Unit filename="wxsmith/VZ_Editorframe.wxs" />
+		<Unit filename="wxsmith/vzeditorframe.wxs" />
 		<Unit filename="wxsmith/vzline.wxs" />
 		<Extensions>
 			<code_completion />

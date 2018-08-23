@@ -7,10 +7,10 @@
  * License:
  **************************************************************/
 
-#include "VZ_EditorApp.h"
+#include "vzeditorapp.h"
 
 //(*AppHeaders
-#include "VZ_EditorMain.h"
+#include "vzeditormain.h"
 #include <wx/image.h>
 //*)
 
