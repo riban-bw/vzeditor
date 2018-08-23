@@ -381,14 +381,14 @@ bool vzvoice::IsModuleEnabled(wxByte nModule)
 {
     if(nModule > 7)
         return false;
-    return GetValue(175 + nModule, 0x80);
+    return !GetValue(175 + nModule, 0x80);
 }
 
 bool vzvoice::EnableModule(wxByte nModule, bool bEnable)
 {
     if(nModule > 7)
         return false;
-    SetValue(175 + nModule, 0x80, bEnable);
+    SetValue(175 + nModule, 0x80, !bEnable);
     return true;
 }
 

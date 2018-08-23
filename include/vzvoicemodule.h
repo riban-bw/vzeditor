@@ -91,6 +91,7 @@ class vzVoiceModule: public wxPanel
 		void OnSliderAmpSensCmdScrollChanged(wxScrollEvent& event);
 		void OnCmbCurveSelect(wxCommandEvent& event);
 		void OnSliderVelSensitivityCmdScrollChanged(wxScrollEvent& event);
+		void Onm_pEnvEditorAmpPaint(wxPaintEvent& event);
 		//*)
 		void OnAmpEnv(wxCommandEvent& event);
 		void OnKFEnv(wxCommandEvent& event);

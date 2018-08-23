@@ -1,0 +1,145 @@
+VZ-1 / VZ-10 (and possibly VZ-8) Sound Synthesis Elements
+
+Voices
+
+Each voice is created using (upto) 8 modules (M1 - M8) each consisting of a DCO and DCA.
+Pairs of modules form internal lines:
+	M1 & M2 = Line A
+	M3 & M4 = Line B
+	M5 & M6 = Line C
+	M7 & M8 = Line D
+	
+M1 	DCO1--DCA1--|
+				|-- Line A
+M2 	DCO2--DCA2--|
+ 
+M3 	DCO3--DCA3--|
+				|-- Line B
+M4 	DCO4--DCA4--|
+ 
+M5 	DCO5--DCA5--|
+				|-- Line C
+M6 	DCO6--DCA6--|
+ 
+M7	DCO7--DCA7--|
+				|-- Line D
+M8	DCO8--DCA8--|
+	
+	
+Each line may be formed by combining the pair of modules thus:
+	Simple Sum: My + Mx
+	Ring Modulation: My + Mx x My
+	Phase Modulation: My(Mx)
+	
+	The second of the pair of modules always feeds the line.
+	The first module may be mixed with the second module to feed the line.
+	The first module may phase modulate the second module.
+	The second module may ring modulate the first module. The output of the ring modulation is mixed with the second module to feed the line.
+	
+	The second module may be phase modulated by the output of the previous Line.
+	M4(Line A)
+
+DCO
+===
+
+Each module has a DCO.
+Each DCO waveform may be selected from:	SINE / SAW1 / SAW2 / SAW3 / SAW4 / SAW5 / NOISE1 / NOISE2
+	Increasing Sawtooth values have increasing quantity of harmonic content.
+	Noise 2 includes some fundamental pitch
+Each DCO may be detuned +/-127 notes and +/-100 cent(63 x 1.6 cent steps). Alternatively the "harmonic" value may be set. Adjusting either the harmonic or the octave / note / fine values automatically adjusts the other.
+Each DCO may be set to a fixed frequency set by the Octave / note / fine settings and may be offset by the x16 switch.
+
+DCA
+===
+
+Each module has a DCA.
+Each DCA has an 8 step envelope.
+	A sustain point can be attached to one envelope step.
+	An end point can be attached to one envelope step. This clears remaining steps.
+The depth of the envelope may be adjusted for each DCA.
+There is a 6 step key follow curve to control the amplitude of each DCA.
+Amplitude of each DCA may be affected by key velocity.  Sensitivity and curve of key velocity may be set.
+Sensitivity to envelope bias and tremolo can be adjusted for each DCA. These bias may be from after-touch, definable wheel 1/2 or foot VR.
+
+Global
+======
+DCO
+There is an 8 step DCO envelope to control the pitch of all DCOs.
+	A sustain point can be attached to one envelope step.
+	An end point can be attached to one envelope step.
+	The scale of the pitch envelope can be adjusted with Range / Depth setting.
+There is a 6 step key follow curve to control the pitch of all DCOs.
+The key velocity control of pitch may be controlled setting sensitivity and curve.
+Vibrato can be set globally for all DCO:
+	Waveform: Triangle / Sawtooth Up / Sawtooth Down / Square
+	Depth
+	Rate
+	Delay
+	Multi switch allows independent trigger of vibrato for each key
+The octave can be set globally for all DCO.
+
+DCA
+Tremolo can be set globally for all DCO:
+	Waveform: Triangle / Sawtooth Up / Sawtooth Down / Square
+	Depth
+	Rate
+	Delay
+	Multi switch allows independent trigger of vibrato for each key
+The overall amplitude / level can be set globally for all DCA. This is independent to synth volume control.
+Each voice can be named up to 12 characters.
+
+Common
+There is a 6 step key follow rate curve which affects the rate at which keyboard follow will react for both DCOs and DCAs.
+There is an 8 step key velocity rate curve which affects the rate at which keyboard velocity will react for both DCOs and DCAs.
+	Sensitivity
+	Curve
+	DCO steps to affect
+	DCA steps to affect
+
+
+SYSEX
+=====
+Bits ABCDEFGH of 8-bit word with A=MSB
+00 F,G,H = Ext phase M4,M6,M8
+01 A,B = Line A: 0=Mix,1=Phase,2=Ring. C-E/F-H = M2/M1 Waveform: 0=Sine, 1-5=Saw1-5, 6-8=Noise1-2
+02-04 Same as 01 for Line B-D and M3-8
+05 A-F = M1 Fine detune. G = M1 Pitch fix. H = Range
+06 A = M1 Detune polarity (1=+). B-H = Detune note(*1)
+07-20 Same as 05 & 06 for M2-8
+21 A = M1 DCA key velocity rate bias step 1 enable???. B-H = M1 DCA envelope step 1 rate(*2)
+22-28 Same as 21 for M2-8
+29 Same as 21 for DCO
+30 A = M1 DCA envelope step 1 sustain point. B-H = M1 DCA envelope step 1 level(*3)
+31-37 Same as 30 for M2-8
+38 Same as 30 for DCO.(*4)
+39-164 Same as 21-38 for envelope steps 2-8
+165 B-D = M1 DCA envelope end (last step #). F-H = M1 Amp Sens (0-7)
+166-172 Same as 165 for M2-8
+173 B-D = DCO envelope end (last step #)
+174 B-H Level(*5) [00~7F = 99~0]
+175 A = M1 On/off. B-H = M1 DCA envelope depth(*5)
+176-182 Same as 175 for M2-8
+183 A = DCO range. C-H = DCO envelope depth(*6)
+184 B-H M1 DCA key follow step 1 key(*7)
+185 B-H M1 DCA key follow step 1 level(*5)
+186-195 Same as 184 & 185 for steps 2-6
+196-279 Same as 184-195 for M2-8
+280 B-H = DCO key follow step 1 key(*7)
+281 C-H = DCO key follow step 1 level(*6)
+283-291 Same as 280 & 281 for steps 2-6
+292 B-H = Key follow step 1 key(*7)
+293 B-H = Key follow step 1 rate(*2)
+294-303 Same as 292 & 293 for steps 2-6
+304 A-C = M1 key velocity curve. D-H = M1 key velocity sensitivity
+305-311 Same as 304 for M2-8
+312 Same as 304 for DCO
+313 Same as 304 for rate???
+314 A = Octave polarity (1=+). B-C = Octave. E = Vibrato multi. G-H = Vibrato waveform [0=Triangle, 1=Sawtooth Up, 2=Sawtooth Down, 3=Square]
+315 B-H = Vibrato depth
+316 B-H = Vibrato rate
+317 B-H = Vibrato delay
+318 E = Tremolo mulit. G-H = Tremolo waveform [0=Triangle, 1=Sawtooth Up, 2=Sawtooth Down, 3=Square]
+319 B-H Tremolo depth
+320 B-H Tremolo rate
+321 B-H Tremolo delay
+322-335 Voice name (ASCII)

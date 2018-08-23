@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes" ?>
+<CodeBlocks_project_file>
+	<FileVersion major="1" minor="6" />
+	<Project>
+		<Option title="VZ Editor" />
+		<Option pch_mode="2" />
+		<Option compiler="gcc" />
+		<Build>
+			<Target title="Debug">
+				<Option output="bin/Debug/VZ Editor" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Debug/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-g" />
+					<Add option="-D__WXDEBUG__" />
+					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
+				</ResourceCompiler>
+				<Linker>
+					<Add library="libwxmsw28ud.a" />
+					<Add directory="$(#wx)/lib/gcc_dll" />
+				</Linker>
+			</Target>
+			<Target title="Release">
+				<Option output="bin/Release/VZ Editor" prefix_auto="1" extension_auto="1" />
+				<Option object_output="obj/Release/" />
+				<Option type="0" />
+				<Option compiler="gcc" />
+				<Option projectLinkerOptionsRelation="2" />
+				<Compiler>
+					<Add option="-O2" />
+					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
+				</Compiler>
+				<ResourceCompiler>
+					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
+				</ResourceCompiler>
+				<Linker>
+					<Add option="-s" />
+					<Add library="libwxmsw28u.a" />
+					<Add directory="$(#wx)/lib/gcc_dll" />
+				</Linker>
+			</Target>
+		</Build>
+		<Compiler>
+			<Add option="-Wall" />
+			<Add option="-pipe" />
+			<Add option="-mthreads" />
+			<Add option='[[if (GetCompilerFactory().GetCompilerVersionString(_T(&quot;gcc&quot;)) &gt;= _T(&quot;4.8.0&quot;)) print(_T(&quot;-Wno-unused-local-typedefs&quot;));]]' />
+			<Add option="-D__GNUWIN32__" />
+			<Add option="-D__WXMSW__" />
+			<Add option="-DwxUSE_UNICODE" />
+			<Add directory="include" />
+			<Add directory="$(#wx)/include" />
+		</Compiler>
+		<ResourceCompiler>
+			<Add directory="$(#wx)/include" />
+		</ResourceCompiler>
+		<Linker>
+			<Add option="-mthreads" />
+			<Add library="portmidi" />
+			<Add directory="lib" />
+		</Linker>
+		<Unit filename="include/VZ_EditorApp.h" />
+		<Unit filename="include/VZ_EditorMain.h" />
+		<Unit filename="include/envelope.h" />
+		<Unit filename="include/keyfollow.h" />
+		<Unit filename="include/portmidi.h" />
+		<Unit filename="include/porttime.h" />
+		<Unit filename="include/vzline.h" />
+		<Unit filename="include/vzvoice.h" />
+		<Unit filename="include/wxMidi.h" />
+		<Unit filename="include/sortablelist.h" />
+		<Unit filename="resource.rc">
+			<Option compilerVar="WINDRES" />
+		</Unit>
+		<Unit filename="src/VZ_EditorApp.cpp" />
+		<Unit filename="src/VZ_EditorMain.cpp" />
+		<Unit filename="src/envelope.cpp" />
+		<Unit filename="src/keyfollow.cpp" />
+		<Unit filename="src/sortablelist.cpp" />
+		<Unit filename="src/vzline.cpp" />
+		<Unit filename="src/vzvoice.cpp" />
+		<Unit filename="src/wxMidi.cpp" />
+		<Unit filename="src/wxMidiDatabase.cpp" />
+		<Unit filename="wxsmith/VZVoiceWidget.wxs" />
+		<Unit filename="wxsmith/VZ_Editorframe.wxs" />
+		<Unit filename="wxsmith/vzline.wxs" />
+		<Extensions>
+			<code_completion />
+			<envvars />
+			<debugger />
+			<lib_finder disable_auto="1" />
+			<wxsmith version="1">
+				<gui name="wxWidgets" src="src/VZ_EditorApp.cpp" main="include/VZ_EditorFrame" init_handlers="necessary" language="CPP" />
+				<resources>
+					<wxFrame wxs="wxsmith/VZ_Editorframe.wxs" src="src/VZ_EditorMain.cpp" hdr="include/VZ_EditorMain.h" fwddecl="0" i18n="1" name="VZ_EditorFrame" language="CPP" />
+					<wxPanel wxs="wxsmith/VZLine.wxs" src="src/vzline.cpp" hdr="include/vzline.h" fwddecl="0" i18n="1" name="VZLine" language="CPP" />
+					<wxPanel wxs="wxsmith/VZVoiceWidget.wxs" src="src/vzvoicewidget.cpp" hdr="include/vzvoicewidget.h" fwddecl="0" i18n="1" name="VZVoiceWidget" language="CPP" />
+				</resources>
+			</wxsmith>
+		</Extensions>
+	</Project>
+</CodeBlocks_project_file>

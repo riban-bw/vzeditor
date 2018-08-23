@@ -1,3 +1,4 @@
+
 //=====================================================================================
 // wxMidi: A MIDI interface based on PortMidi, the Portable Real-Time MIDI Library
 // --------------------------------------------------------------------------------
@@ -183,14 +184,14 @@ wxMidiError wxMidiOutDevice::Write(wxMidiSysExMessage* pMsg)
 	else
 		return (wxMidiError)Pm_WriteSysEx(m_stream,
 									  pMsg->GetTimestamp(),
-									  (unsigned char *)pMsg->GetMessage() );
+									  (wxByte *)pMsg->GetMessage() );
 }
 
 wxMidiError wxMidiOutDevice::Write(wxByte* msg, wxMidiTimestamp when)
 {
 	return (wxMidiError)Pm_WriteSysEx(m_stream,
 									  when,
-									  (unsigned char *)msg );
+									  (wxByte *)msg );
 }
 
 wxMidiError	wxMidiOutDevice::NoteOff(int channel, int note, int velocity)
