@@ -1,16 +1,50 @@
 #include "sortablelist.h"
 #include <algorithm>
 
+bool SortByNameAsc(const vzLibEntry* lhs, const vzLibEntry* rhs)
+{
+    string sLhs(lhs->name.mb_str());
+    string sRhs(rhs->name.mb_str());
+    return  sLhs < sRhs;
+}
 
-bool SortByNameAsc(const ROW_DATA &lhs, const ROW_DATA &rhs) { return  lhs.name < rhs.name; }
-bool SortByNameDesc(const ROW_DATA &lhs, const ROW_DATA &rhs) { return  lhs.name > rhs.name; }
-bool SortByDescriptionAsc(const ROW_DATA &lhs, const ROW_DATA &rhs) { return  lhs.description < rhs.description; }
-bool SortByDescriptionDesc(const ROW_DATA &lhs, const ROW_DATA &rhs) { return  lhs.description> rhs.description; }
-bool SortByGroupAsc(const ROW_DATA &lhs, const ROW_DATA &rhs) { return  lhs.group < rhs.group; }
-bool SortByGroupDesc(const ROW_DATA &lhs, const ROW_DATA &rhs) { return  lhs.group > rhs.group; }
+bool SortByNameDesc(const vzLibEntry* lhs, const vzLibEntry* rhs)
+{
+    string sLhs(lhs->name.mb_str());
+    string sRhs(rhs->name.mb_str());
+    return  sLhs > sRhs;
+}
+
+bool SortByDescriptionAsc(const vzLibEntry* lhs, const vzLibEntry* rhs)
+{
+    string sLhs(lhs->description.mb_str());
+    string sRhs(rhs->description.mb_str());
+    return  sLhs < sRhs;
+}
+bool SortByDescriptionDesc(const vzLibEntry* lhs, const vzLibEntry* rhs)
+{
+    string sLhs(lhs->description.mb_str());
+    string sRhs(rhs->description.mb_str());
+    return  sLhs > sRhs;
+}
+
+bool SortByGroupAsc(const vzLibEntry* lhs, const vzLibEntry* rhs)
+{
+    string sLhs(lhs->group.mb_str());
+    string sRhs(rhs->group.mb_str());
+    return  sLhs < sRhs;
+}
+
+bool SortByGroupDesc(const vzLibEntry* lhs, const vzLibEntry* rhs)
+{
+    string sLhs(lhs->group.mb_str());
+    string sRhs(rhs->group.mb_str());
+    return  sLhs > sRhs;
+}
 
 SortableList::SortableList(wxWindow* parent, wxWindowID id):
-    wxListCtrl(parent, id, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_VIRTUAL)
+    wxListCtrl(parent, id, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_VIRTUAL),
+    m_pvData(NULL)
 {
     wxListItem col0;
     col0.SetId(0);
@@ -27,26 +61,31 @@ SortableList::SortableList(wxWindow* parent, wxWindowID id):
     col2.SetText(wxT("Group"));
     col2.SetWidth(200);
     InsertColumn(2, col2);
+    //!@todo add type column
+}
 
-    m_vData.push_back(ROW_DATA{"Piano", "Grand piano", "Keyboard"});
-    m_vData.push_back(ROW_DATA{"Guitar", "Acoustic guitar", "Plucked"});
-    m_vData.push_back(ROW_DATA{"Bass", "Bass guitar", "Plucked"});
-    m_vData.push_back(ROW_DATA{"Clarinet", "Alto clarinet", "Woodwind"});
-    SetItemCount(m_vData.size());
+void SortableList::SetData(vector<vzLibEntry*>* pData)
+{
+    m_pvData = pData;
+    int nSize = pData->size();
+    SetItemCount(pData->size());
 }
 
 //Overload virtual method of wxListCtrl to provide text data for virtual list
 wxString SortableList::OnGetItemText(long item, long column) const{
-    if(item < (long)m_vData.size() && item >= 0)
+    if(!m_pvData)
+        return wxEmptyString;
+    vzLibEntry* pData = (*m_pvData)[item];
+    if(item < (long)m_pvData->size() && item >= 0)
     {
         switch(column)
         {
             case 0:
-                return wxString::FromUTF8(m_vData[item].name.c_str());
+                return pData->name;
             case 1:
-                return wxString::FromUTF8(m_vData[item].description.c_str());
+                return pData->description;
             case 2:
-                return wxString::FromUTF8(m_vData[item].group.c_str());
+                return pData->group;
         }
     }
     return wxT("");
@@ -76,18 +115,18 @@ void SortableList::Sort(long column)
     switch(column)
     {
         case 0:
-            sort(m_vData.begin(), m_vData.end(), bAscending?SortByNameAsc:SortByNameDesc);
+            sort(m_pvData->begin(), m_pvData->end(), bAscending?SortByNameAsc:SortByNameDesc);
             col.SetText(bAscending?wxT("▲ Name"):wxT("▼ Name"));
             SetColumn(column, col);
             break;
         case 1:
-            sort(m_vData.begin(), m_vData.end(), bAscending?SortByDescriptionAsc:SortByDescriptionDesc);
-            col.SetText(bAscending?wxT("▲ Name"):wxT("▼ Name"));
+            sort(m_pvData->begin(), m_pvData->end(), bAscending?SortByDescriptionAsc:SortByDescriptionDesc);
+            col.SetText(bAscending?wxT("▲ Description"):wxT("▼ Description"));
             SetColumn(column, col);
             break;
         case 2:
-            sort(m_vData.begin(), m_vData.end(), bAscending?SortByGroupAsc:SortByGroupDesc);
-            col.SetText(bAscending?wxT("▲ Name"):wxT("▼ Name"));
+            sort(m_pvData->begin(), m_pvData->end(), bAscending?SortByGroupAsc:SortByGroupDesc);
+            col.SetText(bAscending?wxT("▲ Group"):wxT("▼ Group"));
             SetColumn(column, col);
             break;
         default:

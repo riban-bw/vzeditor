@@ -350,12 +350,15 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     }
     m_pMidiOut = (wxMidiOutDevice*)NULL;
     m_pMidiIn = (wxMidiInDevice*)NULL;
+    m_pvzLib = new VZLibrary();
+    m_pLstLib->SetData(m_pvzLib->GetData());
+//    m_pvzLib->AddEntry(wxT("Organ"), wxT("Organ.syx"), wxT("Hammond organ"), wxT("Keyboard"));
+    m_pvzLib->Save();
 }
 
 VZ_EditorFrame::~VZ_EditorFrame()
 {
-    //(*Destroy(VZ_EditorFrame)
-    //*)
+    delete m_pvzLib;
 }
 
 void VZ_EditorFrame::OnQuit(wxCommandEvent& event)

@@ -30,6 +30,7 @@
 //*)
 #include "wxMidi.h"
 #include "vzvoice.h"
+#include "vzlibrary.h"
 
 class VZ_EditorFrame: public wxFrame
 {
@@ -191,6 +192,7 @@ class VZ_EditorFrame: public wxFrame
         vzvoice m_vzVoice; //Buffer to hold currently edited voice
         vzvoice m_vzVoiceMidi; //Buffer to hold last voice received via MIDI
         wxByte m_acRawVoiceMidi[VZ_VOICE_SIZE]; //Buffer to hold raw sysex voice received via MIDI
+        VZLibrary* m_pvzLib; //Library
 
 
         DECLARE_EVENT_TABLE()

@@ -71,6 +71,7 @@
 		<Unit filename="include/sortablelist.h" />
 		<Unit filename="include/vzeditorapp.h" />
 		<Unit filename="include/vzeditormain.h" />
+		<Unit filename="include/vzlibrary.h" />
 		<Unit filename="include/vzline.h" />
 		<Unit filename="include/vzvoice.h" />
 		<Unit filename="include/wxMidi.h" />
@@ -82,6 +83,7 @@
 		<Unit filename="src/sortablelist.cpp" />
 		<Unit filename="src/vzeditorapp.cpp" />
 		<Unit filename="src/vzeditormain.cpp" />
+		<Unit filename="src/vzlibrary.cpp" />
 		<Unit filename="src/vzline.cpp" />
 		<Unit filename="src/vzvoice.cpp" />
 		<Unit filename="src/wxMidi.cpp" />
