@@ -40,7 +40,8 @@ bool VZLibrary::Save()
     wxXmlDocument xmlDoc;
     wxXmlNode* pNode = new wxXmlNode(NULL, wxXML_ELEMENT_NODE, wxT("vzlibrary"));
     xmlDoc.SetRoot(pNode);
-    for(vector<vzLibEntry*>::iterator it = m_vEntries.begin(); it != m_vEntries.end(); ++it)
+    //iterate in reverse because we are adding each node to the root so it ends up at start of document
+    for(vector<vzLibEntry*>::reverse_iterator it = m_vEntries.rbegin(); it != m_vEntries.rend(); ++it)
     {
         vzLibEntry* pEntry = *it;
         pNode = new wxXmlNode(xmlDoc.GetRoot(), wxXML_ELEMENT_NODE, pEntry->type);

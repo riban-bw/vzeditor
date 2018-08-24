@@ -17,6 +17,8 @@ class SortableList: public wxListCtrl
 
         void Sort(long column);
 
+        wxString GetItemFilename(long item);
+
     protected:
 
     private:

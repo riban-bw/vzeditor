@@ -19,7 +19,7 @@ class VZLibrary
 {
     public:
         /** Construct VZLibrary obect */
-        VZLibrary(const wxString &sFilename = wxT("vzlibrary.xml"));
+        VZLibrary(const wxString &sFilename = wxT("library/vzlibrary.xml"));
         /** Destruct VZLibrary obect */
         virtual ~VZLibrary();
 

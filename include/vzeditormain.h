@@ -72,6 +72,7 @@ class VZ_EditorFrame: public wxFrame
         //*)
         void OnGridSort(wxCommandEvent& event);
         void OnLibSort(wxListEvent& event);
+        void OnLibActivate(wxListEvent& event);
 
         //(*Identifiers(VZ_EditorFrame)
         static const long ID_STATICTEXT2;
@@ -81,6 +82,8 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_CHECKBOX1;
         static const long ID_BUTTON1;
         static const long ID_BTNGETVOICE;
+        static const long ID_LSTLIB;
+        static const long ID_PANEL1;
         static const long ID_LINE1;
         static const long ID_LINE2;
         static const long ID_LINE3;
@@ -113,8 +116,6 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_SLIDER4;
         static const long ID_SLIDER6;
         static const long ID_PNLVOICE;
-        static const long ID_LSTLIB;
-        static const long ID_PANEL1;
         static const long ID_NOTEBOOK;
         static const long idMenuOpen;
         static const long idMenuSave;
@@ -175,7 +176,7 @@ class VZ_EditorFrame: public wxFrame
         void CloseInput(); //!< Open MIDI input port
         void CloseOutput(); //!< Close MIDI input port
         void SaveVoice();
-        void LoadVoice();
+        bool LoadVoice(wxString sFilename = wxEmptyString);
         void SendVoice();
         void GetVoice();
 

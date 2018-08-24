@@ -80,6 +80,8 @@ wxString SortableList::OnGetItemText(long item, long column) const{
     {
         switch(column)
         {
+            case -1:
+                return pData->filename;
             case 0:
                 return pData->name;
             case 1:
@@ -89,6 +91,11 @@ wxString SortableList::OnGetItemText(long item, long column) const{
         }
     }
     return wxT("");
+}
+
+wxString SortableList::GetItemFilename(long item)
+{
+    return OnGetItemText(item, -1);
 }
 
 void SortableList::Sort(long column)

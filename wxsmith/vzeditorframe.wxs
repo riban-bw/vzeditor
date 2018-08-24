@@ -79,6 +79,33 @@
 			<object class="sizeritem">
 				<object class="wxNotebook" name="ID_NOTEBOOK" variable="m_pNotebook" member="yes">
 					<object class="notebookpage">
+						<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
+							<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">
+								<rows>2</rows>
+								<growablecols>0</growablecols>
+								<growablerows>1</growablerows>
+								<object class="sizeritem">
+									<object class="wxBoxSizer" variable="BoxSizer2" member="no" />
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="Custom" name="ID_LSTLIB" subclass="SortableList" variable="m_pLstLib" member="yes">
+										<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
+										<include_file>sortablelist.h</include_file>
+										<local_include>1</local_include>
+										<style></style>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+							</object>
+						</object>
+						<label>Voice Library</label>
+					</object>
+					<object class="notebookpage">
 						<object class="wxPanel" name="ID_PNLVOICE" variable="m_pPnlVoice" member="yes">
 							<object class="wxFlexGridSizer" variable="FlexGridSizer2" member="no">
 								<cols>2</cols>
@@ -484,33 +511,6 @@
 							</object>
 						</object>
 						<label>Voice Editor</label>
-					</object>
-					<object class="notebookpage">
-						<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
-							<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">
-								<rows>2</rows>
-								<growablecols>0</growablecols>
-								<growablerows>1</growablerows>
-								<object class="sizeritem">
-									<object class="wxBoxSizer" variable="BoxSizer2" member="no" />
-									<flag>wxALL|wxEXPAND</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
-								<object class="sizeritem">
-									<object class="Custom" name="ID_LSTLIB" subclass="SortableList" variable="m_pLstLib" member="yes">
-										<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-										<include_file>sortablelist.h</include_file>
-										<local_include>1</local_include>
-										<style></style>
-									</object>
-									<flag>wxALL|wxEXPAND</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
-							</object>
-						</object>
-						<label>Voice Library</label>
 					</object>
 				</object>
 				<flag>wxALL|wxEXPAND</flag>

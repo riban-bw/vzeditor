@@ -96,11 +96,11 @@
 			<debugger />
 			<lib_finder disable_auto="1" />
 			<wxsmith version="1">
-				<gui name="wxWidgets" src="src/VZ_EditorApp.cpp" main="include/VZ_EditorFrame" init_handlers="necessary" language="CPP" />
+				<gui name="wxWidgets" src="src/vzeditorapp.cpp" main="include/vzeditorframe.h" init_handlers="necessary" language="CPP" />
 				<resources>
-					<wxFrame wxs="wxsmith/VZ_Editorframe.wxs" src="src/VZ_EditorMain.cpp" hdr="include/VZ_EditorMain.h" fwddecl="0" i18n="1" name="VZ_EditorFrame" language="CPP" />
-					<wxPanel wxs="wxsmith/VZLine.wxs" src="src/vzline.cpp" hdr="include/vzline.h" fwddecl="0" i18n="1" name="VZLine" language="CPP" />
-					<wxPanel wxs="wxsmith/VZVoiceWidget.wxs" src="src/vzvoicewidget.cpp" hdr="include/vzvoicewidget.h" fwddecl="0" i18n="1" name="VZVoiceWidget" language="CPP" />
+					<wxFrame wxs="wxsmith/vzeditorframe.wxs" src="src/vzeditormain.cpp" hdr="include/vzeditormain.h" fwddecl="0" i18n="1" name="VZ_EditorFrame" language="CPP" />
+					<wxPanel wxs="wxsmith/vzline.wxs" src="src/vzline.cpp" hdr="include/vzline.h" fwddecl="0" i18n="1" name="VZLine" language="CPP" />
+					<wxPanel wxs="wxsmith/vzvoicewidget.wxs" src="src/vzvoicewidget.cpp" hdr="include/vzvoicewidget.h" fwddecl="0" i18n="1" name="VZVoiceWidget" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>
