@@ -11,7 +11,7 @@ class SortableList: public wxListCtrl
         /** Default constructor */
         SortableList(wxWindow* parent, wxWindowID id);
 
-        void SetData(vector<vzLibEntry*>* pData);
+        void SetData(VZLibrary* pData);
 
         wxString OnGetItemText(long item, long column) const;
 
@@ -19,11 +19,16 @@ class SortableList: public wxListCtrl
 
         wxString GetItemFilename(long item);
 
+        void OnKeyUp(wxKeyEvent& event);
+
+        bool DeleteItem(long item);
+
     protected:
 
     private:
         long m_lSortColumn;
-        vector<vzLibEntry*>* m_pvData; // Pointer to vector of library entries
+//        vector<vzLibEntry*>* m_pvData; // Pointer to vector of library entries
+        VZLibrary* m_pData; // Pointer to the data source
 };
 
 #endif // SORTABLELIST_H

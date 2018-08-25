@@ -10,6 +10,7 @@
 #include "vzeditormain.h"
 #include <wx/msgdlg.h>
 #include <wx/file.h>
+#include <wx/filename.h>
 
 //(*InternalHeaders(VZ_EditorFrame)
 #include <wx/intl.h>
@@ -352,7 +353,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pMidiOut = (wxMidiOutDevice*)NULL;
     m_pMidiIn = (wxMidiInDevice*)NULL;
     m_pvzLib = new VZLibrary();
-    m_pLstLib->SetData(m_pvzLib->GetData());
+    m_pLstLib->SetData(m_pvzLib);
 }
 
 VZ_EditorFrame::~VZ_EditorFrame()
@@ -466,13 +467,6 @@ void VZ_EditorFrame::SaveVoice()
 
 bool VZ_EditorFrame::LoadVoice(wxString sFilename)
 {
-    if(sFilename.IsEmpty())
-    {
-        wxFileDialog dlg(this, wxT("Select file to load voice from"),wxEmptyString, wxEmptyString, wxT("SysEx files (*.syx)|*.syx|All files (*.*)|*.*"), wxFD_OPEN);
-        if(dlg.ShowModal() == wxID_CANCEL)
-            return false;
-        sFilename = dlg.GetPath();
-    }
     wxFile file(sFilename, wxFile::read);
     if(!file.IsOpened())
     {
@@ -586,26 +580,18 @@ void VZ_EditorFrame::OnSliderVibratoDelayCmdScroll(wxScrollEvent& event)
 
 void VZ_EditorFrame::OnOpenFile(wxCommandEvent& event)
 {
-    wxFileDialog dlg(this, wxT("Select file to load voice from"),wxEmptyString, wxEmptyString, wxT("SysEx files (*.syx)|*.syx|All files (*.*)|*.*"), wxFD_OPEN);
+    wxFileDialog dlg(this, wxT("Select file to open"),wxEmptyString, wxEmptyString, wxT("SysEx files (*.syx)|*.syx|Library (*.xml)|*.xml|All files (*.*)|*.*"), wxFD_OPEN);
     if(dlg.ShowModal() == wxID_CANCEL)
         return;
-    wxFile file(dlg.GetPath(), wxFile::read);
-    if(!file.IsOpened())
+    wxFileName fnFilename(dlg.GetPath());
+    if(fnFilename.GetExt().Lower().IsSameAs(wxT("xml")))
     {
-        wxMessageBox(wxT("Failed to open file"), wxT("Error"), wxICON_ERROR);
+        if(m_pvzLib->IsDirty())
+        m_pvzLib->Load(dlg.GetPath());
+        m_pLstLib->SetData(m_pvzLib);
         return;
     }
-    wxByte acSysex[VZ_VOICE_SIZE];
-    if(file.Length() != VZ_VOICE_SIZE || file.Read(acSysex, VZ_VOICE_SIZE) != VZ_VOICE_SIZE)
-        wxMessageBox(wxT("Corrupt file"), wxT("Error"), wxICON_ERROR);
-    file.Close();
-    if(m_vzVoice.SetSysEx(acSysex))
-        wxMessageBox(wxT("Invalid VZ voice file"), wxT("Error"), wxICON_ERROR);
-//    else
-//        m_pLstLog->Append(wxString::Format(wxT("Loaded voice %s"), m_vzVoice.GetName().c_str()));
-    m_pTxtVoiceName->SetValue(m_vzVoice.GetName());
-    UpdateGui();
-
+    LoadVoice(dlg.GetPath());
 }
 
 void VZ_EditorFrame::OnLibSort(wxListEvent& event)
