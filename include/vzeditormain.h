@@ -197,7 +197,6 @@ class VZ_EditorFrame: public wxFrame
         wxByte m_acRawVoiceMidi[VZ_VOICE_SIZE]; //Buffer to hold raw sysex voice received via MIDI
         VZLibrary* m_pvzLib; //Library
 
-
         DECLARE_EVENT_TABLE()
 };
 

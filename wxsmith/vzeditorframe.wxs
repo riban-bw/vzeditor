@@ -182,7 +182,8 @@
 												</object>
 												<object class="sizeritem">
 													<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="m_pTxtVoiceName" member="yes">
-														<size>125,27</size>
+														<maxlength>12</maxlength>
+														<validator>m__validateVoiceName</validator>
 														<handler function="OnTxtVoiceNameText" entry="EVT_TEXT" />
 													</object>
 													<flag>wxALL|wxEXPAND</flag>

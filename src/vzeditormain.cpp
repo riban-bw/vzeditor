@@ -103,6 +103,19 @@ END_EVENT_TABLE()
 
 VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
 {
+    wxTextValidator m_validateVoiceName;
+    wxArrayString asValidate;
+    m_validateVoiceName.SetStyle(wxFILTER_INCLUDE_CHAR_LIST);
+    for(char c = 'A'; c <= 'Z'; ++c)
+        asValidate.Add(wxString::Format(wxT("%c"), c));
+    for(char c = '0'; c <= '9'; ++c)
+        asValidate.Add(wxString::Format(wxT("%c"), c));
+    asValidate.Add(wxT(" "));
+    asValidate.Add(wxT("-"));
+    asValidate.Add(wxT("/"));
+    asValidate.Add(wxT("."));
+    m_validateVoiceName.SetIncludes(wxArrayString(asValidate));
+
     //(*Initialize(VZ_EditorFrame)
     wxBoxSizer* BoxSizer1;
     wxBoxSizer* BoxSizer2;
@@ -181,7 +194,8 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     FlexGridSizer4->AddGrowableCol(1);
     StaticText3 = new wxStaticText(m_pPnlVoice, ID_STATICTEXT3, _("Voice Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
     FlexGridSizer4->Add(StaticText3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pTxtVoiceName = new wxTextCtrl(m_pPnlVoice, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxSize(125,27), 0, wxDefaultValidator, _T("ID_TEXTCTRL1"));
+    m_pTxtVoiceName = new wxTextCtrl(m_pPnlVoice, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, m_validateVoiceName, _T("ID_TEXTCTRL1"));
+    m_pTxtVoiceName->SetMaxLength(12);
     FlexGridSizer4->Add(m_pTxtVoiceName, 1, wxALL|wxEXPAND, 5);
     FlexGridSizer8->Add(FlexGridSizer4, 1, wxALL|wxEXPAND, 5);
     FlexGridSizer7 = new wxFlexGridSizer(0, 2, 0, 0);
@@ -341,7 +355,6 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxConfig configPersist(wxTheApp->GetAppName(), wxT("riban"),wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
     int nX, nY, nWidth, nHeight;
     bool bX;
-
     //Position window
     configPersist.Read(wxT("persist/left"), &nX, 0);
     configPersist.Read(wxT("persist/top"), &nY, 0);
