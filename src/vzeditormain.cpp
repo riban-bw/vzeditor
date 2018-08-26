@@ -11,6 +11,8 @@
 #include <wx/msgdlg.h>
 #include <wx/file.h>
 #include <wx/filename.h>
+#include <wx/config.h>
+#include <wx/display.h>
 
 //(*InternalHeaders(VZ_EditorFrame)
 #include <wx/intl.h>
@@ -53,7 +55,7 @@ const long VZ_EditorFrame::ID_CHECKBOX1 = wxNewId();
 const long VZ_EditorFrame::ID_BUTTON1 = wxNewId();
 const long VZ_EditorFrame::ID_BTNGETVOICE = wxNewId();
 const long VZ_EditorFrame::ID_LSTLIB = wxNewId();
-const long VZ_EditorFrame::ID_PANEL1 = wxNewId();
+const long VZ_EditorFrame::ID_PNLLIBRARY = wxNewId();
 const long VZ_EditorFrame::ID_LINE1 = wxNewId();
 const long VZ_EditorFrame::ID_LINE2 = wxNewId();
 const long VZ_EditorFrame::ID_LINE3 = wxNewId();
@@ -145,17 +147,17 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     FlexGridSizer1->Add(m_pBtnGetVoice, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSizerMain->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
     m_pNotebook = new wxNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK"));
-    Panel1 = new wxPanel(m_pNotebook, ID_PANEL1, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANEL1"));
+    m_pPnlLibrary = new wxPanel(m_pNotebook, ID_PNLLIBRARY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLLIBRARY"));
     FlexGridSizer9 = new wxFlexGridSizer(2, 0, 0, 0);
     FlexGridSizer9->AddGrowableCol(0);
     FlexGridSizer9->AddGrowableRow(1);
     BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
     FlexGridSizer9->Add(BoxSizer2, 1, wxALL|wxEXPAND, 5);
-    m_pLstLib = new SortableList(Panel1,ID_LSTLIB);
+    m_pLstLib = new SortableList(m_pPnlLibrary,ID_LSTLIB);
     FlexGridSizer9->Add(m_pLstLib, 1, wxALL|wxEXPAND, 5);
-    Panel1->SetSizer(FlexGridSizer9);
-    FlexGridSizer9->Fit(Panel1);
-    FlexGridSizer9->SetSizeHints(Panel1);
+    m_pPnlLibrary->SetSizer(FlexGridSizer9);
+    FlexGridSizer9->Fit(m_pPnlLibrary);
+    FlexGridSizer9->SetSizeHints(m_pPnlLibrary);
     m_pPnlVoice = new wxPanel(m_pNotebook, ID_PNLVOICE, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLVOICE"));
     FlexGridSizer2 = new wxFlexGridSizer(0, 2, 0, 0);
     FlexGridSizer2->AddGrowableCol(0);
@@ -284,7 +286,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pPnlVoice->SetSizer(FlexGridSizer2);
     FlexGridSizer2->Fit(m_pPnlVoice);
     FlexGridSizer2->SetSizeHints(m_pPnlVoice);
-    m_pNotebook->AddPage(Panel1, _("Voice Library"), false);
+    m_pNotebook->AddPage(m_pPnlLibrary, _("Voice Library"), false);
     m_pNotebook->AddPage(m_pPnlVoice, _("Voice Editor"), false);
     m_pSizerMain->Add(m_pNotebook, 1, wxALL|wxEXPAND, 5);
     SetSizer(m_pSizerMain);
@@ -316,6 +318,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_CHOICE2,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnOutPortSelect);
     Connect(ID_CHECKBOX1,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnChkAutoUpdateClick);
     Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnSendClick);
+    Connect(ID_BTNGETVOICE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnGetVoice);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZ_EditorFrame::OnTxtVoiceNameText);
     Connect(ID_SLIDERVELSENS,wxEVT_SCROLL_TOP|wxEVT_SCROLL_BOTTOM|wxEVT_SCROLL_LINEUP|wxEVT_SCROLL_LINEDOWN|wxEVT_SCROLL_PAGEUP|wxEVT_SCROLL_PAGEDOWN|wxEVT_SCROLL_THUMBTRACK|wxEVT_SCROLL_THUMBRELEASE|wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZ_EditorFrame::OSliderVelSensCmdScroll);
     Connect(ID_CMBVELCURVE,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnCmbVelCurveSelect);
@@ -332,26 +335,58 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     //*)
     Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&VZ_EditorFrame::OnLibSort);
     Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&VZ_EditorFrame::OnLibActivate);
+    Connect(wxID_ANY, wxEVT_MIDI_INPUT,(wxObjectEventFunction)&VZ_EditorFrame::OnMidiReceive);
+    Connect(wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&VZ_EditorFrame::OnClose);
+
+    wxConfig configPersist(wxTheApp->GetAppName(), wxT("riban"),wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+    int nX, nY, nWidth, nHeight;
+    bool bX;
+
+    //Position window
+    configPersist.Read(wxT("persist/left"), &nX, 0);
+    configPersist.Read(wxT("persist/top"), &nY, 0);
+    configPersist.Read(wxT("persist/width"), &nWidth, 800);
+    configPersist.Read(wxT("persist/height"), &nHeight, 600);
+    configPersist.Read(wxT("persist/maximised"), &bX, false);
+    Maximize(bX);
+    SetSize(nWidth, nHeight);
+      //Check saved location is visible
+    bool bCanSee = false;
+	for(unsigned int nDisplay = 0; nDisplay < wxDisplay::GetCount(); nDisplay++)
+    {
+        bCanSee |= wxDisplay(nDisplay).GetGeometry().Intersects(wxRect(nX, nY, nWidth, nHeight));
+    }
+    if(bCanSee)
+        Move(nX, nY);
+
+
     //Get MIDI interfaces
     //!@todo React to MIDI ports appearing and disappearing, e.g. USB plugged in - maybe using wxMidiDevice::HasHostError()
     m_pMidi = wxMidiSystem::GetInstance();
-    int nDevices = Pm_CountDevices();
-    for(int i = 0; i < nDevices; ++i)
-    {
-        const PmDeviceInfo* pInfo = Pm_GetDeviceInfo(i);
-        if(pInfo->input)
-        {
-            int nIndex = m_pCmbInPort->Append(wxString::FromUTF8(pInfo->name));
-            m_pCmbInPort->SetClientData(nIndex, (void*)(long)i);
-        }
-        if(pInfo->output)
-        {
-            int nIndex = m_pCmbOutPort->Append(wxString::FromUTF8(pInfo->name));
-            m_pCmbOutPort->SetClientData(nIndex, (void*)(long)i);
-        }
-    }
     m_pMidiOut = (wxMidiOutDevice*)NULL;
     m_pMidiIn = (wxMidiInDevice*)NULL;
+    UpdateMidiPorts();
+
+    configPersist.Read(wxT("persist/midi_in"), &nX, 0);
+    if(m_pCmbInPort->GetCount())
+    {
+        if((int)m_pCmbInPort->GetCount() - 1 < nX)
+            nX = m_pCmbInPort->GetCount() - 1;
+        wxCommandEvent event;
+        m_pCmbInPort->Select(nX);
+        event.SetClientData(m_pCmbInPort->GetClientData(0));
+        OnInPortSelect(event);
+    }
+    configPersist.Read(wxT("persist/midi_out"), &nX, 0);
+    if(m_pCmbOutPort->GetCount())
+    {
+        if((int)m_pCmbOutPort->GetCount() - 1 < nX)
+            nX = m_pCmbOutPort->GetCount() - 1;
+        wxCommandEvent event;
+        m_pCmbOutPort->Select(nX);
+        event.SetClientData(m_pCmbOutPort->GetClientData(0));
+        OnOutPortSelect(event);
+    }
     m_pvzLib = new VZLibrary();
     m_pLstLib->SetData(m_pvzLib);
 }
@@ -359,6 +394,22 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
 VZ_EditorFrame::~VZ_EditorFrame()
 {
     delete m_pvzLib;
+}
+
+void VZ_EditorFrame::OnClose(wxCloseEvent& event)
+{
+    wxConfig configPersist(wxTheApp->GetAppName(), wxT("riban"),wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+    configPersist.Write(wxT("persist/midi_out"), m_pCmbOutPort->GetSelection());
+    configPersist.Write(wxT("persist/midi_in"), m_pCmbInPort->GetSelection());
+    configPersist.Write(wxT("persist/maximised"), IsMaximized());
+	if(!IsMaximized() && !IsIconized())
+	{
+        configPersist.Write(wxT("persist/width"), GetSize().GetWidth());
+        configPersist.Write(wxT("persist/height"), GetSize().GetHeight());
+        configPersist.Write(wxT("persist/left"), GetPosition().x);
+        configPersist.Write(wxT("persist/top"), GetPosition().y);
+	}
+    event.Skip();
 }
 
 void VZ_EditorFrame::OnQuit(wxCommandEvent& event)
@@ -609,6 +660,7 @@ void VZ_EditorFrame::OnLibActivate(wxListEvent& event)
 void VZ_EditorFrame::OnBtnGetVoice(wxCommandEvent& event)
 {
     GetVoice();
+    m_pNotebook->SetSelection(1);
 }
 
 void VZ_EditorFrame::OnSaveFile(wxCommandEvent& event)
@@ -619,4 +671,25 @@ void VZ_EditorFrame::OnSaveFile(wxCommandEvent& event)
 void VZ_EditorFrame::OnLoadFile(wxCommandEvent& event)
 {
     LoadVoice();
+}
+
+void VZ_EditorFrame::UpdateMidiPorts()
+{
+    m_pCmbInPort->Clear();
+    m_pCmbOutPort->Clear();
+    int nDevices = Pm_CountDevices();
+    for(int i = 0; i < nDevices; ++i)
+    {
+        const PmDeviceInfo* pInfo = Pm_GetDeviceInfo(i);
+        if(pInfo->input)
+        {
+            int nIndex = m_pCmbInPort->Append(wxString::FromUTF8(pInfo->name));
+            m_pCmbInPort->SetClientData(nIndex, (void*)(long)i);
+        }
+        if(pInfo->output)
+        {
+            int nIndex = m_pCmbOutPort->Append(wxString::FromUTF8(pInfo->name));
+            m_pCmbOutPort->SetClientData(nIndex, (void*)(long)i);
+        }
+    }
 }

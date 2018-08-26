@@ -66,6 +66,7 @@
 						<object class="wxButton" name="ID_BTNGETVOICE" variable="m_pBtnGetVoice" member="yes">
 							<label>Get Voice</label>
 							<enabled>0</enabled>
+							<handler function="OnBtnGetVoice" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
@@ -79,7 +80,7 @@
 			<object class="sizeritem">
 				<object class="wxNotebook" name="ID_NOTEBOOK" variable="m_pNotebook" member="yes">
 					<object class="notebookpage">
-						<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
+						<object class="wxPanel" name="ID_PNLLIBRARY" variable="m_pPnlLibrary" member="yes">
 							<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">
 								<rows>2</rows>
 								<growablecols>0</growablecols>

@@ -83,7 +83,7 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_BUTTON1;
         static const long ID_BTNGETVOICE;
         static const long ID_LSTLIB;
-        static const long ID_PANEL1;
+        static const long ID_PNLLIBRARY;
         static const long ID_LINE1;
         static const long ID_LINE2;
         static const long ID_LINE3;
@@ -140,7 +140,7 @@ class VZ_EditorFrame: public wxFrame
         wxMenuItem* MenuItem3;
         wxMenuItem* MenuItem4;
         wxNotebook* m_pNotebook;
-        wxPanel* Panel1;
+        wxPanel* m_pPnlLibrary;
         wxPanel* m_pPnlVoice;
         wxRadioBox* m_pRadioTremeloMulti;
         wxRadioBox* m_pRadioTremeloWaveform;
@@ -179,6 +179,8 @@ class VZ_EditorFrame: public wxFrame
         bool LoadVoice(wxString sFilename = wxEmptyString);
         void SendVoice();
         void GetVoice();
+        void UpdateMidiPorts();
+        void OnClose(wxCloseEvent& event);
 
 
         //!@todo Add function to play MIDI notes / CC
