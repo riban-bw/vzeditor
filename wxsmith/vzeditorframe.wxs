@@ -45,9 +45,8 @@
 						<option>1</option>
 					</object>
 					<object class="sizeritem">
-						<object class="wxCheckBox" name="ID_CHECKBOX1" variable="m_pChkAutoUpdate" member="yes">
+						<object class="wxCheckBox" name="ID_CHKAUTOUPDATE" variable="m_pChkAutoUpdate" member="yes">
 							<label>Auto Update</label>
-							<handler function="OnChkAutoUpdateClick" entry="EVT_CHECKBOX" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
@@ -79,6 +78,7 @@
 			</object>
 			<object class="sizeritem">
 				<object class="wxNotebook" name="ID_NOTEBOOK" variable="m_pNotebook" member="yes">
+					<style>wxNB_NOPAGETHEME</style>
 					<object class="notebookpage">
 						<object class="wxPanel" name="ID_PNLLIBRARY" variable="m_pPnlLibrary" member="yes">
 							<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">

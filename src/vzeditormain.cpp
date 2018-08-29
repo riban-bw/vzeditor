@@ -51,7 +51,7 @@ const long VZ_EditorFrame::ID_STATICTEXT2 = wxNewId();
 const long VZ_EditorFrame::ID_CHOICE1 = wxNewId();
 const long VZ_EditorFrame::ID_STATICTEXT1 = wxNewId();
 const long VZ_EditorFrame::ID_CHOICE2 = wxNewId();
-const long VZ_EditorFrame::ID_CHECKBOX1 = wxNewId();
+const long VZ_EditorFrame::ID_CHKAUTOUPDATE = wxNewId();
 const long VZ_EditorFrame::ID_BUTTON1 = wxNewId();
 const long VZ_EditorFrame::ID_BTNGETVOICE = wxNewId();
 const long VZ_EditorFrame::ID_LSTLIB = wxNewId();
@@ -160,7 +160,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     FlexGridSizer1->Add(StaticText1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pCmbOutPort = new wxChoice(this, ID_CHOICE2, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
     FlexGridSizer1->Add(m_pCmbOutPort, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pChkAutoUpdate = new wxCheckBox(this, ID_CHECKBOX1, _("Auto Update"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX1"));
+    m_pChkAutoUpdate = new wxCheckBox(this, ID_CHKAUTOUPDATE, _("Auto Update"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHKAUTOUPDATE"));
     m_pChkAutoUpdate->SetValue(false);
     FlexGridSizer1->Add(m_pChkAutoUpdate, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnSend = new wxButton(this, ID_BUTTON1, _("Send Voice"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
@@ -169,7 +169,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pBtnGetVoice->Disable();
     FlexGridSizer1->Add(m_pBtnGetVoice, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSizerMain->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
-    m_pNotebook = new wxNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, 0, _T("ID_NOTEBOOK"));
+    m_pNotebook = new wxNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_NOPAGETHEME, _T("ID_NOTEBOOK"));
     m_pPnlLibrary = new wxPanel(m_pNotebook, ID_PNLLIBRARY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLLIBRARY"));
     FlexGridSizer9 = new wxFlexGridSizer(2, 0, 0, 0);
     FlexGridSizer9->AddGrowableCol(0);
