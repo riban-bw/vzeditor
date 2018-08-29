@@ -24,6 +24,7 @@
 #include <wx/scrolwin.h>
 #include <wx/sizer.h>
 #include <wx/slider.h>
+#include <wx/splitter.h>
 #include <wx/stattext.h>
 #include <wx/statusbr.h>
 #include <wx/textctrl.h>
@@ -47,28 +48,27 @@ class VZ_EditorFrame: public wxFrame
         void OnAbout(wxCommandEvent& event);
         void OnInPortSelect(wxCommandEvent& event);
         void OnOutPortSelect(wxCommandEvent& event);
-        void OnChkAutoUpdateClick(wxCommandEvent& event);
         void OnBtnSendClick(wxCommandEvent& event);
         void OnTxtVoiceNameText(wxCommandEvent& event);
         void OnRadioTremeloMultiSelect(wxCommandEvent& event);
-        void OnSliderLevelCmdScroll(wxScrollEvent& event);
-        void OSliderOctaveCmdScroll(wxScrollEvent& event);
-        void OSliderVelSensCmdScroll(wxScrollEvent& event);
         void OnCmbVelCurveSelect(wxCommandEvent& event);
         void OnRadioTremeloWaveformSelect(wxCommandEvent& event);
-        void OnSliderTremeloDepthCmdScroll(wxScrollEvent& event);
-        void OnSliderTremeloRateCmdScroll(wxScrollEvent& event);
-        void OnSliderTremeloDelayCmdScroll(wxScrollEvent& event);
         void OnRadioVibratoMultiSelect(wxCommandEvent& event);
         void OnRadioVibratoWaveformSelect(wxCommandEvent& event);
-        void OnSliderVibratoDepthCmdScroll(wxScrollEvent& event);
-        void OnSliderVibratoRateCmdScroll(wxScrollEvent& event);
-        void OnSliderVibratoDelayCmdScroll(wxScrollEvent& event);
         void OnOpenFile(wxCommandEvent& event);
         void OnListCtrl1ColumnClick(wxListEvent& event);
         void OnBtnGetVoice(wxCommandEvent& event);
         void OnSaveFile(wxCommandEvent& event);
         void OnLoadFile(wxCommandEvent& event);
+        void OnLevelChanged(wxScrollEvent& event);
+        void OnOctaveChanged(wxScrollEvent& event);
+        void OnDcoVelSensChange(wxScrollEvent& event);
+        void OnTremeloDepthChanged(wxScrollEvent& event);
+        void OnTremeloRateChanged(wxScrollEvent& event);
+        void OnTremeloDelayChanged(wxScrollEvent& event);
+        void OnVibratoDepthChanged(wxScrollEvent& event);
+        void OnVibratoRateChanged(wxScrollEvent& event);
+        void OnVibratoDelayChanged(wxScrollEvent& event);
         //*)
         void OnGridSort(wxCommandEvent& event);
         void OnLibSort(wxListEvent& event);
@@ -100,21 +100,23 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_STATICTEXT12;
         static const long ID_CMBVELCURVE;
         static const long ID_RADIOTREMELOMULTI;
-        static const long ID_STATICTEXT6;
-        static const long ID_STATICTEXT5;
-        static const long ID_STATICTEXT4;
         static const long ID_RADIOTREMELOWAVEFORM;
+        static const long ID_STATICTEXT6;
         static const long ID_SLIDERTREMELODEPTH;
+        static const long ID_STATICTEXT5;
         static const long ID_SLIDERTREMELORATE;
+        static const long ID_STATICTEXT4;
         static const long ID_SLIDERTREMELODELAY;
         static const long ID_RADIOBOX3;
-        static const long ID_STATICTEXT7;
-        static const long ID_STATICTEXT8;
-        static const long ID_STATICTEXT9;
         static const long ID_RADIOBOX4;
+        static const long ID_STATICTEXT7;
         static const long ID_SLIDER5;
+        static const long ID_STATICTEXT8;
         static const long ID_SLIDER4;
+        static const long ID_STATICTEXT9;
         static const long ID_SLIDER6;
+        static const long ID_SCROLLEDWINDOW2;
+        static const long ID_SPLITTERWINDOW1;
         static const long ID_PNLVOICE;
         static const long ID_NOTEBOOK;
         static const long idMenuOpen;
@@ -147,6 +149,7 @@ class VZ_EditorFrame: public wxFrame
         wxRadioBox* m_pRadioVibratoMulti;
         wxRadioBox* m_pRadioVibratoWaveform;
         wxScrolledWindow* m_pScrollWinVoiceEditor;
+        wxScrolledWindow* m_pScrollwindowGlobalParameters;
         wxSlider* m_pSliderLevel;
         wxSlider* m_pSliderOctave;
         wxSlider* m_pSliderTremeloDelay;
@@ -156,6 +159,7 @@ class VZ_EditorFrame: public wxFrame
         wxSlider* m_pSliderVibratoDelay;
         wxSlider* m_pSliderVibratoDepth;
         wxSlider* m_pSliderVibratoRate;
+        wxSplitterWindow* SplitterWindow1;
         wxStaticText* StaticText10;
         wxStaticText* StaticText11;
         wxStaticText* StaticText1;
@@ -181,6 +185,7 @@ class VZ_EditorFrame: public wxFrame
         void GetVoice();
         void UpdateMidiPorts();
         void OnClose(wxCloseEvent& event);
+        void AutoSend(); //!< Send voice data after each parameter change
 
 
         //!@todo Add function to play MIDI notes / CC

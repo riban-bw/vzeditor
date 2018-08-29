@@ -37,7 +37,7 @@ void vzvoice::SetValue(unsigned int nOffset, wxByte nMask, wxByte nValue)
     for(nShift = 0; nShift < 8; ++nShift)
         if(nMask & (1 << nShift))
             break;
-    PutByteToSysex(nOffset, (nValue & nMask) | (GetByteFromSysex(nOffset) & ~nMask));
+    PutByteToSysex(nOffset, ((nValue << nShift) & nMask) | (GetByteFromSysex(nOffset) & ~nMask));
 }
 
 bool vzvoice::IsModified()
@@ -364,7 +364,10 @@ bool vzvoice::UpdateDCOEnvelope()
 
 wxByte vzvoice::GetLevel()
 {
-    return GetValue(174, 0x7F);
+    int nLevel = GetValue(174, 0x7F);
+    if(nLevel > 99)
+        return 99;
+    return nLevel;
 }
 
 bool vzvoice::SetLevel(wxByte nLevel)
@@ -568,6 +571,9 @@ bool vzvoice::SetOctave(int nOctave)
         SetValue(314, 0x80, 1);
         nOctave = -nOctave;
     }
+    else
+        SetValue(314, 0x80, 0);
+
     SetValue(314, 0x60, nOctave);
     return true;
 }
