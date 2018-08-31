@@ -2,22 +2,27 @@
 <wxsmith>
 	<object class="wxPanel" name="VZLine">
 		<id_arg>0</id_arg>
-		<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
-			<growablecols>0</growablecols>
-			<growablerows>0</growablerows>
+		<object class="wxBoxSizer" variable="BoxSizer1" member="no">
+			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
-				<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
-					<label>LINE WIDGET</label>
-					<font>
-						<size>18</size>
-						<style>normal</style>
-						<weight>bold</weight>
-						<underlined>0</underlined>
-						<family>swiss</family>
-					</font>
-					<style>wxALIGN_CENTRE|wxSIMPLE_BORDER</style>
+				<object class="Custom" name="ID_VZMODULE1" subclass="VZModule" variable="m_pVzModule1" member="yes">
+					<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE));</creating_code>
+					<include_file>vzmodule.h</include_file>
+					<local_include>1</local_include>
+					<style></style>
 				</object>
-				<flag>wxALL|wxEXPAND</flag>
+				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<border>5</border>
+				<option>1</option>
+			</object>
+			<object class="sizeritem">
+				<object class="Custom" name="ID_VZMODULE2" subclass="VZModule" variable="m_pVzModule2" member="yes">
+					<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID),$(POS),$(SIZE));</creating_code>
+					<include_file>vzmodule.h</include_file>
+					<local_include>1</local_include>
+					<style></style>
+				</object>
+				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 				<border>5</border>
 				<option>1</option>
 			</object>

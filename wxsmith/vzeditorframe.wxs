@@ -119,7 +119,7 @@
 												<orient>wxVERTICAL</orient>
 												<object class="sizeritem">
 													<object class="Custom" name="ID_LINE1" subclass="VZLine" variable="m_pLine1" member="yes">
-														<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
+														<creating_code>$(THIS) = new $(CLASS)($(PARENT), 0);</creating_code>
 														<include_file>vzline.h</include_file>
 														<local_include>1</local_include>
 														<style></style>
@@ -130,7 +130,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="Custom" name="ID_LINE2" subclass="VZLine" variable="m_pLine2" member="yes">
-														<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
+														<creating_code>$(THIS) = new $(CLASS)($(PARENT), 1);</creating_code>
 														<include_file>vzline.h</include_file>
 														<local_include>1</local_include>
 														<style></style>
@@ -141,7 +141,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="Custom" name="ID_LINE3" subclass="VZLine" variable="m_pLine3" member="yes">
-														<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
+														<creating_code>$(THIS) = new $(CLASS)($(PARENT), 2);</creating_code>
 														<include_file>vzline.h</include_file>
 														<local_include>1</local_include>
 														<style></style>
@@ -152,7 +152,7 @@
 												</object>
 												<object class="sizeritem">
 													<object class="Custom" name="ID_LINE4" subclass="VZLine" variable="m_pLine4" member="yes">
-														<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
+														<creating_code>$(THIS) = new $(CLASS)($(PARENT), 3);</creating_code>
 														<include_file>vzline.h</include_file>
 														<local_include>1</local_include>
 														<style></style>

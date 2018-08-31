@@ -188,13 +188,13 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     SplitterWindow1->SetSashGravity(1);
     m_pScrollWinVoiceEditor = new wxScrolledWindow(SplitterWindow1, ID_SCROLLEDWINDOW1, wxDefaultPosition, wxDefaultSize, wxVSCROLL|wxHSCROLL, _T("ID_SCROLLEDWINDOW1"));
     BoxSizer3 = new wxBoxSizer(wxVERTICAL);
-    m_pLine1 = new VZLine(m_pScrollWinVoiceEditor);
+    m_pLine1 = new VZLine(m_pScrollWinVoiceEditor, 0);
     BoxSizer3->Add(m_pLine1, 1, wxALL|wxEXPAND, 5);
-    m_pLine2 = new VZLine(m_pScrollWinVoiceEditor);
+    m_pLine2 = new VZLine(m_pScrollWinVoiceEditor, 1);
     BoxSizer3->Add(m_pLine2, 1, wxALL|wxEXPAND, 5);
-    m_pLine3 = new VZLine(m_pScrollWinVoiceEditor);
+    m_pLine3 = new VZLine(m_pScrollWinVoiceEditor, 2);
     BoxSizer3->Add(m_pLine3, 1, wxALL|wxEXPAND, 5);
-    m_pLine4 = new VZLine(m_pScrollWinVoiceEditor);
+    m_pLine4 = new VZLine(m_pScrollWinVoiceEditor, 3);
     BoxSizer3->Add(m_pLine4, 1, wxALL|wxEXPAND, 5);
     m_pScrollWinVoiceEditor->SetSizer(BoxSizer3);
     BoxSizer3->Fit(m_pScrollWinVoiceEditor);
@@ -450,6 +450,11 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     }
     m_pvzLib = new VZLibrary();
     m_pLstLib->SetData(m_pvzLib);
+
+    m_pLine1->SetVoice(&m_vzVoice);
+    m_pLine2->SetVoice(&m_vzVoice);
+    m_pLine3->SetVoice(&m_vzVoice);
+    m_pLine4->SetVoice(&m_vzVoice);
 }
 
 VZ_EditorFrame::~VZ_EditorFrame()
@@ -628,6 +633,10 @@ void VZ_EditorFrame::UpdateGui()
     m_pSliderVibratoDepth->SetValue(m_vzVoice.GetVibratoDepth());
     m_pSliderVibratoRate->SetValue(m_vzVoice.GetVibratoRate());
     m_pSliderVibratoDelay->SetValue(m_vzVoice.GetVibratoDelay());
+    m_pLine1->UpdateGui();
+    m_pLine2->UpdateGui();
+    m_pLine3->UpdateGui();
+    m_pLine4->UpdateGui();
 }
 
 void VZ_EditorFrame::OnBtnSendClick(wxCommandEvent& event)
