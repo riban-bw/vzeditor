@@ -40,7 +40,7 @@ class VZModule: public wxPanel
 		wxCheckBox* m_pChkExtPhase;
 		wxCheckBox* m_pChkFixedFreq;
 		wxCheckBox* m_pChkX16;
-		wxChoice* m_pCmbCurve;
+		wxChoice* m_pCmbKeyVelCurve;
 		wxChoice* m_pCmbWaveform;
 		wxSlider* m_pSliderAmpSens;
 		wxSlider* m_pSliderDetuneFine;
@@ -77,7 +77,7 @@ class VZModule: public wxPanel
 		static const long ID_CHKENVRANGE;
 		static const long ID_BMPKEYBOARD;
 		static const long ID_STATICTEXT7;
-		static const long ID_CMBCURVE;
+		static const long ID_CMBKEYVELCURVE;
 		static const long ID_SLIDERVELSENSITIVITY;
 		static const long ID_SLIDERAMPSENS;
 		//*)
@@ -88,6 +88,18 @@ class VZModule: public wxPanel
 	    vzvoice* m_pVoice;
 
 		//(*Handlers(VZModule)
+		void OnEnable(wxCommandEvent& event);
+		void OnExtPhase(wxCommandEvent& event);
+		void OnWaveform(wxCommandEvent& event);
+		void OnDetuneCourse(wxScrollEvent& event);
+		void OnDetuneFine(wxScrollEvent& event);
+		void OnFixedFreq(wxCommandEvent& event);
+		void OnX16(wxCommandEvent& event);
+		void OnEnvDepth(wxScrollEvent& event);
+		void OnEnvRange(wxCommandEvent& event);
+		void OnKeyVelCurve(wxCommandEvent& event);
+		void OnKeyVelSens(wxScrollEvent& event);
+		void OnSensitivity(wxScrollEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()

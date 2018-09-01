@@ -26,7 +26,7 @@ const long VZModule::ID_SLIDERENVDEPTH = wxNewId();
 const long VZModule::ID_CHKENVRANGE = wxNewId();
 const long VZModule::ID_BMPKEYBOARD = wxNewId();
 const long VZModule::ID_STATICTEXT7 = wxNewId();
-const long VZModule::ID_CMBCURVE = wxNewId();
+const long VZModule::ID_CMBKEYVELCURVE = wxNewId();
 const long VZModule::ID_SLIDERVELSENSITIVITY = wxNewId();
 const long VZModule::ID_SLIDERAMPSENS = wxNewId();
 //*)
@@ -73,7 +73,6 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	BoxSizer2->Add(m_pChkEnable, 1, wxALL|wxEXPAND, 5);
 	m_pChkExtPhase = new wxCheckBox(this, ID_CHKEXTPHASE, _("Ext Phase"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHKEXTPHASE"));
 	m_pChkExtPhase->SetValue(false);
-	m_pChkExtPhase->Disable();
 	m_pChkExtPhase->SetToolTip(_("External phase"));
 	BoxSizer2->Add(m_pChkExtPhase, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	FlexGridSizer6->Add(BoxSizer2, 1, wxALL|wxEXPAND, 5);
@@ -150,17 +149,17 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	StaticBoxSizer5 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Key Velocity"));
 	FlexGridSizer10 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer10->AddGrowableRow(1);
-	m_pCmbCurve = new wxChoice(this, ID_CMBCURVE, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBCURVE"));
-	m_pCmbCurve->SetSelection( m_pCmbCurve->Append(_("Curve 1")) );
-	m_pCmbCurve->Append(_("Curve 2"));
-	m_pCmbCurve->Append(_("Curve 3"));
-	m_pCmbCurve->Append(_("Curve 4"));
-	m_pCmbCurve->Append(_("Curve 5"));
-	m_pCmbCurve->Append(_("Curve 6"));
-	m_pCmbCurve->Append(_("Curve 7"));
-	m_pCmbCurve->Append(_("Curve 8"));
-	m_pCmbCurve->SetToolTip(_("DCA key velocity curve"));
-	FlexGridSizer10->Add(m_pCmbCurve, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	m_pCmbKeyVelCurve = new wxChoice(this, ID_CMBKEYVELCURVE, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBKEYVELCURVE"));
+	m_pCmbKeyVelCurve->SetSelection( m_pCmbKeyVelCurve->Append(_("Curve 1")) );
+	m_pCmbKeyVelCurve->Append(_("Curve 2"));
+	m_pCmbKeyVelCurve->Append(_("Curve 3"));
+	m_pCmbKeyVelCurve->Append(_("Curve 4"));
+	m_pCmbKeyVelCurve->Append(_("Curve 5"));
+	m_pCmbKeyVelCurve->Append(_("Curve 6"));
+	m_pCmbKeyVelCurve->Append(_("Curve 7"));
+	m_pCmbKeyVelCurve->Append(_("Curve 8"));
+	m_pCmbKeyVelCurve->SetToolTip(_("DCA key velocity curve"));
+	FlexGridSizer10->Add(m_pCmbKeyVelCurve, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	m_pSliderVelSensitivity = new wxSlider(this, ID_SLIDERVELSENSITIVITY, 0, 0, 31, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERVELSENSITIVITY"));
 	m_pSliderVelSensitivity->SetToolTip(_("DCA key velocity sensitivity"));
 	FlexGridSizer10->Add(m_pSliderVelSensitivity, 1, wxALL|wxEXPAND, 5);
@@ -179,6 +178,18 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	SetSizer(FlexGridSizer6);
 	FlexGridSizer6->Fit(this);
 	FlexGridSizer6->SetSizeHints(this);
+
+	Connect(ID_CHKENABLE,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&VZModule::OnEnable);
+	Connect(ID_CHKEXTPHASE,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&VZModule::OnExtPhase);
+	Connect(ID_CMBWAVEFORM,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZModule::OnWaveform);
+	Connect(ID_SLIDERDETUNEOCTAVE,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZModule::OnDetuneCourse);
+	Connect(ID_SLIDERDETUNEFINE,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZModule::OnDetuneFine);
+	Connect(ID_CHKFIXEDFREQ,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&VZModule::OnFixedFreq);
+	Connect(ID_CHKX16,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&VZModule::OnX16);
+	Connect(ID_SLIDERENVDEPTH,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZModule::OnEnvDepth);
+	Connect(ID_CMBKEYVELCURVE,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZModule::OnKeyVelCurve);
+	Connect(ID_SLIDERVELSENSITIVITY,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZModule::OnKeyVelSens);
+	Connect(ID_SLIDERAMPSENS,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZModule::OnSensitivity);
 	//*)
 }
 
@@ -202,8 +213,11 @@ void VZModule::SetModule(wxByte nModule)
 void VZModule::UpdateGui()
 {
     m_pLblTitle->SetLabel(wxString::Format(wxT("M%d"), m_nModule + 1));
-    if(m_nModule > 2 && m_nModule %2)
-        m_pChkExtPhase->Enable();
+    if(m_nModule < 3 || !(m_nModule %2))
+    {
+        m_pChkExtPhase->Disable();
+        m_pChkExtPhase->Hide();
+    }
     if(!m_pVoice)
         return;
     m_pChkEnable->SetValue(m_pVoice->IsModuleEnabled(m_nModule));
@@ -213,4 +227,91 @@ void VZModule::UpdateGui()
     m_pSliderDetuneFine->SetValue(m_pVoice->GetDetuneFine(m_nModule));
     m_pChkFixedFreq->SetValue(m_pVoice->IsPitchFixRange(m_nModule));
     m_pChkX16->SetValue(m_pVoice->IsPitchFixRange(m_nModule));
+    m_pSliderVelSensitivity->SetValue(m_pVoice->GetModuleVelSens(m_nModule));
+    m_pCmbKeyVelCurve->SetSelection(m_pVoice->GetModuleVelCurve(m_nModule));
+//!@todo Sensitivity missing from vzvoice    m_pSliderAmpSens->SetValue(m_pVoice->GetSensitivity(m_nModule));
+}
+
+void VZModule::OnEnable(wxCommandEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    m_pVoice->EnableModule(m_nModule, event.IsChecked());
+}
+
+void VZModule::OnExtPhase(wxCommandEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    m_pVoice->EnableExtPhase(m_nModule, event.IsChecked());
+}
+
+void VZModule::OnWaveform(wxCommandEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    m_pVoice->SetWaveform(m_nModule, (VZ_WAVEFORM)event.GetInt());
+}
+
+void VZModule::OnDetuneCourse(wxScrollEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    m_pVoice->SetDetuneCourse(m_nModule, event.GetInt());
+}
+
+void VZModule::OnDetuneFine(wxScrollEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    m_pVoice->SetDetuneFine(m_nModule, event.GetInt());
+}
+
+void VZModule::OnFixedFreq(wxCommandEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    m_pVoice->EnablePitchFix(m_nModule, event.IsChecked());
+}
+
+void VZModule::OnX16(wxCommandEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    m_pVoice->EnablePitchFixRange(m_nModule, event.IsChecked());
+}
+
+void VZModule::OnEnvDepth(wxScrollEvent& event)
+{
+    if(!m_pVoice)
+        return;
+//!@todo EnvDepth is missing from vzvoice    m_pVoice->SetXXX(m_nModule, event.GetInt());
+}
+
+void VZModule::OnEnvRange(wxCommandEvent& event)
+{
+    if(!m_pVoice)
+        return;
+//!@todo EnvRange is missing from vzvoice    m_pVoice->EnableXXXm_nModule, event.IsChecked());
+}
+
+void VZModule::OnKeyVelCurve(wxCommandEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    m_pVoice->SetModuleVelCurve(m_nModule, event.GetInt());
+}
+
+void VZModule::OnKeyVelSens(wxScrollEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    m_pVoice->SetModuleVelSens(m_nModule, event.GetInt());
+}
+
+void VZModule::OnSensitivity(wxScrollEvent& event)
+{
+    if(!m_pVoice)
+        return;
+//!@todo Sensitivity missing from vzvoice    m_pVoice->SetXXX(m_nModule, event.GetInt());
 }

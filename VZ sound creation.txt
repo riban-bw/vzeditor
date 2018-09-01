@@ -56,10 +56,11 @@ Each module has a DCA.
 Each DCA has an 8 step envelope.
 	A sustain point can be attached to one envelope step.
 	An end point can be attached to one envelope step. This clears remaining steps.
-The depth of the envelope may be adjusted for each DCA.
+Depth of envelope can be set [175..182(0..6)] *User manual says gloabal, SYSEX manual shows per module
 There is a 6 step key follow curve to control the amplitude of each DCA.
 Amplitude of each DCA may be affected by key velocity.  Sensitivity and curve of key velocity may be set.
-Sensitivity to envelope bias and tremolo can be adjusted for each DCA. These bias may be from after-touch, definable wheel 1/2 or foot VR.
+Sensitivity to envelope bias and tremolo can be adjusted for each DCA. These bias may be from after-touch, definable wheel 1/2 or foot VR. [165..172(0..3)]
+Each module may be disabled [175..182(7)]
 
 Global
 ======
