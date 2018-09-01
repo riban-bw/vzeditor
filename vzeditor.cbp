@@ -103,7 +103,6 @@
 				<resources>
 					<wxFrame wxs="wxsmith/vzeditorframe.wxs" src="src/vzeditormain.cpp" hdr="include/vzeditormain.h" fwddecl="0" i18n="1" name="VZ_EditorFrame" language="CPP" />
 					<wxPanel wxs="wxsmith/vzline.wxs" src="src/vzline.cpp" hdr="include/vzline.h" fwddecl="0" i18n="1" name="VZLine" language="CPP" />
-					<wxPanel wxs="wxsmith/vzvoicewidget.wxs" src="src/vzvoicewidget.cpp" hdr="include/vzvoicewidget.h" fwddecl="0" i18n="1" name="VZVoiceWidget" language="CPP" />
 					<wxPanel wxs="wxsmith/vzmodule.wxs" src="src/vzmodule.cpp" hdr="include/vzmodule.h" fwddecl="0" i18n="1" name="VZModule" language="CPP" />
 				</resources>
 			</wxsmith>
