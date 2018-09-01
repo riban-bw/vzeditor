@@ -66,7 +66,7 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxChoice" name="ID_CHOICE3" variable="m_pCmbWaveform" member="yes">
+								<object class="wxChoice" name="ID_CMBWAVEFORM" variable="m_pCmbWaveform" member="yes">
 									<content>
 										<item>Sine</item>
 										<item>Saw 1</item>
@@ -93,11 +93,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxSlider" name="ID_SLIDER8" variable="m_pSliderDetuneOctave" member="yes">
+								<object class="wxSlider" name="ID_SLIDERDETUNEOCTAVE" variable="m_pSliderDetuneOctave" member="yes">
 									<min>-128</min>
 									<max>127</max>
 									<tooltip>Detune DCO in semitone steps</tooltip>
-									<handler function="Onm_pSliderDetuneOctaveCmdScroll" entry="EVT_COMMAND_SCROLL" />
 								</object>
 								<flag>wxALL|wxEXPAND</flag>
 								<border>5</border>
@@ -112,11 +111,10 @@
 								<option>1</option>
 							</object>
 							<object class="sizeritem">
-								<object class="wxSlider" name="ID_SLIDER1" variable="m_pSliderDetuneFine" member="yes">
+								<object class="wxSlider" name="ID_SLIDERDETUNEFINE" variable="m_pSliderDetuneFine" member="yes">
 									<value>32</value>
 									<max>63</max>
 									<tooltip>Detune DCO in 1.6 cent steps</tooltip>
-									<handler function="Onm_pSliderDetuneFineCmdScroll" entry="EVT_COMMAND_SCROLL" />
 								</object>
 								<flag>wxALL|wxEXPAND</flag>
 								<border>5</border>
@@ -125,7 +123,7 @@
 							<object class="sizeritem">
 								<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 									<object class="sizeritem">
-										<object class="wxCheckBox" name="ID_CHECKBOX2" variable="m_pChkFixedFreq" member="yes">
+										<object class="wxCheckBox" name="ID_CHKFIXEDFREQ" variable="m_pChkFixedFreq" member="yes">
 											<label>Fixed Freq</label>
 											<tooltip>DCO Fixed frequency</tooltip>
 										</object>
@@ -134,7 +132,7 @@
 										<option>1</option>
 									</object>
 									<object class="sizeritem">
-										<object class="wxCheckBox" name="ID_CHECKBOX3" variable="m_pChkX16" member="yes">
+										<object class="wxCheckBox" name="ID_CHKX16" variable="m_pChkX16" member="yes">
 											<label>x16</label>
 											<tooltip>DCO frequency detune multiplier</tooltip>
 										</object>
@@ -194,19 +192,18 @@
 														<option>1</option>
 													</object>
 													<object class="sizeritem">
-														<object class="wxSlider" name="ID_SLIDER11" variable="m_pSliderEnvDepth" member="yes">
+														<object class="wxSlider" name="ID_SLIDERENVDEPTH" variable="m_pSliderEnvDepth" member="yes">
 															<value>99</value>
 															<max>99</max>
 															<tooltip>DCA Amplitued envelope depth</tooltip>
 															<style>wxSL_VERTICAL|wxSL_INVERSE</style>
-															<handler function="Onm_pSliderEnvDepthCmdScroll" entry="EVT_COMMAND_SCROLL" />
 														</object>
 														<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE</flag>
 														<border>5</border>
 														<option>1</option>
 													</object>
 													<object class="sizeritem">
-														<object class="wxCheckBox" name="ID_CHECKBOX4" variable="m_pEnvRange" member="yes">
+														<object class="wxCheckBox" name="ID_CHKENVRANGE" variable="m_pChkEnvRange" member="yes">
 															<label>Range</label>
 														</object>
 														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -235,8 +232,8 @@
 											<growablecols>0</growablecols>
 											<growablerows>1</growablerows>
 											<object class="sizeritem">
-												<object class="wxStaticBitmap" name="ID_STATICBITMAP1" variable="m_pBmpKeyboard" member="yes">
-													<bitmap>D:\PJ\miditest\images\keyboard.png</bitmap>
+												<object class="wxStaticBitmap" name="ID_BMPKEYBOARD" variable="m_pBmpKeyboard" member="yes">
+													<bitmap>D:\PJ\vzeditor\media\keyboard.png</bitmap>
 												</object>
 												<flag>wxALL|wxEXPAND</flag>
 												<border>5</border>
@@ -268,7 +265,7 @@
 											<cols>1</cols>
 											<growablerows>1</growablerows>
 											<object class="sizeritem">
-												<object class="wxChoice" name="ID_CHOICE4" variable="m_pCmbCurve" member="yes">
+												<object class="wxChoice" name="ID_CMBCURVE" variable="m_pCmbCurve" member="yes">
 													<content>
 														<item>Curve 1</item>
 														<item>Curve 2</item>
@@ -287,11 +284,10 @@
 												<option>1</option>
 											</object>
 											<object class="sizeritem">
-												<object class="wxSlider" name="ID_SLIDER9" variable="m_pSliderVelSensitivity" member="yes">
+												<object class="wxSlider" name="ID_SLIDERVELSENSITIVITY" variable="m_pSliderVelSensitivity" member="yes">
 													<max>31</max>
 													<tooltip>DCA key velocity sensitivity</tooltip>
 													<style>wxSL_VERTICAL|wxSL_INVERSE</style>
-													<handler function="Onm_pSliderVelSensitivityCmdScroll" entry="EVT_COMMAND_SCROLL" />
 												</object>
 												<flag>wxALL|wxEXPAND</flag>
 												<border>5</border>
@@ -313,12 +309,11 @@
 											<cols>1</cols>
 											<growablerows>0</growablerows>
 											<object class="sizeritem">
-												<object class="wxSlider" name="ID_SLIDER10" variable="m_pSliderAmpSens" member="yes">
+												<object class="wxSlider" name="ID_SLIDERAMPSENS" variable="m_pSliderAmpSens" member="yes">
 													<value>7</value>
 													<max>7</max>
 													<tooltip>DCA Sensititivy to external modulation</tooltip>
 													<style>wxSL_VERTICAL|wxSL_INVERSE</style>
-													<handler function="Onm_pSliderAmpSensCmdScroll" entry="EVT_COMMAND_SCROLL" />
 												</object>
 												<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE</flag>
 												<border>5</border>

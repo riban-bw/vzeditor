@@ -48,11 +48,11 @@ wxString wxbuildinfo(wxbuildinfoformat format)
 
 //(*IdInit(VZ_EditorFrame)
 const long VZ_EditorFrame::ID_STATICTEXT2 = wxNewId();
-const long VZ_EditorFrame::ID_CHOICE1 = wxNewId();
+const long VZ_EditorFrame::ID_CMBINPORT = wxNewId();
 const long VZ_EditorFrame::ID_STATICTEXT1 = wxNewId();
-const long VZ_EditorFrame::ID_CHOICE2 = wxNewId();
+const long VZ_EditorFrame::ID_CMBOUTPORT = wxNewId();
 const long VZ_EditorFrame::ID_CHKAUTOUPDATE = wxNewId();
-const long VZ_EditorFrame::ID_BUTTON1 = wxNewId();
+const long VZ_EditorFrame::ID_BTNSEND = wxNewId();
 const long VZ_EditorFrame::ID_BTNGETVOICE = wxNewId();
 const long VZ_EditorFrame::ID_LSTLIB = wxNewId();
 const long VZ_EditorFrame::ID_PNLLIBRARY = wxNewId();
@@ -154,16 +154,16 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     FlexGridSizer1 = new wxFlexGridSizer(0, 0, 0, 0);
     StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("MIDI Input Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
     FlexGridSizer1->Add(StaticText2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pCmbInPort = new wxChoice(this, ID_CHOICE1, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
+    m_pCmbInPort = new wxChoice(this, ID_CMBINPORT, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CMBINPORT"));
     FlexGridSizer1->Add(m_pCmbInPort, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("MIDI Output Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
     FlexGridSizer1->Add(StaticText1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pCmbOutPort = new wxChoice(this, ID_CHOICE2, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE2"));
+    m_pCmbOutPort = new wxChoice(this, ID_CMBOUTPORT, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CMBOUTPORT"));
     FlexGridSizer1->Add(m_pCmbOutPort, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pChkAutoUpdate = new wxCheckBox(this, ID_CHKAUTOUPDATE, _("Auto Update"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHKAUTOUPDATE"));
     m_pChkAutoUpdate->SetValue(false);
     FlexGridSizer1->Add(m_pChkAutoUpdate, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pBtnSend = new wxButton(this, ID_BUTTON1, _("Send Voice"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTON1"));
+    m_pBtnSend = new wxButton(this, ID_BTNSEND, _("Send Voice"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNSEND"));
     FlexGridSizer1->Add(m_pBtnSend, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnGetVoice = new wxButton(this, ID_BTNGETVOICE, _("Get Voice"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNGETVOICE"));
     m_pBtnGetVoice->Disable();
@@ -369,9 +369,9 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pSizerMain->SetSizeHints(this);
     Center();
 
-    Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnInPortSelect);
-    Connect(ID_CHOICE2,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnOutPortSelect);
-    Connect(ID_BUTTON1,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnSendClick);
+    Connect(ID_CMBINPORT,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnInPortSelect);
+    Connect(ID_CMBOUTPORT,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnOutPortSelect);
+    Connect(ID_BTNSEND,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnSendClick);
     Connect(ID_BTNGETVOICE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnGetVoice);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZ_EditorFrame::OnTxtVoiceNameText);
     Connect(ID_SLIDERLEVEL,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZ_EditorFrame::OnLevelChanged);

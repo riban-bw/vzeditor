@@ -73,7 +73,6 @@
 		<Unit filename="include/vzeditormain.h" />
 		<Unit filename="include/vzlibrary.h" />
 		<Unit filename="include/vzline.h" />
-		<Unit filename="include/vzmodule.cpp" />
 		<Unit filename="include/vzmodule.h" />
 		<Unit filename="include/vzvoice.h" />
 		<Unit filename="include/wxMidi.h" />
@@ -87,12 +86,13 @@
 		<Unit filename="src/vzeditormain.cpp" />
 		<Unit filename="src/vzlibrary.cpp" />
 		<Unit filename="src/vzline.cpp" />
+		<Unit filename="src/vzmodule.cpp" />
 		<Unit filename="src/vzvoice.cpp" />
 		<Unit filename="src/wxMidi.cpp" />
 		<Unit filename="src/wxMidiDatabase.cpp" />
-		<Unit filename="wxsmith/VZModule.wxs" />
 		<Unit filename="wxsmith/vzeditorframe.wxs" />
 		<Unit filename="wxsmith/vzline.wxs" />
+		<Unit filename="wxsmith/vzmodule.wxs" />
 		<Extensions>
 			<code_completion />
 			<envvars />
@@ -104,7 +104,7 @@
 					<wxFrame wxs="wxsmith/vzeditorframe.wxs" src="src/vzeditormain.cpp" hdr="include/vzeditormain.h" fwddecl="0" i18n="1" name="VZ_EditorFrame" language="CPP" />
 					<wxPanel wxs="wxsmith/vzline.wxs" src="src/vzline.cpp" hdr="include/vzline.h" fwddecl="0" i18n="1" name="VZLine" language="CPP" />
 					<wxPanel wxs="wxsmith/vzvoicewidget.wxs" src="src/vzvoicewidget.cpp" hdr="include/vzvoicewidget.h" fwddecl="0" i18n="1" name="VZVoiceWidget" language="CPP" />
-					<wxPanel wxs="wxsmith/VZModule.wxs" src="include/vzmodule.cpp" hdr="include/vzmodule.h" fwddecl="0" i18n="1" name="VZModule" language="CPP" />
+					<wxPanel wxs="wxsmith/vzmodule.wxs" src="include/vzmodule.cpp" hdr="include/vzmodule.h" fwddecl="0" i18n="1" name="VZModule" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

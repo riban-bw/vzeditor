@@ -36,10 +36,10 @@ class VZModule: public wxPanel
 
 		//(*Declarations(VZModule)
 		wxCheckBox* m_pChkEnable;
+		wxCheckBox* m_pChkEnvRange;
 		wxCheckBox* m_pChkExtPhase;
 		wxCheckBox* m_pChkFixedFreq;
 		wxCheckBox* m_pChkX16;
-		wxCheckBox* m_pEnvRange;
 		wxChoice* m_pCmbCurve;
 		wxChoice* m_pCmbWaveform;
 		wxSlider* m_pSliderAmpSens;
@@ -64,22 +64,22 @@ class VZModule: public wxPanel
 		static const long ID_CHKENABLE;
 		static const long ID_CHKEXTPHASE;
 		static const long ID_STATICTEXT4;
-		static const long ID_CHOICE3;
+		static const long ID_CMBWAVEFORM;
 		static const long ID_STATICTEXT5;
-		static const long ID_SLIDER8;
+		static const long ID_SLIDERDETUNEOCTAVE;
 		static const long ID_STATICTEXT6;
-		static const long ID_SLIDER1;
-		static const long ID_CHECKBOX2;
-		static const long ID_CHECKBOX3;
+		static const long ID_SLIDERDETUNEFINE;
+		static const long ID_CHKFIXEDFREQ;
+		static const long ID_CHKX16;
 		static const long ID_STATICTEXT8;
 		static const long ID_STATICTEXT15;
-		static const long ID_SLIDER11;
-		static const long ID_CHECKBOX4;
-		static const long ID_STATICBITMAP1;
+		static const long ID_SLIDERENVDEPTH;
+		static const long ID_CHKENVRANGE;
+		static const long ID_BMPKEYBOARD;
 		static const long ID_STATICTEXT7;
-		static const long ID_CHOICE4;
-		static const long ID_SLIDER9;
-		static const long ID_SLIDER10;
+		static const long ID_CMBCURVE;
+		static const long ID_SLIDERVELSENSITIVITY;
+		static const long ID_SLIDERAMPSENS;
 		//*)
 
 	private:

@@ -76,11 +76,11 @@ class VZ_EditorFrame: public wxFrame
 
         //(*Identifiers(VZ_EditorFrame)
         static const long ID_STATICTEXT2;
-        static const long ID_CHOICE1;
+        static const long ID_CMBINPORT;
         static const long ID_STATICTEXT1;
-        static const long ID_CHOICE2;
+        static const long ID_CMBOUTPORT;
         static const long ID_CHKAUTOUPDATE;
-        static const long ID_BUTTON1;
+        static const long ID_BTNSEND;
         static const long ID_BTNGETVOICE;
         static const long ID_LSTLIB;
         static const long ID_PNLLIBRARY;
