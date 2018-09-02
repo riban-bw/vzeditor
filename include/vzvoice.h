@@ -250,6 +250,32 @@ class vzvoice
         */
         bool SetLevel(wxByte nLevel);
 
+        /** @brief  Get module sensitivity to continuous controllers
+        *   @param  nModule Index of module (zero base) [0..7]
+        *   @retval wxByte Sensitivity
+        */
+        wxByte GetCCSensitivity(wxByte nModule);
+
+        /** @brief  Set module sensitivity to continuous controllers
+        *   @param  nModule Index of module (zero base) [0..7]
+        *   @param  nSensitivity [0..7]
+        *   @retval bool True on success
+        */
+        bool SetCCSensitivity(wxByte nModule, wxByte nSensitivity);
+
+        /** @brief  Get DCA envelope depth
+        *   @param  nModule Index of module (zero base) [0..7]
+        *   @retval wxByte DCA envelope depth
+        */
+        wxByte GetDCAEnvDepth(wxByte nModule);
+
+        /** @brief  Set DCA envelope depth
+        *   @param  nModule Index of module (zero base) [0..7]
+        *   @param  nDepth [0..7F]
+        *   @retval bool True on success
+        */
+        bool SetDCAEnvDepth(wxByte nModule, wxByte nDepth);
+
         /** @brief  Is module enabled
         *   @param  nModule Index of module (zero base) [0..7]
         *   @retval bool True if module enabled (On)

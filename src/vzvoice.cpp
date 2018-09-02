@@ -380,6 +380,38 @@ bool vzvoice::SetLevel(wxByte nLevel)
     return true;
 }
 
+wxByte vzvoice::GetCCSensitivity(wxByte nModule)
+{
+    if(nModule > 7)
+        return 0;
+    return GetValue(165 + nModule, 0x07);
+}
+
+bool vzvoice::SetCCSensitivity(wxByte nModule, wxByte nSensitivity)
+{
+    if(nModule > 7 || nSensitivity > 0x07)
+        return false;
+    SetValue(165 + nModule, 0x07, nSensitivity);
+    return true;
+}
+
+wxByte vzvoice::GetDCAEnvDepth(wxByte nModule)
+{
+    if(nModule > 7)
+        return 0;
+    return GetValue(175 + nModule, 0x7F);
+}
+
+bool vzvoice::SetDCAEnvDepth(wxByte nModule, wxByte nDepth)
+{
+    if(nModule > 7 || nDepth > 99)
+        return false;
+    if(nDepth == 99)
+        nDepth = 0x7F;
+    SetValue(175 + nModule, 0x7F, nDepth);
+    return true;
+}
+
 bool vzvoice::IsModuleEnabled(wxByte nModule)
 {
     if(nModule > 7)

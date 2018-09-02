@@ -36,7 +36,6 @@ class VZModule: public wxPanel
 
 		//(*Declarations(VZModule)
 		wxCheckBox* m_pChkEnable;
-		wxCheckBox* m_pChkEnvRange;
 		wxCheckBox* m_pChkExtPhase;
 		wxCheckBox* m_pChkFixedFreq;
 		wxCheckBox* m_pChkX16;
@@ -48,19 +47,18 @@ class VZModule: public wxPanel
 		wxSlider* m_pSliderEnvDepth;
 		wxSlider* m_pSliderVelSensitivity;
 		wxStaticBitmap* m_pBmpKeyboard;
+		wxStaticBoxSizer* m_pSizerModule;
 		wxStaticText* StaticText3;
 		wxStaticText* StaticText4;
 		wxStaticText* StaticText5;
 		wxStaticText* StaticText6;
 		wxStaticText* m_pLblDepth;
-		wxStaticText* m_pLblTitle;
 		wxStaticText* m_pLblWaveform;
 		//*)
 
 	protected:
 
 		//(*Identifiers(VZModule)
-		static const long ID_STATICTEXT3;
 		static const long ID_CHKENABLE;
 		static const long ID_CHKEXTPHASE;
 		static const long ID_STATICTEXT4;
@@ -74,7 +72,6 @@ class VZModule: public wxPanel
 		static const long ID_STATICTEXT8;
 		static const long ID_STATICTEXT15;
 		static const long ID_SLIDERENVDEPTH;
-		static const long ID_CHKENVRANGE;
 		static const long ID_BMPKEYBOARD;
 		static const long ID_STATICTEXT7;
 		static const long ID_CMBKEYVELCURVE;
@@ -96,7 +93,6 @@ class VZModule: public wxPanel
 		void OnFixedFreq(wxCommandEvent& event);
 		void OnX16(wxCommandEvent& event);
 		void OnEnvDepth(wxScrollEvent& event);
-		void OnEnvRange(wxCommandEvent& event);
 		void OnKeyVelCurve(wxCommandEvent& event);
 		void OnKeyVelSens(wxScrollEvent& event);
 		void OnSensitivity(wxScrollEvent& event);

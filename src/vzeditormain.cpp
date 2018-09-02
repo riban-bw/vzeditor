@@ -393,7 +393,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnAbout);
     //*)
-    m_pScrollWinVoiceEditor->SetScrollRate(0,10);
+    m_pScrollWinVoiceEditor->SetScrollRate(10,10);
     m_pScrollwindowGlobalParameters->SetScrollRate(0, 10);
     Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&VZ_EditorFrame::OnLibSort);
     Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&VZ_EditorFrame::OnLibActivate);

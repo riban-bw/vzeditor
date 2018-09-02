@@ -3,6 +3,7 @@
 
 //(*Headers(VZLine)
 #include "vzmodule.h"
+#include <wx/choice.h>
 #include <wx/panel.h>
 #include <wx/sizer.h>
 //*)
@@ -34,11 +35,13 @@ class VZLine: public wxPanel
 		//(*Declarations(VZLine)
 		VZModule* m_pVzModule1;
 		VZModule* m_pVzModule2;
+		wxChoice* m_pCmbLine;
 		//*)
 
 	protected:
 
 		//(*Identifiers(VZLine)
+		static const long ID_CHOICE1;
 		static const long ID_VZMODULE1;
 		static const long ID_VZMODULE2;
 		//*)
@@ -49,6 +52,7 @@ class VZLine: public wxPanel
 	    vzvoice* m_pvzVoice;
 
 		//(*Handlers(VZLine)
+		void OnLine(wxCommandEvent& event);
 		//*)
 
 		DECLARE_EVENT_TABLE()

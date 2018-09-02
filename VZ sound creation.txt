@@ -26,7 +26,7 @@ M7	DCO7--DCA7--|
 M8	DCO8--DCA8--|
 	
 	
-Each line may be formed by combining the pair of modules thus:
+Each line may be formed by combining the pair of modules thus [1..4(6..7)]:
 	Simple Sum: My + Mx
 	Ring Modulation: My + Mx x My
 	Phase Modulation: My(Mx)
@@ -36,14 +36,13 @@ Each line may be formed by combining the pair of modules thus:
 	The first module may phase modulate the second module.
 	The second module may ring modulate the first module. The output of the ring modulation is mixed with the second module to feed the line.
 	
-	The second module may be phase modulated by the output of the previous Line.
-	M4(Line A)
+	The second module may be phase modulated by the output of the previous Line [0(0..2)].
 
 DCO
 ===
 
 Each module has a DCO.
-Each DCO waveform may be selected from:	SINE / SAW1 / SAW2 / SAW3 / SAW4 / SAW5 / NOISE1 / NOISE2
+Each DCO waveform may be selected from:	SINE / SAW1 / SAW2 / SAW3 / SAW4 / SAW5 / NOISE1 / NOISE2 [1..4(0..2,3..5)]
 	Increasing Sawtooth values have increasing quantity of harmonic content.
 	Noise 2 includes some fundamental pitch
 Each DCO may be detuned +/-127 notes and +/-100 cent(63 x 1.6 cent steps). Alternatively the "harmonic" value may be set. Adjusting either the harmonic or the octave / note / fine values automatically adjusts the other.
