@@ -1,0 +1,44 @@
+SYSEX
+=====
+Header: F0 44 03 00 7N 01 II
+	N MIDI Channel 0x00..0x0F
+	II "Range in which data is received"
+Bits ABCDEFGH of 8-bit word with A=MSB
+00 E-H Mode
+01-12 Operation Name (ASCII)
+13-14 Not used
+15 G Positional crossfade  on / off
+16 1 Split point (0x0C-0x78 = C0-C9)
+17 3 Split point lower (0x0C-0x76 = C0-Bb8)
+18 3 Split point middle (0x0D-0x77 = C#0-B9)
+19 3 Split point upper (0x0E-0x78 = D0-C9)
+20 Positional crossfade point 2 tone mix minimum (0x0C-0x78 = C0-C9)
+21 Positional crossfade point 2 tone mix maximum (0x0C-0x78 = C0-C9)
+22 Positional crossfade point 4 tone mix low minimum (0x0C-0x78 = C0-C9)
+23 Positional crossfade point 4 tone mix low maximum (0x0C-0x78 = C0-C9)
+24 Positional crossfade point 4 tone mix middle minimum (0x0C-0x78 = C0-C9)
+25 Positional crossfade point 4 tone mix middle maximum (0x0C-0x78 = C0-C9)
+26 Positional crossfade point 4 tone mix upper minimum (0x0C-0x78 = C0-C9)
+27 Positional crossfade point 4 tone mix upper maximum (0x0C-0x78 = C0-C9)
+28-45 Sound Data for Normal, Combi 1
+	28 Voice B (0=internal/1-card) C-H Voice number
+	29 A=Tremelo inverse B=Vibrato inverse C=Velocity inverse D=Sustain pedal enable E=Solo
+	30 Portamento A=Mode (0=Time constant, 1=Rate constant) B-H=Time (0-99)
+	31 Pitchbend A=Release enable C-H=Range (0-48)
+	32 Aftertouch A=Sensitivity (+/-) B-H=Sensitivity (0-99)
+	33 Aftertouch A=Amplitude envelope bias enable B=Tremelo rate enable C=Tremelo depth enable D=Portamento time enable E=Pitch- F=Pitch+ G=Vibrato rate enable H=Vibrato depth enable
+	34 Def Wheel 1 A=Sensitivity (+/-) B-H=Sensitivity (0-99)
+	35 Def Wheel 1 A=Amplitude envelope bias enable B=Tremelo rate enable C=Tremelo depth enable D=Portamento time enable E=Pitch- F=Pitch+ G=Vibrato rate enable H=Vibrato depth enable
+	36 Def Wheel 2 A=Sensitivity (+/-) B-H=Sensitivity (0-99)
+	37 Def Wheel 2 A=Amplitude envelope bias enable B=Tremelo rate enable C=Tremelo depth enable D=Portamento time enable E=Pitch- F=Pitch+ G=Vibrato rate enable H=Vibrato depth enable
+	38 Foot VR A=Sensitivity (+/-) B-H=Sensitivity (0-99)
+	39 Foot VR A=Amplitude envelope bias enable B=Tremelo rate enable C=Tremelo depth enable D=Portamento time enable E=Pitch- F=Pitch+	G=Vibrato rate enable H=Vibrato depth enable
+	40 Level B-H (0-99)
+	41 Combi pitch A-F=Fine (0-63)
+	42 Combi pitch A=Polarity (-/+) B-H=Note (0-71)
+	43 Velocity split B-H=Minimum (0-127)
+	44 Velocity split B-H=Maximum (0-127)
+	45 Delay trigger B-H=Time (0-99)
+46-63 Sound Data for Combi 2 (same as 28-45)
+64-81 Sound Data for Combi 3 (same as 28-45)
+82-99 Sound Data for Combi 4 (same as 28-45)

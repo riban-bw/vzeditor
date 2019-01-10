@@ -1,11 +1,9 @@
-#ifndef VZ1VOICE_H
-#define VZ1VOICE_H
+#ifndef VZVOICE_H
+#define VZVOICE_H
 
-#define VZ_VOICE_SIZE 681 //Size of sysex voice data in bytes
 #define VZ_VOICE_PAYLOAD_SIZE 672 //Size of sysex voice payload in bytes
-#define VZ_VOICE_PAYLOAD_START 7 //Offset of start of payload in bytes
 
-#include "wx/wx.h"
+#include "vzsysex.h"
 #include "envelope.h"
 #include "keyfollow.h"
 
@@ -26,73 +24,26 @@ enum VZ_LINE {
     RING    = 2
 };
 
-/** Provides interface to VZ-1 SysEx voice data
+/** Provides interface to VZ SysEx voice data
 *   @note   Data is stored as raw SysEx data
 */
-class vzvoice
+class vzvoice : public vzsysex
 {
     public:
-        /** @brief  Construct vz1voice object
+        /** @brief  Construct vzvoice object
         *   @note   Initialises voice data to defaults
         */
         vzvoice();
 
-        /** @brief  Construct vz1voice object from existing SysEx data
-        *   @param  Data Pointer to a buffer containing raw SysEx voice data
+        /** @brief  Construct vzvoice object from existing SysEx data
+        *   @param  pData Pointer to a buffer containing raw SysEx voice data
         *   @note   Initiailses any invalid values to defaults and sets modified field
         */
         vzvoice(wxByte* pData);
 
-        /** @brief  Default destruct vz1voice object
+        /** @brief  Default destruct vzvoice object
         */
         virtual ~vzvoice();
-
-        //!@todo implement copy operator
-
-        /** @brief  Check if data has been changed since last validate / save (***which)
-        *   @retval bool True if data has been modified
-        */
-        bool IsModified();
-
-        /** @brief  Get the raw SysEx data
-        *   @param  pData Pointer to buffer to store raw SyseEx data
-        */
-        void GetSysEx(wxByte* pData);
-
-        /** @brief  Get the raw SysEx data
-        *   @retval wxByte* Pointer to buffer with raw SyseEx data
-        */
-        wxByte* GetSysEx();
-
-        /** @brief  Set the raw SysEx data
-        *   @param  pData Pointer to a buffer containing raw SysEx voice data
-        *   @retval bool True if any data is invalid and initialised
-        *   @note   Data is validated before populating the voice data
-        */
-        bool SetSysEx(wxByte* pData);
-
-        /** @brief  Validate a single byte
-        *   @param  pByte Pointer to the byte to validate
-        *   @param  nByte Value to validate against
-        *   @param  bFix True to correct invalid data
-        *   @retval bool True if data invalid
-        */
-        bool ValidateByte(wxByte* pByte, wxByte nByte, bool bFix);
-
-        /** @brief  Validates raw SysEx voice data
-        *   @param  bFix True to initalise invalid data
-        *   @retval bool True if data is valid
-        */
-        bool Validate(bool bFix = false);
-
-        /** @brief  Validate data against checksum
-        *   @param  pData Pointer to the data to validate
-        *   @param  nSize Quantity of bytes to validate
-        *   @param  nChecksum Checksum to validate [Default: 0 - calculate checksum]
-        *   @retval wxByte Calculated value of checksum (zero if valid checksum)
-        *   @note   Pass zero checksum to calculate a checksum. Pass a checksum to check data (zero return for valid data)
-        */
-        wxByte Checksum(wxByte* pData, unsigned int nSize, wxByte nChecksum = 0);
 
         /** @brief  Is the external phase enabled for a module
         *   @param  nModule Index of module (zero base) [0..7]
@@ -558,8 +509,6 @@ class vzvoice
     protected:
 
     private:
-        wxByte m_acSysEx[VZ_VOICE_SIZE]; //Raw sysex voice data
-        bool m_bModified; //True if any fields have changed since last validate / save ***We don't really mean save
         Envelope m_envDCA[8]; //!< DCA envelope for each module
         Envelope m_envDCO; //!< DCO envelope
         wxByte m_nLevel; //!< Totoal Level [0..62,127]
@@ -567,15 +516,6 @@ class vzvoice
         bool m_bDCORange; //!< DCO Range True = wide, false = narrow
         KeyFollow m_kfDCA[8]; //!< DCA keyboard follow curve
         KeyFollow* m_pkfDCO; //!< DCO keyboard follow curve
-
-        wxByte GetValue(unsigned int nOffset, wxByte nMask); //!< Helper function to get value from SysEx
-        void SetValue(unsigned int nOffset, wxByte nMask, wxByte nValue); //!< Helper function to set value in SysEx
-
-        wxByte DecodeByte(wxByte* pCursor); //!< Decodes 2 nibbles in separate bytes to single byte
-        void EncodeByte(wxByte* pCursor, wxByte nValue); //!< Encodes byte to 2 nibbles in separate bytes
-        wxByte GetByteFromSysex(unsigned int nOffset); //!< Decode a byte of data from the position in SysEx payload pointed to by cursor
-        bool PutByteToSysex(unsigned int nOffset, wxByte nValue); //!< Encode a byte of data into position in SysEx payload pointed to by cursor
-
 };
 
-#endif // VZ1VOICE_H
+#endif // VZVOICE_H

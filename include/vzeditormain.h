@@ -33,6 +33,18 @@
 #include "vzvoice.h"
 #include "vzlibrary.h"
 
+static const unsigned int MESSAGE_TYPE_VOICE            = 0;
+static const unsigned int MESSAGE_TYPE_OPERATION        = 1;
+static const unsigned int MESSAGE_TYPE_MULTI            = 2;
+static const unsigned int MESSAGE_TYPE_PITCH            = 0x40;
+static const unsigned int MESSAGE_TYPE_MODE             = 0x50;
+static const unsigned int MESSAGE_TYPE_BANK             = 0x51;
+static const unsigned int MESSAGE_TYPE_OPEN             = 0x70;
+static const unsigned int MESSAGE_TYPE_CLOSE            = 0x71;
+static const unsigned int MESSAGE_TYPE_OK               = 0x72;
+static const unsigned int MESSAGE_TYPE_ERROR            = 0x73;
+static const unsigned int MESSAGE_TYPE_DATA             = 0x74;
+
 class VZ_EditorFrame: public wxFrame
 {
     public:
@@ -199,7 +211,7 @@ class VZ_EditorFrame: public wxFrame
         bool m_bNoteOn;
         vzvoice m_vzVoice; //Buffer to hold currently edited voice
         vzvoice m_vzVoiceMidi; //Buffer to hold last voice received via MIDI
-        wxByte m_acRawVoiceMidi[VZ_VOICE_SIZE]; //Buffer to hold raw sysex voice received via MIDI
+        wxByte m_acRawVoiceMidi[VZ_HEADER_SIZE + VZ_VOICE_PAYLOAD_SIZE + 1]; //Buffer to hold raw sysex voice received via MIDI
         VZLibrary* m_pvzLib; //Library
 
         DECLARE_EVENT_TABLE()

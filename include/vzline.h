@@ -36,6 +36,7 @@ class VZLine: public wxPanel
 		VZModule* m_pVzModule1;
 		VZModule* m_pVzModule2;
 		wxChoice* m_pCmbLine;
+		wxStaticBoxSizer* m_pSizerLine;
 		//*)
 
 	protected:

@@ -550,11 +550,21 @@ void VZ_EditorFrame::OnMidiReceive(wxCommandEvent &event)
 //        unsigned int nChannel = (*(pSysExMsg + 4) & 0x0F);
         unsigned int nType = *(pSysExMsg + 5);
 //        m_pLstLog->Append(wxString::Format(wxT("VZ-1/VZ-10 SysEx message. Length %ld. Channel %d. Type %d"), lLength, nChannel + 1, nType));
-        if(nType == 0 && lLength == VZ_VOICE_SIZE)
+        switch(nType)
         {
-            //Tone data
-            m_vzVoiceMidi.SetSysEx(pSysExMsg);
-            m_pBtnGetVoice->Enable();
+            case MESSAGE_TYPE_VOICE:
+            {
+                if(lLength != (long)m_vzVoiceMidi.GetSize())
+                    break;
+                m_vzVoiceMidi.SetSysEx(pSysExMsg);
+                m_pBtnGetVoice->Enable();
+                break;
+            }
+            case MESSAGE_TYPE_OPERATION:
+            {
+                //!@todo Implement operational
+                break;
+            }
         }
         //delete message when no longer needed
         delete pMsg;
@@ -574,10 +584,10 @@ void VZ_EditorFrame::SaveVoice()
         wxMessageBox(wxT("Failed to save file"), wxT("Error"), wxICON_ERROR);
         return;
     }
-    wxByte acSysex[VZ_VOICE_SIZE];
+    wxByte acSysex[m_vzVoice.GetSize()];
     m_vzVoice.Validate(true);
     m_vzVoice.GetSysEx(acSysex);
-    if(file.Write(m_vzVoice.GetSysEx(), VZ_VOICE_SIZE) != VZ_VOICE_SIZE)
+    if(file.Write(m_vzVoice.GetSysEx(), m_vzVoice.GetSize()) != m_vzVoice.GetSize())
         wxMessageBox(wxT("Error - corrupt file"), wxT("Error"), wxICON_ERROR);
     file.Close();
 }
@@ -590,12 +600,19 @@ bool VZ_EditorFrame::LoadVoice(wxString sFilename)
         wxMessageBox(wxT("Failed to open file"), wxT("Error"), wxICON_ERROR);
         return false;
     }
-    wxByte acSysex[VZ_VOICE_SIZE];
-    if(file.Length() != VZ_VOICE_SIZE || file.Read(acSysex, VZ_VOICE_SIZE) != VZ_VOICE_SIZE)
+    wxByte acSysex[m_vzVoice.GetSize()];
+    if(file.Length() != (wxFileOffset)m_vzVoice.GetSize() || file.Read(acSysex, m_vzVoice.GetSize()) != (ssize_t)m_vzVoice.GetSize())
+    {
         wxMessageBox(wxT("Corrupt file"), wxT("Error"), wxICON_ERROR);
+        file.Close();
+        return false;
+    }
     file.Close();
     if(m_vzVoice.SetSysEx(acSysex))
+    {
         wxMessageBox(wxT("Invalid VZ voice file"), wxT("Error"), wxICON_ERROR);
+        return false;
+    }
     m_pNotebook->SetSelection(1);
     UpdateGui();
     return true;
@@ -689,6 +706,7 @@ void VZ_EditorFrame::OnOpenFile(wxCommandEvent& event)
     if(fnFilename.GetExt().Lower().IsSameAs(wxT("xml")))
     {
         if(m_pvzLib->IsDirty())
+            ; //!@todo Handle dirty library
         m_pvzLib->Load(dlg.GetPath());
         m_pLstLib->SetData(m_pvzLib);
         return;

@@ -74,6 +74,8 @@
 		<Unit filename="include/vzlibrary.h" />
 		<Unit filename="include/vzline.h" />
 		<Unit filename="include/vzmodule.h" />
+		<Unit filename="include/vzoperation.h" />
+		<Unit filename="include/vzsysex.h" />
 		<Unit filename="include/vzvoice.h" />
 		<Unit filename="include/wxMidi.h" />
 		<Unit filename="resource.rc">
@@ -87,6 +89,8 @@
 		<Unit filename="src/vzlibrary.cpp" />
 		<Unit filename="src/vzline.cpp" />
 		<Unit filename="src/vzmodule.cpp" />
+		<Unit filename="src/vzoperation.cpp" />
+		<Unit filename="src/vzsysex.cpp" />
 		<Unit filename="src/vzvoice.cpp" />
 		<Unit filename="src/wxMidi.cpp" />
 		<Unit filename="src/wxMidiDatabase.cpp" />

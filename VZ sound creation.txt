@@ -45,7 +45,7 @@ Each module has a DCO.
 Each DCO waveform may be selected from:	SINE / SAW1 / SAW2 / SAW3 / SAW4 / SAW5 / NOISE1 / NOISE2 [1..4(0..2,3..5)]
 	Increasing Sawtooth values have increasing quantity of harmonic content.
 	Noise 2 includes some fundamental pitch
-Each DCO may be detuned +/-127 notes and +/-100 cent(63 x 1.6 cent steps). Alternatively the "harmonic" value may be set. Adjusting either the harmonic or the octave / note / fine values automatically adjusts the other.
+Each DCO may be detuned +/-127 notes and +/-100 cent(63 x 1.6 cent steps). Alternatively the "harmonic" value may be set. Adjusting either the harmonic or the octave / note / fine values automatically adjusts the other. [5..20]
 Each DCO may be set to a fixed frequency set by the Octave / note / fine settings and may be offset by the x16 switch.
 
 DCA
@@ -55,7 +55,7 @@ Each module has a DCA.
 Each DCA has an 8 step envelope.
 	A sustain point can be attached to one envelope step.
 	An end point can be attached to one envelope step. This clears remaining steps.
-Depth of envelope can be set [175..182(0..6)] *User manual says gloabal, SYSEX manual shows per module
+Depth of envelope can be set [175..182(0..6)]
 There is a 6 step key follow curve to control the amplitude of each DCA.
 Amplitude of each DCA may be affected by key velocity.  Sensitivity and curve of key velocity may be set.
 Sensitivity to envelope bias and tremolo can be adjusted for each DCA. These bias may be from after-touch, definable wheel 1/2 or foot VR. [165..172(0..3)]

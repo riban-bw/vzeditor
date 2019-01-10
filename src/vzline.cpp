@@ -23,7 +23,6 @@ VZLine::VZLine(wxWindow* parent, wxByte line) :
 	//(*Initialize(VZLine)
 	wxBoxSizer* BoxSizer2;
 	wxFlexGridSizer* FlexGridSizer1;
-	wxStaticBoxSizer* m_pSizerLine;
 
 	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	m_pSizerLine = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Internal Line"));
@@ -41,7 +40,7 @@ VZLine::VZLine(wxWindow* parent, wxByte line) :
 	m_pVzModule2 = new VZModule(this,ID_VZMODULE2,wxDefaultPosition,wxDefaultSize);
 	BoxSizer2->Add(m_pVzModule2, 1, wxALL|wxEXPAND, 5);
 	FlexGridSizer1->Add(BoxSizer2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	m_pSizerLine->Add(FlexGridSizer1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	m_pSizerLine->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
 	SetSizer(m_pSizerLine);
 	m_pSizerLine->Fit(this);
 	m_pSizerLine->SetSizeHints(this);

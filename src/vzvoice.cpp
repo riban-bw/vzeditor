@@ -1,124 +1,19 @@
 #include "vzvoice.h"
 #include <cstring>
 
-vzvoice::vzvoice()
+vzvoice::vzvoice() :
+    vzsysex(VZ_VOICE_PAYLOAD_SIZE)
 {
-    Validate(true);
-    m_bModified = false;
     m_pkfDCO = new KeyFollow(6, true);
-    //!@todo Should we use pointers for all these objects?
 }
 
-vzvoice::vzvoice(wxByte* pData)
+vzvoice::vzvoice(wxByte* pData) :
+    vzsysex(pData, VZ_VOICE_PAYLOAD_SIZE)
 {
-    SetSysEx(pData);
 }
 
 vzvoice::~vzvoice()
 {
-}
-
-wxByte vzvoice::GetValue(unsigned int nOffset, wxByte nMask)
-{
-    //!@todo Validate this works
-    wxByte nValue = GetByteFromSysex(nOffset);
-    nValue &= nMask;
-    wxByte nShift = 0;
-    for(nShift = 0; nShift < 8; ++nShift)
-        if(nMask & (1 << nShift))
-            break;
-    return nValue >> nShift;
-}
-
-void vzvoice::SetValue(unsigned int nOffset, wxByte nMask, wxByte nValue)
-{
-    //!@todo Validate this works
-    wxByte nShift = 0;
-    for(nShift = 0; nShift < 8; ++nShift)
-        if(nMask & (1 << nShift))
-            break;
-    PutByteToSysex(nOffset, ((nValue << nShift) & nMask) | (GetByteFromSysex(nOffset) & ~nMask));
-}
-
-bool vzvoice::IsModified()
-{
-    return m_bModified;
-}
-
-void vzvoice::GetSysEx(wxByte* pData)
-{
-    memcpy(pData, m_acSysEx, VZ_VOICE_SIZE);
-}
-
-wxByte* vzvoice::GetSysEx()
-{
-    return m_acSysEx;
-}
-
-bool vzvoice::SetSysEx(wxByte* pData)
-{
-    memcpy(m_acSysEx, pData, VZ_VOICE_SIZE);
-    m_bModified = Validate(true);
-    return m_bModified;
-}
-
-bool vzvoice::ValidateByte(wxByte* pByte, wxByte nByte, bool bFix)
-{
-    bool bInvalid = (nByte != *pByte);
-    if(bFix)
-        *pByte = nByte;
-    return bInvalid;
-}
-
-bool vzvoice::Validate(bool bFix)
-{
-    m_bModified = false;
-    m_bModified |= ValidateByte(m_acSysEx, 0xF0, bFix);
-    m_bModified |= ValidateByte(m_acSysEx + 1, 0x44, bFix);
-    m_bModified |= ValidateByte(m_acSysEx + 2, 0x03, bFix);
-    m_bModified |= ValidateByte(m_acSysEx + 3, 0x00, bFix);
-    m_bModified |= ValidateByte(m_acSysEx + 4, 0x70, bFix); //!@todo Allow different MIDI channel [0xF0 - 0xFF]
-    m_bModified |= ValidateByte(m_acSysEx + 5, 0x00, bFix);
-    m_bModified |= ValidateByte(m_acSysEx + 6, 0x40, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
-    m_bModified |= ValidateByte(m_acSysEx + VZ_VOICE_PAYLOAD_SIZE + 7, Checksum(m_acSysEx + 7, VZ_VOICE_PAYLOAD_SIZE), bFix);
-    m_bModified |= ValidateByte(m_acSysEx + VZ_VOICE_PAYLOAD_SIZE + 8, 0xF7, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
-    return m_bModified;
-}
-
-wxByte vzvoice::Checksum(wxByte* pData, unsigned int nSize, wxByte nChecksum)
-{
-    wxByte nSum = nChecksum;
-    for(unsigned int nIndex = 0; nIndex < nSize; nIndex+=2)
-        nSum += DecodeByte(pData + nIndex);
-    return (0 - nSum) & 0x7F;
-}
-
-
-wxByte vzvoice::DecodeByte(wxByte* pCursor)
-{
-    return (*(pCursor) << 4) | (*(pCursor + 1));
-}
-
-void vzvoice::EncodeByte(wxByte* pCursor, wxByte nValue)
-{
-    *pCursor = (nValue & 0xF0) >> 4;
-    *(pCursor + 1) = nValue & 0x0F;
-}
-
-wxByte vzvoice::GetByteFromSysex(unsigned int nOffset)
-{
-    if(nOffset >= VZ_VOICE_PAYLOAD_SIZE / 2)
-            return 0;
-
-    return DecodeByte(m_acSysEx + VZ_VOICE_PAYLOAD_START + nOffset * 2);
-}
-
-bool vzvoice::PutByteToSysex(unsigned int nOffset, wxByte nValue)
-{
-    if(nOffset >= VZ_VOICE_PAYLOAD_SIZE / 2)
-        return false;
-    EncodeByte(m_acSysEx + VZ_VOICE_PAYLOAD_START + nOffset * 2, nValue);
-    return true;
 }
 
 bool vzvoice::IsExtPhase(wxByte nModule)
