@@ -39,13 +39,19 @@ class vzvoice : public vzsysex
 
         /** @brief  Construct vzvoice object from existing SysEx data
         *   @param  pData Pointer to a buffer containing raw SysEx voice data
-        *   @note   Initiailses any invalid values to defaults and sets modified field
+        *   @note   Initialises any invalid values to defaults and sets modified field
         */
         vzvoice(wxByte* pData);
 
         /** @brief  Default destruct vzvoice object
         */
         virtual ~vzvoice();
+
+        /** @brief  Validates raw SysEx sysex data
+        *   @param  bFix True to initialise invalid data
+        *   @retval bool True if data is valid
+        */
+        bool Validate(bool bFix = false);
 
         /** @brief  Is the external phase enabled for a module
         *   @param  nModule Index of module (zero base) [0..7]

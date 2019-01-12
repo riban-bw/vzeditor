@@ -54,7 +54,7 @@
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_BTNSEND" variable="m_pBtnSend" member="yes">
-							<label>Send Voice</label>
+							<label>Send</label>
 							<handler function="OnBtnSendClick" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -66,6 +66,16 @@
 							<label>Get Voice</label>
 							<enabled>0</enabled>
 							<handler function="OnBtnGetVoice" entry="EVT_BUTTON" />
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
+					</object>
+					<object class="sizeritem">
+						<object class="wxButton" name="IID_BTNGETOPERATION" variable="m_pBtnGetOperation" member="yes">
+							<label>Get Operation</label>
+							<enabled>0</enabled>
+							<handler function="OnBtnGetOperation" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
@@ -593,6 +603,62 @@
 							</object>
 						</object>
 						<label>Voice Editor</label>
+					</object>
+					<object class="notebookpage">
+						<object class="wxPanel" name="ID_PNLOPERATION" variable="m_pPnlOperation" member="yes">
+							<object class="wxBoxSizer" variable="BoxSizer5" member="no">
+								<object class="sizeritem">
+									<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW2" variable="SplitterWindow2" member="yes">
+										<sashgravity>1.000000</sashgravity>
+										<minpanesize>10</minpanesize>
+										<orientation>vertical</orientation>
+										<object class="wxScrolledWindow" name="ID_SCROLLEDWINDOW3" variable="ScrolledWindow1" member="yes">
+											<object class="wxBoxSizer" variable="BoxSizer6" member="no">
+												<orient>wxVERTICAL</orient>
+											</object>
+										</object>
+										<object class="wxScrolledWindow" name="ID_SCROLLEDWINDOW4" variable="ScrolledWindow2" member="yes">
+											<style>wxVSCROLL</style>
+											<object class="wxFlexGridSizer" variable="FlexGridSizer2" member="no">
+												<cols>1</cols>
+												<growablecols>0</growablecols>
+												<growablerows>3,4</growablerows>
+												<object class="sizeritem">
+													<object class="wxFlexGridSizer" variable="FlexGridSizer16" member="no">
+														<growablecols>1</growablecols>
+														<object class="sizeritem">
+															<object class="wxStaticText" name="ID_STATICTEXT13" variable="StaticText12" member="yes">
+																<label>Voice Name</label>
+															</object>
+															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+															<border>5</border>
+															<option>1</option>
+														</object>
+														<object class="sizeritem">
+															<object class="wxTextCtrl" name="ID_TXTOPERATIONNAME" variable="m_pTxtOperationName" member="yes">
+																<maxlength>12</maxlength>
+																<validator>m__validateVoiceName</validator>
+																<handler function="OnTxtVoiceNameText" entry="EVT_TEXT" />
+															</object>
+															<flag>wxALL|wxEXPAND</flag>
+															<border>5</border>
+															<option>1</option>
+														</object>
+													</object>
+													<flag>wxALL|wxEXPAND</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+											</object>
+										</object>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+							</object>
+						</object>
+						<label>Operation Editor</label>
 					</object>
 				</object>
 				<flag>wxALL|wxEXPAND</flag>

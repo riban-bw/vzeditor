@@ -15,18 +15,12 @@
 class vzsysex
 {
     public:
-        /** @brief  Construct vzsysex object
-        *   @param  nPayloadSize Quantity of bytes in payload
-        *   @note   Initialises operation data to defaults
-        */
-        vzsysex(unsigned int nPayload);
-
         /** @brief  Construct vzsysex object from existing SysEx data
-        *   @param  Data Pointer to a buffer containing raw SysEx operation data
         *   @param  nPayloadSize Quantity of bytes in payload
-        *   @note   Initiailses any invalid values to defaults and sets modified field
+        *   @param  pData Pointer to a buffer containing raw SysEx operation data [default=null]
+        *   @note   Initialises any invalid values to defaults and sets modified field
         */
-        vzsysex(wxByte* pData, unsigned int nPayload);
+        vzsysex(unsigned int nPayload, wxByte* pData = nullptr);
 
         /** @brief  Default destruct vzsysex object
         */
@@ -65,10 +59,10 @@ class vzsysex
         bool ValidateByte(wxByte* pByte, wxByte nByte, bool bFix);
 
         /** @brief  Validates raw SysEx sysex data
-        *   @param  bFix True to initalise invalid data
+        *   @param  bFix True to initialise invalid data
         *   @retval bool True if data is valid
         */
-        bool Validate(bool bFix = false);
+        virtual bool Validate(bool bFix = false);
 
         /** @brief  Validate data against checksum
         *   @param  pData Pointer to the data to validate
@@ -93,10 +87,10 @@ class vzsysex
         void EncodeByte(wxByte* pCursor, wxByte nValue); //!< Encodes byte to 2 nibbles in separate bytes
         wxByte GetByteFromSysex(unsigned int nOffset); //!< Decode a byte of data from the position in SysEx payload pointed to by cursor
         bool PutByteToSysex(unsigned int nOffset, wxByte nValue); //!< Encode a byte of data into position in SysEx payload pointed to by cursor
+        bool m_bModified; //True if any fields have changed since last validate / save ***We don't really mean save
 
     private:
 
-        bool m_bModified; //True if any fields have changed since last validate / save ***We don't really mean save
 };
 
 #endif // VZSYSEX_H

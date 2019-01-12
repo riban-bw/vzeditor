@@ -3,19 +3,14 @@
 
 static const unsigned int VZ_PAYLOAD_START = 7;
 
-vzsysex::vzsysex(unsigned int nPayloadSize) :
+vzsysex::vzsysex(unsigned int nPayloadSize, wxByte* pData) :
     m_nPayloadSize(nPayloadSize)
 {
     m_pSysEx = new wxByte[GetSize()];
+    if(pData)
+        SetSysEx(pData);
     Validate(true);
     m_bModified = false;
-}
-
-vzsysex::vzsysex(wxByte* pData, unsigned int nPayloadSize) :
-    m_nPayloadSize(nPayloadSize)
-{
-    m_pSysEx = new wxByte[GetSize()];
-    SetSysEx(pData);
 }
 
 vzsysex::~vzsysex()
@@ -85,10 +80,8 @@ bool vzsysex::Validate(bool bFix)
     m_bModified |= ValidateByte(m_pSysEx + 2, 0x03, bFix);
     m_bModified |= ValidateByte(m_pSysEx + 3, 0x00, bFix);
     m_bModified |= ValidateByte(m_pSysEx + 4, 0x70, bFix); //!@todo Allow different MIDI channel [0xF0 - 0xFF]
-    m_bModified |= ValidateByte(m_pSysEx + 5, 0x00, bFix);
-    m_bModified |= ValidateByte(m_pSysEx + 6, 0x40, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
-    m_bModified |= ValidateByte(m_pSysEx + m_nPayloadSize + 7, Checksum(m_pSysEx + 7, m_nPayloadSize), bFix);
-    m_bModified |= ValidateByte(m_pSysEx + m_nPayloadSize + 8, 0xF7, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
+    m_bModified |= ValidateByte(m_pSysEx + 7 + m_nPayloadSize, Checksum(m_pSysEx + 7, m_nPayloadSize), bFix);
+    m_bModified |= ValidateByte(m_pSysEx + 8 + m_nPayloadSize, 0xF7, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
     return m_bModified;
 }
 

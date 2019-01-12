@@ -19,13 +19,29 @@ class vzoperation : public vzsysex
 
         /** @brief  Construct vzoperation object from existing SysEx data
         *   @param  Data Pointer to a buffer containing raw SysEx operation data
-        *   @note   Initiailses any invalid values to defaults and sets modified field
+        *   @note   Initialises any invalid values to defaults and sets modified field
         */
         vzoperation(wxByte* pData);
 
         /** @brief  Default destruct vzoperation object
         */
         virtual ~vzoperation();
+
+        /** @brief  Validates raw SysEx sysex data
+        *   @param  bFix True to initialise invalid data
+        *   @retval bool True if data is valid
+        */
+        bool Validate(bool bFix = false);
+
+        /** @brief  Gets the operationa data name
+        *   @retval wxString Name of the operationa data
+        */
+        wxString GetName();
+
+        /** @brief  Sets the operationa data  name
+        *   @param wxString Name of the operationa data
+        */
+        void SetName(wxString sName);
 
     protected:
 

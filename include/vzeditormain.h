@@ -72,7 +72,6 @@ class VZ_EditorFrame: public wxFrame
         void OnListCtrl1ColumnClick(wxListEvent& event);
         void OnBtnGetVoice(wxCommandEvent& event);
         void OnSaveFile(wxCommandEvent& event);
-        void OnLoadFile(wxCommandEvent& event);
         void OnLevelChanged(wxScrollEvent& event);
         void OnOctaveChanged(wxScrollEvent& event);
         void OnDcoVelSensChange(wxScrollEvent& event);
@@ -82,6 +81,7 @@ class VZ_EditorFrame: public wxFrame
         void OnVibratoDepthChanged(wxScrollEvent& event);
         void OnVibratoRateChanged(wxScrollEvent& event);
         void OnVibratoDelayChanged(wxScrollEvent& event);
+        void OnBtnGetOperation(wxCommandEvent& event);
         //*)
         void OnGridSort(wxCommandEvent& event);
         void OnLibSort(wxListEvent& event);
@@ -95,6 +95,7 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_CHKAUTOUPDATE;
         static const long ID_BTNSEND;
         static const long ID_BTNGETVOICE;
+        static const long IID_BTNGETOPERATION;
         static const long ID_LSTLIB;
         static const long ID_PNLLIBRARY;
         static const long ID_LINE1;
@@ -131,6 +132,12 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_SCROLLEDWINDOW2;
         static const long ID_SPLITTERWINDOW1;
         static const long ID_PNLVOICE;
+        static const long ID_SCROLLEDWINDOW3;
+        static const long ID_STATICTEXT13;
+        static const long ID_TXTOPERATIONNAME;
+        static const long ID_SCROLLEDWINDOW4;
+        static const long ID_SPLITTERWINDOW2;
+        static const long ID_PNLOPERATION;
         static const long ID_NOTEBOOK;
         static const long idMenuOpen;
         static const long idMenuSave;
@@ -145,6 +152,7 @@ class VZ_EditorFrame: public wxFrame
         VZLine* m_pLine2;
         VZLine* m_pLine3;
         VZLine* m_pLine4;
+        wxButton* m_pBtnGetOperation;
         wxButton* m_pBtnGetVoice;
         wxButton* m_pBtnSend;
         wxCheckBox* m_pChkAutoUpdate;
@@ -156,11 +164,14 @@ class VZ_EditorFrame: public wxFrame
         wxMenuItem* MenuItem4;
         wxNotebook* m_pNotebook;
         wxPanel* m_pPnlLibrary;
+        wxPanel* m_pPnlOperation;
         wxPanel* m_pPnlVoice;
         wxRadioBox* m_pRadioTremeloMulti;
         wxRadioBox* m_pRadioTremeloWaveform;
         wxRadioBox* m_pRadioVibratoMulti;
         wxRadioBox* m_pRadioVibratoWaveform;
+        wxScrolledWindow* ScrolledWindow1;
+        wxScrolledWindow* ScrolledWindow2;
         wxScrolledWindow* m_pScrollWinVoiceEditor;
         wxScrolledWindow* m_pScrollwindowGlobalParameters;
         wxSlider* m_pSliderLevel;
@@ -173,8 +184,10 @@ class VZ_EditorFrame: public wxFrame
         wxSlider* m_pSliderVibratoDepth;
         wxSlider* m_pSliderVibratoRate;
         wxSplitterWindow* SplitterWindow1;
+        wxSplitterWindow* SplitterWindow2;
         wxStaticText* StaticText10;
         wxStaticText* StaticText11;
+        wxStaticText* StaticText12;
         wxStaticText* StaticText1;
         wxStaticText* StaticText2;
         wxStaticText* StaticText30;
@@ -187,15 +200,17 @@ class VZ_EditorFrame: public wxFrame
         wxStaticText* StaticText9;
         wxStaticText* m_pLblVelCurve;
         wxStatusBar* StatusBar1;
+        wxTextCtrl* m_pTxtOperationName;
         wxTextCtrl* m_pTxtVoiceName;
         //*)
 
         void CloseInput(); //!< Open MIDI input port
         void CloseOutput(); //!< Close MIDI input port
-        void SaveVoice();
+        void Save(unsigned int nType); //!< Save file (nType = type of file to save)
         bool LoadFile(wxString sFilename = wxEmptyString);
-        void SendVoice();
+        void Send();
         void GetVoice();
+        void GetOperation();
         void UpdateMidiPorts();
         void OnClose(wxCloseEvent& event);
         void AutoSend(); //!< Send voice data after each parameter change
@@ -210,10 +225,12 @@ class VZ_EditorFrame: public wxFrame
         wxMidiInDevice* m_pMidiIn;
         wxMidiOutDevice* m_pMidiOut;
         bool m_bNoteOn;
-        vzvoice m_vzVoice; //Buffer to hold currently edited voice
-        vzoperation m_vzOperation; //Buffer to hold currently edited operational memory
-        vzvoice m_vzVoiceMidi; //Buffer to hold last voice received via MIDI
+        vzvoice* m_pVoice; //Currently edited voice
+        vzvoice* m_pVoiceMidi; //Last voice received via MIDI
+        vzoperation* m_pOperation; //Currently edited operational memory
+        vzoperation* m_pOperationMidi; //Last operation data received via MIDI
         wxByte m_acRawVoiceMidi[VZ_HEADER_SIZE + VZ_VOICE_PAYLOAD_SIZE + 1]; //Buffer to hold raw sysex voice received via MIDI
+        wxByte m_acRawOperationMidi[VZ_HEADER_SIZE + VZ_OPERATION_PAYLOAD_SIZE + 1]; //Buffer to hold raw sysex operation data received via MIDI
         VZLibrary* m_pvzLib; //Library
 
         DECLARE_EVENT_TABLE()
