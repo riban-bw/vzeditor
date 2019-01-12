@@ -592,28 +592,50 @@ void VZ_EditorFrame::SaveVoice()
     file.Close();
 }
 
-bool VZ_EditorFrame::LoadVoice(wxString sFilename)
+bool VZ_EditorFrame::LoadFile(wxString sFilename)
 {
+    if(!wxFileExists(sFilename)) {
+        wxMessageBox(wxT("File does not exist"), wxT("Error"), wxICON_ERROR);
+        return false;
+    }
     wxFile file(sFilename, wxFile::read);
     if(!file.IsOpened())
     {
         wxMessageBox(wxT("Failed to open file"), wxT("Error"), wxICON_ERROR);
         return false;
     }
-    wxByte acSysex[m_vzVoice.GetSize()];
-    if(file.Length() != (wxFileOffset)m_vzVoice.GetSize() || file.Read(acSysex, m_vzVoice.GetSize()) != (ssize_t)m_vzVoice.GetSize())
+    wxByte acSysex[file.Length()];
+    if(file.Length() < VZ_HEADER_SIZE || file.Length() != file.Read(acSysex, file.Length()))
     {
-        wxMessageBox(wxT("Corrupt file"), wxT("Error"), wxICON_ERROR);
+        wxMessageBox(wxT("Failed to read file"), wxT("Error"), wxICON_ERROR);
         file.Close();
         return false;
     }
     file.Close();
-    if(m_vzVoice.SetSysEx(acSysex))
+    bool bFail = false;
+    switch(acSysex[VZ_HEADER_TYPE])
     {
-        wxMessageBox(wxT("Invalid VZ voice file"), wxT("Error"), wxICON_ERROR);
+        case VZ_TYPE_TONE:
+            if(m_vzVoice.SetSysEx(acSysex))
+            {
+                m_pNotebook->SetSelection(1);
+            }
+            break;
+        case VZ_TYPE_OPERATION:
+            if(m_vzOperation.SetSysEx(acSysex))
+            {
+                //!@todo Support Operation data
+//                m_pNotebook->SetSelection(2);
+            }
+            break;
+        default:
+            bFail = true;
+    }
+    if(bFail)
+    {
+        wxMessageBox(wxT("This does not appear to be a valid VZ file"), wxT("Error"), wxICON_ERROR);
         return false;
     }
-    m_pNotebook->SetSelection(1);
     UpdateGui();
     return true;
 }
@@ -711,7 +733,7 @@ void VZ_EditorFrame::OnOpenFile(wxCommandEvent& event)
         m_pLstLib->SetData(m_pvzLib);
         return;
     }
-    LoadVoice(dlg.GetPath());
+    LoadFile(dlg.GetPath());
 }
 
 void VZ_EditorFrame::OnLibSort(wxListEvent& event)
@@ -722,7 +744,8 @@ void VZ_EditorFrame::OnLibSort(wxListEvent& event)
 void VZ_EditorFrame::OnLibActivate(wxListEvent& event)
 {
     wxString sFilename = m_pLstLib->GetItemFilename(event.GetIndex());
-    if(LoadVoice(wxT("library/") + sFilename)) //!@todo configure path to library
+    wxString sType = m_pLstLib->GetItemType(event.GetIndex());
+    if(LoadFile(wxT("library/") + sFilename)) //!@todo configure path to library
         m_pNotebook->SetSelection(1);
 }
 
@@ -739,7 +762,7 @@ void VZ_EditorFrame::OnSaveFile(wxCommandEvent& event)
 
 void VZ_EditorFrame::OnLoadFile(wxCommandEvent& event)
 {
-    LoadVoice();
+    LoadFile();
 }
 
 void VZ_EditorFrame::UpdateMidiPorts()

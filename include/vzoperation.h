@@ -2,6 +2,7 @@
 #define VZOPERATION_H
 
 #define VZ_OPERATION_PAYLOAD_SIZE 200 //Size of sysex operation payload in bytes
+#define VZ_TYPE_OPERATION 0x01
 
 #include "vzsysex.h"
 

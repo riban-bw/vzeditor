@@ -19,6 +19,8 @@ class SortableList: public wxListCtrl
 
         wxString GetItemFilename(long item);
 
+        wxString GetItemType(long item);
+
         void OnKeyUp(wxKeyEvent& event);
 
         bool DeleteItem(long item);

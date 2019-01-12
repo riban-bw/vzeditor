@@ -31,6 +31,7 @@
 //*)
 #include "wxMidi.h"
 #include "vzvoice.h"
+#include "vzoperation.h"
 #include "vzlibrary.h"
 
 static const unsigned int MESSAGE_TYPE_VOICE            = 0;
@@ -192,7 +193,7 @@ class VZ_EditorFrame: public wxFrame
         void CloseInput(); //!< Open MIDI input port
         void CloseOutput(); //!< Close MIDI input port
         void SaveVoice();
-        bool LoadVoice(wxString sFilename = wxEmptyString);
+        bool LoadFile(wxString sFilename = wxEmptyString);
         void SendVoice();
         void GetVoice();
         void UpdateMidiPorts();
@@ -210,6 +211,7 @@ class VZ_EditorFrame: public wxFrame
         wxMidiOutDevice* m_pMidiOut;
         bool m_bNoteOn;
         vzvoice m_vzVoice; //Buffer to hold currently edited voice
+        vzoperation m_vzOperation; //Buffer to hold currently edited operational memory
         vzvoice m_vzVoiceMidi; //Buffer to hold last voice received via MIDI
         wxByte m_acRawVoiceMidi[VZ_HEADER_SIZE + VZ_VOICE_PAYLOAD_SIZE + 1]; //Buffer to hold raw sysex voice received via MIDI
         VZLibrary* m_pvzLib; //Library

@@ -76,9 +76,9 @@ SortableList::SortableList(wxWindow* parent, wxWindowID id):
     col2.SetWidth(200);
     InsertColumn(2, col2);
     wxListItem col3;
-    col2.SetId(3);
-    col2.SetText(wxT("Type"));
-    col2.SetWidth(200);
+    col3.SetId(3);
+    col3.SetText(wxT("Type"));
+    col3.SetWidth(200);
     InsertColumn(3, col3);
     Connect(wxEVT_KEY_UP, (wxObjectEventFunction)&SortableList::OnKeyUp);
 }
@@ -117,6 +117,11 @@ wxString SortableList::OnGetItemText(long item, long column) const{
 wxString SortableList::GetItemFilename(long item)
 {
     return OnGetItemText(item, -1);
+}
+
+wxString SortableList::GetItemType(long item)
+{
+    return OnGetItemText(item, 3);
 }
 
 void SortableList::Sort(long column)

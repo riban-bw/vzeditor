@@ -2,6 +2,8 @@
 #define VZVOICE_H
 
 #define VZ_VOICE_PAYLOAD_SIZE 672 //Size of sysex voice payload in bytes
+#define VZ_TYPE_VOICE 0x00
+#define VZ_TYPE_TONE 0x00
 
 #include "vzsysex.h"
 #include "envelope.h"

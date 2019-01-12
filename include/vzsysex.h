@@ -4,6 +4,10 @@
 #include "wx/wx.h"
 
 #define VZ_HEADER_SIZE 7
+#define VZ_HEADER {0xF0,0x44,0x03,0x00,0x70}
+#define VZ_HEADER_CHANNEL 4
+#define VZ_HEADER_TYPE 5
+#define VZ_HEADER_SUBTYPE 6
 
 /** Provides interface to VZ SysEx data
 *   @note   Data is stored as raw SysEx data
