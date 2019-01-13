@@ -641,20 +641,17 @@ void VZ_EditorFrame::Save(unsigned int nType)
     {
         case 0:
             //Library
-            dlg.SetMessage(wxT("Select file to save library to"));
-            dlg.SetWildcard(wxT("XML files (*.xml)|*.xml|All files (*.*)|*.*"));
+            dlg.SetWildcard(wxT("Library files (*.xml)|*.xml|All files (*.*)|*.*"));
             break;
         case 1:
             //Voice
-            dlg.SetMessage(wxT("Select file to save voice to"));
-            dlg.SetFilename(wxString::Format(wxT("%s.syx"), m_pVoice->GetName().c_str()));
-            dlg.SetWildcard(wxT("SysEx files (*.syx)|*.syx|All files (*.*)|*.*"));
+            dlg.SetFilename(wxString::Format(wxT("%s.vzt"), m_pVoice->GetName().c_str()));
+            dlg.SetWildcard(wxT("VZ tone files (*.vzt)|*.vzt|All files (*.*)|*.*"));
             break;
         case 2:
             //Operation data
-            dlg.SetMessage(wxT("Select file to save operation data to"));
-            dlg.SetFilename(wxString::Format(wxT("%s.syx"), m_pOperation->GetName().c_str()));
-            dlg.SetWildcard(wxT("SysEx files (*.syx)|*.syx|All files (*.*)|*.*"));
+            dlg.SetFilename(wxString::Format(wxT("%s.vzo"), m_pOperation->GetName().c_str()));
+            dlg.SetWildcard(wxT("VZ operation files (*.vzo)|*.vzo|All files (*.*)|*.*"));
             break;
         default:
             return;
@@ -847,17 +844,8 @@ void VZ_EditorFrame::OnRadioVibratoWaveformSelect(wxCommandEvent& event)
 
 void VZ_EditorFrame::OnOpenFile(wxCommandEvent& event)
 {
-    wxFileDialog dlg(this, wxT("Select file to open"),wxEmptyString, wxEmptyString, wxEmptyString, wxFD_OPEN);
-    switch(m_pNotebook->GetSelection())
-    {
-        case 0: //Library
-            dlg.SetWildcard(wxT("XML files (*.xml)|*.xml|All files (*.*)|*.*"));
-            break;
-        case 1: //Voice
-        case 2: //Operation data
-            dlg.SetWildcard(wxT("SysEx files (*.syx)|*.syx|All files (*.*)|*.*"));
-            break;
-    }
+    wxFileDialog dlg(this, wxEmptyString, wxEmptyString, wxEmptyString,wxT("Library files (*.xml)|*.xml|VZ tone files (*vzt)|*.vzt|VZ operation files (*vzo)|*.vzo|All files (*.*)|*.*"), wxFD_OPEN);
+    dlg.SetFilterIndex(m_pNotebook->GetSelection());
     if(dlg.ShowModal() == wxID_CANCEL)
         return;
     wxFileName fnFilename(dlg.GetPath());
