@@ -22,7 +22,6 @@ vzsysex::~vzsysex()
 
 wxByte vzsysex::GetValue(unsigned int nOffset, wxByte nMask)
 {
-    //!@todo Validate this works
     wxByte nValue = GetByteFromSysex(nOffset);
     nValue &= nMask;
     wxByte nShift = 0;
@@ -34,7 +33,6 @@ wxByte vzsysex::GetValue(unsigned int nOffset, wxByte nMask)
 
 void vzsysex::SetValue(unsigned int nOffset, wxByte nMask, wxByte nValue)
 {
-    //!@todo Validate this works
     wxByte nShift = 0;
     for(nShift = 0; nShift < 8; ++nShift)
         if(nMask & (1 << nShift))

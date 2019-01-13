@@ -142,4 +142,5 @@ Bits ABCDEFGH of 8-bit word with A=MSB
 319 B-H Tremolo depth
 320 B-H Tremolo rate
 321 B-H Tremolo delay
-322-335 Voice name (ASCII)
+322-333 Voice name (ASCII)
+334-335 Not used
