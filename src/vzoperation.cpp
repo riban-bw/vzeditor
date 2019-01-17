@@ -8,6 +8,8 @@ vzoperation::vzoperation() :
 vzoperation::vzoperation(wxByte* pData, bool bPayload) :
     vzsysex(VZ_OPERATION_PAYLOAD_SIZE, pData, bPayload)
 {
+    Validate(true);
+    m_bModified = false;
 }
 
 vzoperation::~vzoperation()
@@ -19,6 +21,7 @@ bool vzoperation::Validate(bool bFix)
     vzsysex::Validate(bFix);
     m_bModified |= ValidateByte(m_pSysEx + 5, 0x01, bFix);
     m_bModified |= ValidateByte(m_pSysEx + 6, 0x40, bFix);
+    m_bModified |= ValidateByte(m_pSysEx + 7 + m_nPayloadSize, Checksum(m_pSysEx + 7, m_nPayloadSize), bFix);
     return m_bModified;
 }
 

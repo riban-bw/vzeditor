@@ -637,21 +637,26 @@ void VZ_EditorFrame::OnMidiReceive(wxCommandEvent &event)
             case MESSAGE_TYPE_BANK:
                 break; //Not implemented
             case MESSAGE_TYPE_OPEN:
+                //Start of bulk transfer from VZ device - defines transfer type
                 if(lLength != 8)
                     break;
                 m_vzSave.OnOpen(*(pSysExMsg + 6));
                 break;
             case MESSAGE_TYPE_CLOSE:
+                //End of bulk transfer from VZ device
                 m_vzSave.OnClose();
                 OnVzSave();
                 break;
             case MESSAGE_TYPE_OK:
+                //Acknowledge of request to start bulk transfer to VZ device
                 m_vzSave.OnOk();
                 break;
             case MESSAGE_TYPE_ERROR:
+                //Error during bulk transfer to VZ device
                 m_vzSave.OnError();
                 break;
             case MESSAGE_TYPE_DATA:
+                //Received bulk transfer data from VZ device
                 m_vzSave.OnData(pSysExMsg, lLength);
                 break;
             }
@@ -676,6 +681,7 @@ void VZ_EditorFrame::OnVzSave()
         if(pOperation)
         {
             wxString sName = pOperation->GetName();
+            int n = 0;
         }
     }
 }
@@ -822,7 +828,7 @@ void VZ_EditorFrame::GetVoice()
 void VZ_EditorFrame::GetOperation()
 {
     m_pOperation->SetSysEx(m_pOperationMidi->GetSysEx());
-    UpdateVoiceGui();
+    UpdateOperationGui();
 }
 
 void VZ_EditorFrame::UpdateVoiceGui()

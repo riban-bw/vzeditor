@@ -23,6 +23,7 @@ bool vzvoice::Validate(bool bFix)
     vzsysex::Validate(bFix);
     m_bModified |= ValidateByte(m_pSysEx + 5, 0x00, bFix);
     m_bModified |= ValidateByte(m_pSysEx + 6, 0x40, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
+    m_bModified |= ValidateByte(m_pSysEx + 7 + m_nPayloadSize, Checksum(m_pSysEx + 7, m_nPayloadSize), bFix);
     return m_bModified;
 }
 

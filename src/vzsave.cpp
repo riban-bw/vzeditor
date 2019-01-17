@@ -21,6 +21,7 @@ void vzsave::ClearVectors()
         delete *it;
     m_vOperation.empty();
 }
+
 void vzsave::OnOpen(unsigned int nDataType)
 {
     ClearVectors();
