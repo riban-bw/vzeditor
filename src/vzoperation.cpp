@@ -5,8 +5,8 @@ vzoperation::vzoperation() :
 {
 }
 
-vzoperation::vzoperation(wxByte* pData) :
-    vzsysex(VZ_OPERATION_PAYLOAD_SIZE, pData)
+vzoperation::vzoperation(wxByte* pData, bool bPayload) :
+    vzsysex(VZ_OPERATION_PAYLOAD_SIZE, pData, bPayload)
 {
 }
 

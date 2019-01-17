@@ -496,6 +496,9 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
         event.SetClientData(m_pCmbOutPort->GetClientData(0));
         OnOutPortSelect(event);
     }
+    bool bAuto;
+    configPersist.Read(wxT("persist/auto_update"), &bAuto, false);
+    m_pChkAutoUpdate->SetValue(bAuto);
     m_pvzLib = new VZLibrary();
     m_pLstLib->SetData(m_pvzLib);
 
@@ -518,6 +521,7 @@ void VZ_EditorFrame::OnClose(wxCloseEvent& event)
 {
     wxConfig configPersist(wxTheApp->GetAppName(), wxT("riban"),wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
     configPersist.Write(wxT("persist/midi_out"), m_pCmbOutPort->GetSelection());
+    configPersist.Write(wxT("persist/auto_update"), m_pChkAutoUpdate->IsChecked());
     configPersist.Write(wxT("persist/midi_in"), m_pCmbInPort->GetSelection());
     configPersist.Write(wxT("persist/maximised"), IsMaximized());
 	if(!IsMaximized() && !IsIconized())
@@ -627,9 +631,52 @@ void VZ_EditorFrame::OnMidiReceive(wxCommandEvent &event)
                 m_pBtnGetOperation->Enable();
                 break;
             }
-        }
+            case MESSAGE_TYPE_MULTI:
+            case MESSAGE_TYPE_PITCH:
+            case MESSAGE_TYPE_MODE:
+            case MESSAGE_TYPE_BANK:
+                break; //Not implemented
+            case MESSAGE_TYPE_OPEN:
+                if(lLength != 8)
+                    break;
+                m_vzSave.OnOpen(*(pSysExMsg + 6));
+                break;
+            case MESSAGE_TYPE_CLOSE:
+                m_vzSave.OnClose();
+                OnVzSave();
+                break;
+            case MESSAGE_TYPE_OK:
+                m_vzSave.OnOk();
+                break;
+            case MESSAGE_TYPE_ERROR:
+                m_vzSave.OnError();
+                break;
+            case MESSAGE_TYPE_DATA:
+                m_vzSave.OnData(pSysExMsg, lLength);
+                break;
+            }
         //delete message when no longer needed
         delete pMsg;
+    }
+}
+
+void VZ_EditorFrame::OnVzSave()
+{
+    //!@todo What to do when save message received?
+    if(m_vzSave.GetAvailable() == VZSAVE_DATATYPE::NONE)
+        return;
+    for(unsigned int i = 0; i < 64; ++i)
+    {
+        vzvoice* pVoice = m_vzSave.GetVoice(i);
+        if(pVoice)
+        {
+            wxString sName = pVoice->GetName();
+        }
+        vzoperation* pOperation = m_vzSave.GetOperation(i);
+        if(pOperation)
+        {
+            wxString sName = pOperation->GetName();
+        }
     }
 }
 
@@ -718,6 +765,7 @@ bool VZ_EditorFrame::LoadFile(wxString sFilename)
         case VZ_TYPE_TONE:
             if(!m_pVoice->SetSysEx(acSysex))
             {
+                UpdateVoiceGui();
                 m_pNotebook->SetSelection(1);
                 bFail = false;
             }
@@ -725,6 +773,7 @@ bool VZ_EditorFrame::LoadFile(wxString sFilename)
         case VZ_TYPE_OPERATION:
             if(!m_pOperation->SetSysEx(acSysex))
             {
+                UpdateOperationGui();
                 m_pNotebook->SetSelection(2);
                 bFail = false;
             }
@@ -737,7 +786,6 @@ bool VZ_EditorFrame::LoadFile(wxString sFilename)
         wxMessageBox(wxT("This does not appear to be a valid VZ file"), wxT("Error"), wxICON_ERROR);
         return false;
     }
-    UpdateGui();
     return true;
 }
 
@@ -768,16 +816,16 @@ void VZ_EditorFrame::Send()
 void VZ_EditorFrame::GetVoice()
 {
     m_pVoice->SetSysEx(m_pVoiceMidi->GetSysEx());
-    UpdateGui();
+    UpdateVoiceGui();
 }
 
 void VZ_EditorFrame::GetOperation()
 {
     m_pOperation->SetSysEx(m_pOperationMidi->GetSysEx());
-    UpdateGui();
+    UpdateVoiceGui();
 }
 
-void VZ_EditorFrame::UpdateGui()
+void VZ_EditorFrame::UpdateVoiceGui()
 {
     m_pTxtVoiceName->SetValue(m_pVoice->GetName());
     m_pSliderLevel->SetValue(m_pVoice->GetLevel());
@@ -798,6 +846,10 @@ void VZ_EditorFrame::UpdateGui()
     m_pLine2->UpdateGui();
     m_pLine3->UpdateGui();
     m_pLine4->UpdateGui();
+}
+
+void VZ_EditorFrame::UpdateOperationGui()
+{
     m_pTxtOperationName->SetValue(m_pOperation->GetName());
 }
 

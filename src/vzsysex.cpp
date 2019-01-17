@@ -3,12 +3,12 @@
 
 static const unsigned int VZ_PAYLOAD_START = 7;
 
-vzsysex::vzsysex(unsigned int nPayloadSize, wxByte* pData) :
+vzsysex::vzsysex(unsigned int nPayloadSize, wxByte* pData, bool bPayload) :
     m_nPayloadSize(nPayloadSize)
 {
     m_pSysEx = new wxByte[GetSize()];
     if(pData)
-        SetSysEx(pData);
+        SetSysEx(pData, bPayload);
     Validate(true);
     m_bModified = false;
 }
@@ -55,9 +55,12 @@ wxByte* vzsysex::GetSysEx()
     return m_pSysEx;
 }
 
-bool vzsysex::SetSysEx(wxByte* pData)
+bool vzsysex::SetSysEx(wxByte* pData, bool bPayload)
 {
-    memcpy(m_pSysEx, pData, GetSize());
+    if(bPayload)
+        memcpy(m_pSysEx + VZ_HEADER_SIZE, pData, m_nPayloadSize);
+    else
+        memcpy(m_pSysEx, pData, GetSize());
     m_bModified = Validate(true);
     return m_bModified;
 }
@@ -70,16 +73,18 @@ bool vzsysex::ValidateByte(wxByte* pByte, wxByte nByte, bool bFix)
     return bInvalid;
 }
 
-bool vzsysex::Validate(bool bFix)
+bool vzsysex::Validate(bool bFix, unsigned int nSubheaderSize, bool bChecksum)
 {
     m_bModified = false;
-    m_bModified |= ValidateByte(m_pSysEx, 0xF0, bFix);
-    m_bModified |= ValidateByte(m_pSysEx + 1, 0x44, bFix);
-    m_bModified |= ValidateByte(m_pSysEx + 2, 0x03, bFix);
-    m_bModified |= ValidateByte(m_pSysEx + 3, 0x00, bFix);
-    m_bModified |= ValidateByte(m_pSysEx + 4, 0x70, bFix); //!@todo Allow different MIDI channel [0xF0 - 0xFF]
-    m_bModified |= ValidateByte(m_pSysEx + 7 + m_nPayloadSize, Checksum(m_pSysEx + 7, m_nPayloadSize), bFix);
-    m_bModified |= ValidateByte(m_pSysEx + 8 + m_nPayloadSize, 0xF7, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
+    unsigned int nPos = 0;
+    m_bModified |= ValidateByte(m_pSysEx + nPos++, 0xF0, bFix);
+    m_bModified |= ValidateByte(m_pSysEx + nPos++, 0x44, bFix);
+    m_bModified |= ValidateByte(m_pSysEx + nPos++, 0x03, bFix);
+    m_bModified |= ValidateByte(m_pSysEx + nPos++, 0x00, bFix);
+    m_bModified |= ValidateByte(m_pSysEx + nPos++, 0x70, bFix); //!@todo Allow different MIDI channel [0xF0 - 0xFF]
+    if(bChecksum) //!@todo Checksum created before derived classes run validate
+        m_bModified |= ValidateByte(m_pSysEx + nPos++ + nSubheaderSize + m_nPayloadSize, Checksum(m_pSysEx + 7, m_nPayloadSize), bFix);
+    m_bModified |= ValidateByte(m_pSysEx + nPos++ + nSubheaderSize + m_nPayloadSize, 0xF7, bFix);
     return m_bModified;
 }
 
@@ -119,7 +124,10 @@ bool vzsysex::PutByteToSysex(unsigned int nOffset, wxByte nValue)
     return true;
 }
 
-unsigned int vzsysex::GetSize()
+unsigned int vzsysex::GetSize(bool bPayload)
 {
-    return VZ_HEADER_SIZE + m_nPayloadSize + 2; //Sysex header, payload, checksum + sysex end
+    if(bPayload)
+        return m_nPayloadSize;
+    else
+        return VZ_HEADER_SIZE + m_nPayloadSize + 2; //Sysex header, payload, checksum + sysex end
 }

@@ -33,6 +33,7 @@
 #include "vzvoice.h"
 #include "vzoperation.h"
 #include "vzlibrary.h"
+#include "vzsave.h"
 
 static const unsigned int MESSAGE_TYPE_VOICE            = 0;
 static const unsigned int MESSAGE_TYPE_OPERATION        = 1;
@@ -218,7 +219,9 @@ class VZ_EditorFrame: public wxFrame
 
         //!@todo Add function to play MIDI notes / CC
 
-        void UpdateGui();
+        void UpdateVoiceGui(); //!< Update voice editor GUI
+        void UpdateOperationGui(); //!< Update operation data editor GUI
+        void OnVzSave();
 
         void OnMidiReceive(wxCommandEvent& event); //!< Handle MIDI receive events
         wxMidiSystem* m_pMidi;
@@ -229,6 +232,7 @@ class VZ_EditorFrame: public wxFrame
         vzvoice* m_pVoiceMidi; //Last voice received via MIDI
         vzoperation* m_pOperation; //Currently edited operational memory
         vzoperation* m_pOperationMidi; //Last operation data received via MIDI
+        vzsave m_vzSave; //Object to handle save and load functions
         wxByte m_acRawVoiceMidi[VZ_HEADER_SIZE + VZ_VOICE_PAYLOAD_SIZE + 1]; //Buffer to hold raw sysex voice received via MIDI
         wxByte m_acRawOperationMidi[VZ_HEADER_SIZE + VZ_OPERATION_PAYLOAD_SIZE + 1]; //Buffer to hold raw sysex operation data received via MIDI
         VZLibrary* m_pvzLib; //Library

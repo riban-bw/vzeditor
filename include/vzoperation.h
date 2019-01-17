@@ -19,9 +19,10 @@ class vzoperation : public vzsysex
 
         /** @brief  Construct vzoperation object from existing SysEx data
         *   @param  Data Pointer to a buffer containing raw SysEx operation data
+        *   @param  bPayload True if pData contains payload only (create default header and footer) [Default: false]
         *   @note   Initialises any invalid values to defaults and sets modified field
         */
-        vzoperation(wxByte* pData);
+        vzoperation(wxByte* pData, bool bPayload = false);
 
         /** @brief  Default destruct vzoperation object
         */

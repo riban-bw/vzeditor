@@ -7,9 +7,11 @@ vzvoice::vzvoice() :
     m_pkfDCO = new KeyFollow(6, true);
 }
 
-vzvoice::vzvoice(wxByte* pData) :
-    vzsysex(VZ_VOICE_PAYLOAD_SIZE, pData)
+vzvoice::vzvoice(wxByte* pData, bool bPayload) :
+    vzsysex(VZ_VOICE_PAYLOAD_SIZE, pData, bPayload)
 {
+    Validate(true);
+    m_bModified = false;
 }
 
 vzvoice::~vzvoice()

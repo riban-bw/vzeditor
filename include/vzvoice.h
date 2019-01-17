@@ -39,9 +39,10 @@ class vzvoice : public vzsysex
 
         /** @brief  Construct vzvoice object from existing SysEx data
         *   @param  pData Pointer to a buffer containing raw SysEx voice data
+        *   @param  bPayload True if pData contains payload only (create default header and footer) [Default: false]
         *   @note   Initialises any invalid values to defaults and sets modified field
         */
-        vzvoice(wxByte* pData);
+        vzvoice(wxByte* pData, bool bPayload = false);
 
         /** @brief  Default destruct vzvoice object
         */

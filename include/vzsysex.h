@@ -18,9 +18,10 @@ class vzsysex
         /** @brief  Construct vzsysex object from existing SysEx data
         *   @param  nPayloadSize Quantity of bytes in payload
         *   @param  pData Pointer to a buffer containing raw SysEx operation data [default=null]
+        *   @param  bPayload True if pData contains payload only (create default header and footer) [Default: false]
         *   @note   Initialises any invalid values to defaults and sets modified field
         */
-        vzsysex(unsigned int nPayload, wxByte* pData = nullptr);
+        vzsysex(unsigned int nPayload, wxByte* pData = nullptr, bool bPayload = false);
 
         /** @brief  Default destruct vzsysex object
         */
@@ -45,10 +46,11 @@ class vzsysex
 
         /** @brief  Set the raw SysEx data
         *   @param  pData Pointer to a buffer containing raw SysEx operation data
+        *   @param  bPayload True if data only contains payload - create default header [Default: false]
         *   @retval bool True if any data is invalid and initialised
         *   @note   Data is validated before populating the sysex data
         */
-        bool SetSysEx(wxByte* pData);
+        bool SetSysEx(wxByte* pData, bool bPayload = false);
 
         /** @brief  Validate a single byte
         *   @param  pByte Pointer to the byte to validate
@@ -60,9 +62,11 @@ class vzsysex
 
         /** @brief  Validates raw SysEx sysex data
         *   @param  bFix True to initialise invalid data
+        *   @param  nSubheaderSize Quantity of bytes in message subheader [Default: 2]
+        *   @param  bChecksum True if message has checksum as penultimate byte
         *   @retval bool True if data is valid
         */
-        virtual bool Validate(bool bFix = false);
+        virtual bool Validate(bool bFix = false, unsigned int nSubheaderSize = 2, bool bChecksum = true);
 
         /** @brief  Validate data against checksum
         *   @param  pData Pointer to the data to validate
@@ -74,9 +78,10 @@ class vzsysex
         wxByte Checksum(wxByte* pData, unsigned int nSize, wxByte nChecksum = 0);
 
         /** @brief  Get the quantity of bytes in a SysEx message
+        *   @param  bPayload True to get size of payload. False to get size of whole sysex message including header and footer [Default: false]
         *   @retval unsigned int Quantity of bytes
         */
-        unsigned int GetSize();
+        unsigned int GetSize(bool bPayload = false);
 
     protected:
         wxByte* m_pSysEx; //Raw sysex operation data
