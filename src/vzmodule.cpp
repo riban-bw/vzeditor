@@ -1,4 +1,5 @@
 #include "vzmodule.h"
+#include "keyboard.xpm"
 
 //(*InternalHeaders(VZModule)
 #include <wx/bitmap.h>
@@ -57,8 +58,8 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
 	m_pSizerModule = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Module"));
 	FlexGridSizer6 = new wxFlexGridSizer(1, 0, 0, 0);
+	FlexGridSizer6->AddGrowableCol(1);
 	FlexGridSizer6->AddGrowableCol(2);
-	FlexGridSizer6->AddGrowableCol(4);
 	FlexGridSizer6->AddGrowableRow(0);
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	m_pChkEnable = new wxCheckBox(this, ID_CHKENABLE, _("Enable"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHKENABLE"));
@@ -132,7 +133,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	FlexGridSizer9 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer9->AddGrowableCol(0);
 	FlexGridSizer9->AddGrowableRow(1);
-	m_pBmpKeyboard = new wxStaticBitmap(this, ID_BMPKEYBOARD, wxBitmap(wxImage(_T("D:\\PJ\\vzeditor\\media\\keyboard.png"))), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_BMPKEYBOARD"));
+	m_pBmpKeyboard = new wxStaticBitmap(this, ID_BMPKEYBOARD, keyboard_xpm, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_BMPKEYBOARD"));
 	FlexGridSizer9->Add(m_pBmpKeyboard, 1, wxALL|wxEXPAND, 5);
 	StaticText5 = new wxStaticText(this, ID_STATICTEXT7, _("ENV"), wxDefaultPosition, wxSize(122,13), wxALIGN_CENTRE, _T("ID_STATICTEXT7"));
 	FlexGridSizer9->Add(StaticText5, 1, wxALL|wxEXPAND, 5);

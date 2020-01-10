@@ -330,7 +330,7 @@
 														<object class="sizeritem">
 															<object class="wxFlexGridSizer" variable="FlexGridSizer3" member="no">
 																<rows>1</rows>
-																<growablerows>1</growablerows>
+																<growablerows>0</growablerows>
 																<object class="sizeritem">
 																	<object class="wxFlexGridSizer" variable="FlexGridSizer15" member="no">
 																		<cols>1</cols>
@@ -471,7 +471,7 @@
 														<object class="sizeritem">
 															<object class="wxFlexGridSizer" variable="FlexGridSizer5" member="no">
 																<rows>1</rows>
-																<growablerows>1</growablerows>
+																<growablerows>0</growablerows>
 																<object class="sizeritem">
 																	<object class="wxBoxSizer" variable="BoxSizer4" member="no">
 																		<orient>wxVERTICAL</orient>
@@ -631,7 +631,7 @@
 											<object class="wxFlexGridSizer" variable="FlexGridSizer2" member="no">
 												<cols>1</cols>
 												<growablecols>0</growablecols>
-												<growablerows>3,4</growablerows>
+												<growablerows>0</growablerows>
 												<object class="sizeritem">
 													<object class="wxFlexGridSizer" variable="FlexGridSizer16" member="no">
 														<growablecols>1</growablecols>
@@ -681,6 +681,7 @@
 							<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
 							<include_file>keyboardoctave.h</include_file>
 							<local_include>1</local_include>
+							<style></style>
 							<hidden>1</hidden>
 						</object>
 						<flag>wxALL|wxEXPAND</flag>

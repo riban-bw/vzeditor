@@ -265,7 +265,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pFlexgridGlobalParameters->Add(StaticBoxSizer3, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("Tremelo"));
     FlexGridSizer3 = new wxFlexGridSizer(1, 0, 0, 0);
-    FlexGridSizer3->AddGrowableRow(1);
+    FlexGridSizer3->AddGrowableRow(0);
     FlexGridSizer15 = new wxFlexGridSizer(0, 1, 0, 0);
     wxString __wxRadioBoxChoices_1[2] =
     {
@@ -310,7 +310,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pFlexgridGlobalParameters->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("Vibrato"));
     FlexGridSizer5 = new wxFlexGridSizer(1, 0, 0, 0);
-    FlexGridSizer5->AddGrowableRow(1);
+    FlexGridSizer5->AddGrowableRow(0);
     BoxSizer4 = new wxBoxSizer(wxVERTICAL);
     wxString __wxRadioBoxChoices_3[2] =
     {
@@ -373,8 +373,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     ScrolledWindow2 = new wxScrolledWindow(SplitterWindow2, ID_SCROLLEDWINDOW4, wxDefaultPosition, wxDefaultSize, wxVSCROLL, _T("ID_SCROLLEDWINDOW4"));
     FlexGridSizer2 = new wxFlexGridSizer(0, 1, 0, 0);
     FlexGridSizer2->AddGrowableCol(0);
-    FlexGridSizer2->AddGrowableRow(3);
-    FlexGridSizer2->AddGrowableRow(4);
+    FlexGridSizer2->AddGrowableRow(0);
     FlexGridSizer16 = new wxFlexGridSizer(0, 0, 0, 0);
     FlexGridSizer16->AddGrowableCol(1);
     StaticText12 = new wxStaticText(ScrolledWindow2, ID_STATICTEXT13, _("Voice Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT13"));
@@ -691,7 +690,6 @@ void VZ_EditorFrame::OnVzSave()
         if(pOperation)
         {
             wxString sName = pOperation->GetName();
-            int n = 0;
         }
     }
 }
