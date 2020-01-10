@@ -13,4 +13,4 @@ The application is developed using cross-platform libraries so should work with 
 
 This application depends on wxWidgets (tested with V2.8 / V3.0) and wxMidi (source files included) which in turn depends on portmidi. (Portmidi libraries are not stored in github repository and must be sourced for your platform.) I use the open source Code::Blocks IDE (project files are stored in version control).
 
-This is open source software, released under the GPL V3. Copyright riban (Brian Walton) 2014-2018.
+This is open source software, released under the GPL V3. Copyright riban (Brian Walton) 2014-2020.

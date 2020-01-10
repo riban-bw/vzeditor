@@ -3,6 +3,7 @@
 vzoperation::vzoperation() :
     vzsysex(VZ_OPERATION_PAYLOAD_SIZE)
 {
+    Validate(true);
 }
 
 vzoperation::vzoperation(wxByte* pData, bool bPayload) :

@@ -21,7 +21,7 @@ class vzsysex
         *   @param  bPayload True if pData contains payload only (create default header and footer) [Default: false]
         *   @note   Initialises any invalid values to defaults and sets modified field
         */
-        vzsysex(unsigned int nPayload, wxByte* pData = nullptr, bool bPayload = false);
+        vzsysex(unsigned int nPayload, wxByte* pData = NULL, bool bPayload = false);
 
         /** @brief  Default destruct vzsysex object
         */

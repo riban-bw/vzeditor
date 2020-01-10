@@ -4,9 +4,10 @@
 
 VZLibrary::VZLibrary(const wxString &sFilename) :
     m_sFilename(sFilename),
-    m_bDirty(false)
+    m_bDirty(false),
+    m_bValid(false)
 {
-    Load(sFilename);
+    m_bValid = Load(sFilename);
 }
 
 VZLibrary::~VZLibrary()
@@ -24,9 +25,15 @@ void VZLibrary::ClearData()
 
 bool VZLibrary::Load(const wxString &sFilename)
 {
-    //!@todo Use filename as parameter
     wxXmlDocument xmlDoc;
-    if(!wxFileExists(sFilename) || !xmlDoc.Load(sFilename))
+    if(!wxFileExists(sFilename))
+    {
+        wxXmlNode nodeRoot(NULL, wxXML_ELEMENT_NODE, wxT("vzlibrary"));
+        xmlDoc.SetRoot(&nodeRoot);
+        if(!xmlDoc.Save(sFilename))
+            return false;
+    }
+    else if(!xmlDoc.Load(sFilename))
         return false;
     Close();
     wxXmlNode* pNode = xmlDoc.GetRoot()->GetChildren();

@@ -35,10 +35,10 @@ enum VZSAVE_RX_STATUS {
 };
 
 enum VZSAVE_DATATYPE {
-    NONE,    // No valid data available
-    VOICE,   // Voice data available
-    OP,      // Operation data available
-    VOICE_OP // Voice and operation data available
+    VZSAVE_DATATYPE_NONE,    // No valid data available
+    VZSAVE_DATATYPE_VOICE,   // Voice data available
+    VZSAVE_DATATYPE_OP,      // Operation data available
+    VZSAVE_DATATYPE_VOICE_OP // Voice and operation data available
 };
 
 /** Provides interface to VZ SysEx save operation
@@ -110,6 +110,13 @@ class vzsave : public vzsysex
         *   @retval pData Pointer to vzoperation object or NULL if data not available
         */
         vzoperation* GetOperation(unsigned int nIndex);
+
+        /** @brief  Save data to files and create a library
+        *   @param  sPath Full path and filename to save new library
+        *   @retval bool True on success
+        *   @note   Each voice and operation data is saved as individual files within same folder
+        */
+        bool SaveToDisk(wxString sPath);
 
     protected:
 

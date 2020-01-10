@@ -55,6 +55,7 @@ const long VZ_EditorFrame::ID_CHKAUTOUPDATE = wxNewId();
 const long VZ_EditorFrame::ID_BTNSEND = wxNewId();
 const long VZ_EditorFrame::ID_BTNGETVOICE = wxNewId();
 const long VZ_EditorFrame::IID_BTNGETOPERATION = wxNewId();
+const long VZ_EditorFrame::ID_BTNSAVEDUMP = wxNewId();
 const long VZ_EditorFrame::ID_LSTLIB = wxNewId();
 const long VZ_EditorFrame::ID_PNLLIBRARY = wxNewId();
 const long VZ_EditorFrame::ID_LINE1 = wxNewId();
@@ -98,6 +99,7 @@ const long VZ_EditorFrame::ID_SCROLLEDWINDOW4 = wxNewId();
 const long VZ_EditorFrame::ID_SPLITTERWINDOW2 = wxNewId();
 const long VZ_EditorFrame::ID_PNLOPERATION = wxNewId();
 const long VZ_EditorFrame::ID_NOTEBOOK = wxNewId();
+const long VZ_EditorFrame::ID_KBD = wxNewId();
 const long VZ_EditorFrame::idMenuOpen = wxNewId();
 const long VZ_EditorFrame::idMenuSave = wxNewId();
 const long VZ_EditorFrame::idMenuQuit = wxNewId();
@@ -132,6 +134,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer4;
     wxBoxSizer* BoxSizer5;
     wxBoxSizer* BoxSizer6;
+    wxBoxSizer* BoxSizer7;
     wxFlexGridSizer* FlexGridSizer10;
     wxFlexGridSizer* FlexGridSizer11;
     wxFlexGridSizer* FlexGridSizer12;
@@ -182,6 +185,8 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pBtnGetOperation = new wxButton(this, IID_BTNGETOPERATION, _("Get Operation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("IID_BTNGETOPERATION"));
     m_pBtnGetOperation->Disable();
     FlexGridSizer1->Add(m_pBtnGetOperation, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pBtnSaveDump = new wxButton(this, ID_BTNSAVEDUMP, _("Save Dump"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNSAVEDUMP"));
+    FlexGridSizer1->Add(m_pBtnSaveDump, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSizerMain->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
     m_pNotebook = new wxNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_NOPAGETHEME, _T("ID_NOTEBOOK"));
     m_pPnlLibrary = new wxPanel(m_pNotebook, ID_PNLLIBRARY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLLIBRARY"));
@@ -390,6 +395,10 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pNotebook->AddPage(m_pPnlVoice, _("Voice Editor"), false);
     m_pNotebook->AddPage(m_pPnlOperation, _("Operation Editor"), false);
     m_pSizerMain->Add(m_pNotebook, 1, wxALL|wxEXPAND, 5);
+    BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
+    m_pKeyboard = new KeyboardOctave(this,ID_KBD);
+    BoxSizer7->Add(m_pKeyboard, 1, wxALL|wxEXPAND, 5);
+    m_pSizerMain->Add(BoxSizer7, 1, wxALL|wxEXPAND, 5);
     SetSizer(m_pSizerMain);
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
@@ -420,6 +429,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BTNSEND,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnSendClick);
     Connect(ID_BTNGETVOICE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnGetVoice);
     Connect(IID_BTNGETOPERATION,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnGetOperation);
+    Connect(ID_BTNSAVEDUMP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnSaveDump);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZ_EditorFrame::OnTxtVoiceNameText);
     Connect(ID_SLIDERLEVEL,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZ_EditorFrame::OnLevelChanged);
     Connect(ID_SLIDEROCTAVE,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZ_EditorFrame::OnOctaveChanged);
@@ -668,7 +678,7 @@ void VZ_EditorFrame::OnMidiReceive(wxCommandEvent &event)
 void VZ_EditorFrame::OnVzSave()
 {
     //!@todo What to do when save message received?
-    if(m_vzSave.GetAvailable() == VZSAVE_DATATYPE::NONE)
+    if(m_vzSave.GetAvailable() == VZSAVE_DATATYPE_NONE)
         return;
     for(unsigned int i = 0; i < 64; ++i)
     {
@@ -719,7 +729,7 @@ void VZ_EditorFrame::Save(unsigned int nType)
         wxMessageBox(wxT("Failed to save file"), wxT("Error"), wxICON_ERROR);
         return;
     }
-    vzsysex* pSysex = nullptr;
+    vzsysex* pSysex = NULL;
     switch(nType)
     {
         case 0:
@@ -799,7 +809,7 @@ void VZ_EditorFrame::Send()
 {
     if(!m_pMidiOut)
         return;
-    vzsysex* pSysex = nullptr;
+    vzsysex* pSysex = NULL;
     switch(m_pNotebook->GetSelection())
     {
         case 0: //Library
@@ -1030,3 +1040,11 @@ void VZ_EditorFrame::OnVibratoDelayChanged(wxScrollEvent& event)
     AutoSend();
 }
 
+
+void VZ_EditorFrame::OnBtnSaveDump(wxCommandEvent& event)
+{
+    wxFileDialog dlg(this, wxT("Select filename and folder to save new library"), wxEmptyString, wxT("NewLibrary.xml"), wxT("Library files (*.xml)|*.xml|All files (*.*)|*.*"), wxFD_SAVE);
+    if(dlg.ShowModal() == wxID_CANCEL)
+        return;
+    m_vzSave.SaveToDisk(dlg.GetPath());
+}

@@ -4,6 +4,7 @@
 vzvoice::vzvoice() :
     vzsysex(VZ_VOICE_PAYLOAD_SIZE)
 {
+    Validate(true);
     m_pkfDCO = new KeyFollow(6, true);
 }
 

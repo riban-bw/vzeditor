@@ -22,8 +22,9 @@
 					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
 				</ResourceCompiler>
 				<Linker>
-					<Add library="libwxmsw28ud.a" />
+					<Add library="wxmsw28ud_gcc_riban" />
 					<Add directory="$(#wx)/lib/gcc_dll" />
+					<Add directory="$(#portmidi)/debug" />
 				</Linker>
 			</Target>
 			<Target title="Release">
@@ -42,8 +43,9 @@
 				</ResourceCompiler>
 				<Linker>
 					<Add option="-s" />
-					<Add library="libwxmsw28u.a" />
+					<Add library="wxmsw28u_gcc_riban" />
 					<Add directory="$(#wx)/lib/gcc_dll" />
+					<Add directory="$(#portmidi)/release" />
 				</Linker>
 			</Target>
 		</Build>
@@ -62,11 +64,13 @@
 			<Add directory="$(#wx)/include" />
 		</ResourceCompiler>
 		<Linker>
+			<Add option="-static-libstdc++" />
+			<Add option="-static-libgcc" />
 			<Add option="-mthreads" />
 			<Add library="portmidi" />
-			<Add directory="lib" />
 		</Linker>
 		<Unit filename="include/envelope.h" />
+		<Unit filename="include/keyboardoctave.h" />
 		<Unit filename="include/keyfollow.h" />
 		<Unit filename="include/portmidi.h" />
 		<Unit filename="include/porttime.h" />
@@ -85,6 +89,7 @@
 			<Option compilerVar="WINDRES" />
 		</Unit>
 		<Unit filename="src/envelope.cpp" />
+		<Unit filename="src/keyboardoctave.cpp" />
 		<Unit filename="src/keyfollow.cpp" />
 		<Unit filename="src/sortablelist.cpp" />
 		<Unit filename="src/vzeditorapp.cpp" />
@@ -98,6 +103,7 @@
 		<Unit filename="src/vzvoice.cpp" />
 		<Unit filename="src/wxMidi.cpp" />
 		<Unit filename="src/wxMidiDatabase.cpp" />
+		<Unit filename="wxsmith/keyboardoctave.wxs" />
 		<Unit filename="wxsmith/vzeditorframe.wxs" />
 		<Unit filename="wxsmith/vzline.wxs" />
 		<Unit filename="wxsmith/vzmodule.wxs" />
@@ -107,13 +113,15 @@
 			<debugger />
 			<lib_finder disable_auto="1" />
 			<wxsmith version="1">
-				<gui name="wxWidgets" src="src/vzeditorapp.cpp" main="include/vzeditorframe.h" init_handlers="necessary" language="CPP" />
+				<gui name="wxWidgets" src="src/vzeditorapp.cpp" main="-- None --" init_handlers="necessary" language="CPP" />
 				<resources>
 					<wxFrame wxs="wxsmith/vzeditorframe.wxs" src="src/vzeditormain.cpp" hdr="include/vzeditormain.h" fwddecl="0" i18n="1" name="VZ_EditorFrame" language="CPP" />
 					<wxPanel wxs="wxsmith/vzline.wxs" src="src/vzline.cpp" hdr="include/vzline.h" fwddecl="0" i18n="1" name="VZLine" language="CPP" />
 					<wxPanel wxs="wxsmith/vzmodule.wxs" src="src/vzmodule.cpp" hdr="include/vzmodule.h" fwddecl="0" i18n="1" name="VZModule" language="CPP" />
+					<wxPanel wxs="wxsmith/keyboardoctave.wxs" src="src/keyboardoctave.cpp" hdr="include/keyboardoctave.h" fwddecl="0" i18n="1" name="KeyboardOctave" language="CPP" />
 				</resources>
 			</wxsmith>
+			<fortran_project />
 		</Extensions>
 	</Project>
 </CodeBlocks_project_file>

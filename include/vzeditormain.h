@@ -11,6 +11,7 @@
 #define VZ_EDITORMAIN_H
 
 //(*Headers(VZ_EditorFrame)
+#include "keyboardoctave.h"
 #include "sortablelist.h"
 #include "vzline.h"
 #include <wx/button.h>
@@ -83,6 +84,7 @@ class VZ_EditorFrame: public wxFrame
         void OnVibratoRateChanged(wxScrollEvent& event);
         void OnVibratoDelayChanged(wxScrollEvent& event);
         void OnBtnGetOperation(wxCommandEvent& event);
+        void OnBtnSaveDump(wxCommandEvent& event);
         //*)
         void OnGridSort(wxCommandEvent& event);
         void OnLibSort(wxListEvent& event);
@@ -97,6 +99,7 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_BTNSEND;
         static const long ID_BTNGETVOICE;
         static const long IID_BTNGETOPERATION;
+        static const long ID_BTNSAVEDUMP;
         static const long ID_LSTLIB;
         static const long ID_PNLLIBRARY;
         static const long ID_LINE1;
@@ -140,6 +143,7 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_SPLITTERWINDOW2;
         static const long ID_PNLOPERATION;
         static const long ID_NOTEBOOK;
+        static const long ID_KBD;
         static const long idMenuOpen;
         static const long idMenuSave;
         static const long idMenuQuit;
@@ -148,6 +152,7 @@ class VZ_EditorFrame: public wxFrame
         //*)
 
         //(*Declarations(VZ_EditorFrame)
+        KeyboardOctave* m_pKeyboard;
         SortableList* m_pLstLib;
         VZLine* m_pLine1;
         VZLine* m_pLine2;
@@ -155,6 +160,7 @@ class VZ_EditorFrame: public wxFrame
         VZLine* m_pLine4;
         wxButton* m_pBtnGetOperation;
         wxButton* m_pBtnGetVoice;
+        wxButton* m_pBtnSaveDump;
         wxButton* m_pBtnSend;
         wxCheckBox* m_pChkAutoUpdate;
         wxChoice* m_pCmbInPort;

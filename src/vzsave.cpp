@@ -1,8 +1,9 @@
 #include "vzsave.h"
+#include "vzlibrary.h"
 
 vzsave::vzsave() :
     vzsysex(VZ_SAVE_PAYLOAD_SIZE),
-    m_nRxStatus(VZSAVE_RX_STATUS::RX_STATUS_IDLE)
+    m_nRxStatus(RX_STATUS_IDLE)
 {
 }
 
@@ -28,26 +29,34 @@ void vzsave::OnOpen(unsigned int nDataType)
     switch(nDataType)
     {
         case 0:
-            m_nRxStatus = VZSAVE_RX_STATUS::RX_STATUS_VOICE;
+            m_nRxStatus = RX_STATUS_VOICE;
             //!@todo Populate voice data
             break;
         case 1:
-            m_nRxStatus = VZSAVE_RX_STATUS::RX_STATUS_OP;
+            m_nRxStatus = RX_STATUS_OP;
             //!@todo Populate operation data
             break;
         case 2:
-            m_nRxStatus = VZSAVE_RX_STATUS::RX_STATUS_VOICE_OP;
+            m_nRxStatus = RX_STATUS_VOICE_OP;
             //!@todo Populate voice data
             //!@todo Populate operation data
             break;
         default:
-            m_nRxStatus = VZSAVE_RX_STATUS::RX_STATUS_IDLE;
+            m_nRxStatus = RX_STATUS_IDLE;
     }
 }
 
 void vzsave::OnClose()
 {
-    m_nRxStatus = VZSAVE_RX_STATUS::RX_STATUS_IDLE;
+    if(m_nRxStatus == RX_STATUS_VOICE || m_nRxStatus == RX_STATUS_VOICE_OP)
+    {
+        //!@todo Save new voices to (temporary?) .vzt files
+    }
+    if(m_nRxStatus == RX_STATUS_OP || m_nRxStatus == RX_STATUS_VOICE_OP)
+    {
+        //!@todo Save new voices to (temporary?) .vzo files
+    }
+    m_nRxStatus = RX_STATUS_IDLE;
 }
 
 void vzsave::OnOk()
@@ -67,7 +76,7 @@ void vzsave::OnData(wxByte* pData, long lLength)
     pData += 6;
     lLength -= 6;
     // Iterate through data, one voice at a time populating new voice objects
-    if(m_nRxStatus == VZSAVE_RX_STATUS::RX_STATUS_VOICE || m_nRxStatus == VZSAVE_RX_STATUS::RX_STATUS_VOICE_OP)
+    if(m_nRxStatus == RX_STATUS_VOICE || m_nRxStatus == RX_STATUS_VOICE_OP)
     {
         if(lLength < (VZ_VOICE_PAYLOAD_SIZE + 1) * 64)
             return;
@@ -78,7 +87,7 @@ void vzsave::OnData(wxByte* pData, long lLength)
         }
         lLength -= VZ_VOICE_PAYLOAD_SIZE * 64;
     }
-    if(m_nRxStatus == VZSAVE_RX_STATUS::RX_STATUS_OP || m_nRxStatus == VZSAVE_RX_STATUS::RX_STATUS_VOICE_OP)
+    if(m_nRxStatus == RX_STATUS_OP || m_nRxStatus == RX_STATUS_VOICE_OP)
     {
         if(lLength < (VZ_OPERATION_PAYLOAD_SIZE + 1) * 64)
             return;
@@ -88,7 +97,7 @@ void vzsave::OnData(wxByte* pData, long lLength)
             pData += VZ_OPERATION_PAYLOAD_SIZE + 1;
         }
     }
-    m_nRxStatus = VZSAVE_RX_STATUS::RX_STATUS_CLOSE;
+    m_nRxStatus = RX_STATUS_CLOSE;
 }
 
 VZSAVE_DATATYPE vzsave::GetAvailable()
@@ -96,25 +105,37 @@ VZSAVE_DATATYPE vzsave::GetAvailable()
     if (m_vOperation.size() > 0)
     {
         if(m_vVoice.size() > 0)
-            return VZSAVE_DATATYPE::VOICE_OP;
+            return VZSAVE_DATATYPE_VOICE_OP;
         else
-            return VZSAVE_DATATYPE::OP;
+            return VZSAVE_DATATYPE_OP;
     }
     if(m_vVoice.size() > 0)
-        return VZSAVE_DATATYPE::VOICE;
-    return VZSAVE_DATATYPE::NONE;
+        return VZSAVE_DATATYPE_VOICE;
+    return VZSAVE_DATATYPE_NONE;
 }
 
 vzvoice* vzsave::GetVoice(unsigned int nIndex)
 {
     if(m_vVoice.size() > nIndex)
         return m_vVoice[nIndex];
-    return nullptr;
+    return NULL;
 }
 
 vzoperation* vzsave::GetOperation(unsigned int nIndex)
 {
     if(m_vOperation.size() > nIndex)
         return m_vOperation[nIndex];
-    return nullptr;
+    return NULL;
+}
+
+
+bool vzsave::SaveToDisk(wxString sPath)
+{
+//    if(m_vVoice.size() == 0 && m_vOperation.size() == 0)
+//        return; // Nothing to save
+    VZLibrary vzLib(sPath);
+    if(!vzLib.IsValid())
+        return false;
+
+    return true;
 }
