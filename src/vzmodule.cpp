@@ -1,5 +1,5 @@
 #include "vzmodule.h"
-#include "keyboard.xpm"
+#include "../media/keyboard.xpm"
 
 //(*InternalHeaders(VZModule)
 #include <wx/bitmap.h>
