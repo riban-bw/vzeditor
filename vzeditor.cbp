@@ -38,6 +38,7 @@
 			<Add option="`wx-config --cflags`" />
 			<Add option="-DwxUSE_UNICODE" />
 			<Add directory="include" />
+			<Add directory="media" />
 		</Compiler>
 		<Linker>
 			<Add option="`wx-config --libs`" />
