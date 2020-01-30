@@ -1,0 +1,3 @@
+[submodule "wxEnvelopeGraph"]
+	path = wxEnvelopeGraph
+	url = https://github.com/riban-bw/wxEnvelopeGraph.git

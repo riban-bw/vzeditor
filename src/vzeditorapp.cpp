@@ -8,7 +8,6 @@
  **************************************************************/
 
 #include "vzeditorapp.h"
-#include "../media/icon.xpm"
 
 //(*AppHeaders
 #include "vzeditormain.h"
@@ -25,11 +24,11 @@ bool VZ_EditorApp::OnInit()
     if ( wxsOK )
     {
     	VZ_EditorFrame* Frame = new VZ_EditorFrame(0);
-    	Frame->SetIcon(icon_xpm);
     	Frame->Show();
     	SetTopWindow(Frame);
     }
     //*)
+
     return wxsOK;
 
 }

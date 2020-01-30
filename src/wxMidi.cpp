@@ -1,11 +1,10 @@
-
 //=====================================================================================
 // wxMidi: A MIDI interface based on PortMidi, the Portable Real-Time MIDI Library
 // --------------------------------------------------------------------------------
 //
 // Author:      Cecilio Salmeron <s.cecilio@gmail.com>
 // Copyright:   (c) 2005-2015 Cecilio Salmeron
-// Licence:     wxWidgets licence, version 3.1 or later at your choice.
+// Licence:     wxWidgets license, version 3.1 or later at your choice.
 //=====================================================================================
 #if defined(__GNUG__) && !defined(NO_GCC_PRAGMA)
 #pragma implementation "wxMidi.h"
@@ -32,7 +31,8 @@
 wxMidiTimestamp wxMidiGetTime() { return Pt_Time(); }
 
 //Define the new command event to inform that MIDI input data is available
-DEFINE_EVENT_TYPE(wxEVT_MIDI_INPUT)
+//DEFINE_EVENT_TYPE(wxEVT_MIDI_INPUT)
+wxDEFINE_EVENT(wxEVT_MIDI_INPUT, wxCommandEvent);
 
 //================================================================================
 // Implementation of classes wxMidiPmEvent, wxMidiShortEvent and wxMidiSysExEvent
@@ -41,6 +41,10 @@ DEFINE_EVENT_TYPE(wxEVT_MIDI_INPUT)
 #define SYSEX_CHUNK_SIZE		4								// PmEvent size
 #define SYSEX_BUFFER_SIZE		(SYSEX_CHUNK_SIZE * 1024)		// alloc in 4K chunks
 
+//-----------------------------------------------------------------------------
+
+//-----------------------------------------------------------------------------
+/// Default constructor, intended for wxMidi internal use.
 wxMidiSysExMessage::wxMidiSysExMessage()
     : wxMidiMessage()
 	, m_pMessage(NULL)
@@ -51,7 +55,25 @@ wxMidiSysExMessage::wxMidiSysExMessage()
 	m_type = wxMIDI_SYSEX_MSG;
 }
 
+//-----------------------------------------------------------------------------
+/** Constructor, creating a wxMidiSysExMessage object from a string
+    of wxBytes.
 
+    In case of error during construction, subsequent
+    calls to Error() will return a error code with more
+    information about the error.
+    \param msg  The raw MIDI message, as string of wxBytes. It must
+           include the start-of-sysex status byte (0xF0) at the
+           beginning and the end-of-sysex status byte (0xF7) at the
+           end.
+    \param timestamp  The timestamp value. It is milliseconds elapsed
+           since the wxMidi package initialization. Current time can be
+           obtained by calling wxMidi::GetTime(). Only meaningful if
+           the wxOutDevice is open with latency time different from
+           zero. In any case, if no timestamp is specified or if a
+           value of zero is specified, the message will be delivered
+           immediately. See wxMidiOutDevice::Write().
+*/
 wxMidiSysExMessage::wxMidiSysExMessage(wxByte* msg, wxMidiTimestamp timestamp)
     : wxMidiMessage()
 	, m_pMessage(NULL)
@@ -81,6 +103,8 @@ wxMidiSysExMessage::wxMidiSysExMessage(wxByte* msg, wxMidiTimestamp timestamp)
 	memcpy(m_pMessage, msg, m_nSize);
 }
 
+//-----------------------------------------------------------------------------
+/// Destructor
 wxMidiSysExMessage::~wxMidiSysExMessage()
 {
 	if (m_pMessage) {
@@ -95,8 +119,8 @@ wxMidiSysExMessage::~wxMidiSysExMessage()
 
 
 wxMidiDevice::wxMidiDevice(wxMidiDeviceID nDevice)
+    : m_nDevice(nDevice)
 {
-	m_nDevice = nDevice;
 	int devices = Pm_CountDevices();
 	if (m_nDevice > devices-1) m_nDevice = 0;
 	m_pInfo = Pm_GetDeviceInfo(m_nDevice);
@@ -105,12 +129,11 @@ wxMidiDevice::wxMidiDevice(wxMidiDeviceID nDevice)
 
 wxMidiDevice::~wxMidiDevice()
 {
-	/*
-    WARNING: Pm_GetDeviceInfo() returns a pointer to a PmDeviceInfo structure
-    referring to the device specified by id. The returned structure is owned by
-	the PortMidi implementation and must not be manipulated or freed.
-	*/
-	//if (m_pInfo) delete m_pInfo;
+    //AWARE: Pm_GetDeviceInfo() returns a pointer to a PmDeviceInfo structure
+    //referring to the device specified by id. The returned structure is owned by
+    //the PortMidi implementation and must not be manipulated or freed.
+
+	//delete m_pInfo;
 }
 
 const wxString wxMidiDevice::DeviceName()
@@ -164,10 +187,9 @@ bool wxMidiDevice::IsOutputPort()
 // Class wxMidiOutDevice implementation
 //================================================================================
 
-wxMidiError wxMidiOutDevice::Open(long latency, void *DriverInfo)
+wxMidiError wxMidiOutDevice::Open(long latency, void* pDriverInfo)
 {
-	// bufferSize = 0    How to set up an optimum value?
-	return (wxMidiError)Pm_OpenOutput(&m_stream, m_nDevice, DriverInfo,
+	return (wxMidiError)Pm_OpenOutput(&m_stream, m_nDevice, pDriverInfo,
 									  0, NULL, NULL, latency );
 }
 
@@ -184,14 +206,14 @@ wxMidiError wxMidiOutDevice::Write(wxMidiSysExMessage* pMsg)
 	else
 		return (wxMidiError)Pm_WriteSysEx(m_stream,
 									  pMsg->GetTimestamp(),
-									  (wxByte *)pMsg->GetMessage() );
+									  (unsigned char *)pMsg->GetMessage() );
 }
 
 wxMidiError wxMidiOutDevice::Write(wxByte* msg, wxMidiTimestamp when)
 {
 	return (wxMidiError)Pm_WriteSysEx(m_stream,
 									  when,
-									  (wxByte *)msg );
+									  (unsigned char *)msg );
 }
 
 wxMidiError	wxMidiOutDevice::NoteOff(int channel, int note, int velocity)
@@ -254,13 +276,13 @@ wxMidiInDevice::~wxMidiInDevice()
 	if (m_SysexBuffer) delete [] m_SysexBuffer;
 }
 
-wxMidiError wxMidiInDevice::Open(void *DriverInfo, int buffersize)
+wxMidiError wxMidiInDevice::Open(void* pDriverInfo, int buffersize)
 {
-	return (wxMidiError)Pm_OpenInput(&m_stream, m_nDevice, DriverInfo,
+	return (wxMidiError)Pm_OpenInput(&m_stream, m_nDevice, pDriverInfo,
 									 buffersize, NULL, NULL);
 }
 
-wxMidiError wxMidiInDevice::Read(wxMidiPmEvent *buffer, long* length )
+wxMidiError wxMidiInDevice::Read(wxMidiPmEvent* buffer, long* length )
 {
 	/*
 	If no error, the real number of buffers read is returned in "length" and
@@ -307,7 +329,7 @@ wxMidiMessage* wxMidiInDevice::Read(wxMidiError* pError)
 		m_fEventPending = false;
 	}
 	else {
-		nError = (wxMidiError) Pm_Read( m_stream, &buffer, 1 );
+        nError = (wxMidiError) Pm_Read( m_stream, &buffer, 1 );
 
 		// if read was not successful return the error
 		if (nError < wxMIDI_NO_ERROR) {
@@ -349,7 +371,8 @@ wxMidiMessage* wxMidiInDevice::Read(wxMidiError* pError)
 
 		while(!fEndSysex)
         {
-			nError = (wxMidiError) Pm_Read( m_stream, &buffer, 1 );
+            nError = (wxMidiError) Pm_Read( m_stream, &buffer, 1 );
+
 			if (nError < wxMIDI_NO_ERROR) {
 				*pError = nError;
 				delete pSysExMsg;
@@ -466,8 +489,8 @@ bool wxMidiInDevice::MoveDataToSysExBuffer(PmMessage message)
 		// allocate the new buffer
 		wxByte* newSysexBuffer = new wxByte[ m_SizeOfSysexBuffer ];
 
-		wxLogDebug(wxString::Format(
-			_T("Increasing buffer size from %ld to %ld"), oldSize, m_SizeOfSysexBuffer ));
+//		wxLogDebug(wxString::Format(
+//			_T("Increasing buffer size from %ld to %ld"), oldSize, m_SizeOfSysexBuffer ));
 
 		// move the data from old buffer
 		memcpy( newSysexBuffer, m_SysexBuffer, oldSize );
@@ -657,6 +680,7 @@ void* wxMidiThread::Entry()
 //	the constructor and destructor, respectively
 //================================================================================
 
+
 wxMidiSystem* wxMidiSystem::m_pInstance = (wxMidiSystem*)NULL;
 
 wxMidiSystem::~wxMidiSystem()
@@ -743,7 +767,7 @@ const wxString wxMidiSystem::GetErrorText( wxMidiError errnum )
    }
 }
 
-
+//-----------------------------------------------------------------------------
 wxString wxMidiSystem::GetHostErrorText()
 {
 	//TODO: review this

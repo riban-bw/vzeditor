@@ -8,6 +8,7 @@
  **************************************************************/
 
 #include "vzeditormain.h"
+#include "../media/icon.xpm"
 #include <wx/msgdlg.h>
 #include <wx/file.h>
 #include <wx/filename.h>
@@ -15,36 +16,12 @@
 #include <wx/display.h>
 
 //(*InternalHeaders(VZ_EditorFrame)
+#include <wx/bitmap.h>
+#include <wx/icon.h>
+#include <wx/image.h>
 #include <wx/intl.h>
 #include <wx/string.h>
 //*)
-
-//helper functions
-enum wxbuildinfoformat {
-    short_f, long_f };
-
-wxString wxbuildinfo(wxbuildinfoformat format)
-{
-    wxString wxbuild(wxVERSION_STRING);
-
-    if (format == long_f )
-    {
-#if defined(__WXMSW__)
-        wxbuild << _T("-Windows");
-#elif defined(__UNIX__)
-        wxbuild << _T("-Linux");
-#endif
-
-#if wxUSE_UNICODE
-        wxbuild << _T("-Unicode build");
-#else
-        wxbuild << _T("-ANSI build");
-#endif // wxUSE_UNICODE
-    }
-
-    return wxbuild;
-}
-
 
 //(*IdInit(VZ_EditorFrame)
 const long VZ_EditorFrame::ID_STATICTEXT2 = wxNewId();
@@ -162,6 +139,11 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer3;
 
     Create(parent, wxID_ANY, _("riban Casio VZ-x Voice Editor and Library"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+    {
+    	wxIcon FrameIcon;
+    	FrameIcon.CopyFromBitmap(wxBitmap(icon_xpm));
+    	SetIcon(FrameIcon);
+    }
     m_pSizerMain = new wxFlexGridSizer(0, 1, 0, 0);
     m_pSizerMain->AddGrowableCol(0);
     m_pSizerMain->AddGrowableRow(1);
@@ -557,14 +539,23 @@ void VZ_EditorFrame::OnQuit(wxCommandEvent& event)
 
 void VZ_EditorFrame::OnAbout(wxCommandEvent& event)
 {
-    wxString msg = wxbuildinfo(long_f);
-    wxMessageBox(msg, _("Casio VZ-1 / VZ-10M / VZ-8 Library and editor"));
+    wxMessageBox("riban 2014-2020", _("Casio VZ-1 / VZ-10M / VZ-8 Library and editor"));
+}
+
+int VZ_EditorFrame::GetPortId(PmDeviceInfo* pInfo)
+{
+    for(int nPort = 0; nPort < Pm_CountDevices(); ++nPort)
+        if(pInfo == Pm_GetDeviceInfo(nPort))
+            return nPort;
+    return -1;
 }
 
 void VZ_EditorFrame::OnInPortSelect(wxCommandEvent& event)
 {
     CloseInput();
-    int nPort = (int)(long)event.GetClientData();
+    int nPort = GetPortId((PmDeviceInfo*)event.GetClientData());
+    if(nPort < 0)
+        return;
     m_pMidiIn = new wxMidiInDevice(nPort);
     m_pMidiIn->Open();
     m_pMidiIn->StartListening(this);
@@ -573,7 +564,9 @@ void VZ_EditorFrame::OnInPortSelect(wxCommandEvent& event)
 void VZ_EditorFrame::OnOutPortSelect(wxCommandEvent& event)
 {
     CloseOutput();
-    int nPort = (int)(long)event.GetClientData();
+    int nPort = GetPortId((PmDeviceInfo*)event.GetClientData());
+    if(nPort < 0)
+        return;
     m_pMidiOut = new wxMidiOutDevice(nPort);
     m_pMidiOut->Open(0);
     m_pBtnSend->Enable();
@@ -967,12 +960,12 @@ void VZ_EditorFrame::UpdateMidiPorts()
         if(pInfo->input)
         {
             int nIndex = m_pCmbInPort->Append(wxString::FromUTF8(pInfo->name));
-            m_pCmbInPort->SetClientData(nIndex, (void*)(long)i);
+            m_pCmbInPort->SetClientData(nIndex, (void*)pInfo);
         }
         if(pInfo->output)
         {
             int nIndex = m_pCmbOutPort->Append(wxString::FromUTF8(pInfo->name));
-            m_pCmbOutPort->SetClientData(nIndex, (void*)(long)i);
+            m_pCmbOutPort->SetClientData(nIndex, (void*)pInfo);
         }
     }
 }

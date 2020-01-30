@@ -19,11 +19,12 @@ const long VZModule::ID_STATICTEXT6 = wxNewId();
 const long VZModule::ID_SLIDERDETUNEFINE = wxNewId();
 const long VZModule::ID_CHKFIXEDFREQ = wxNewId();
 const long VZModule::ID_CHKX16 = wxNewId();
-const long VZModule::ID_STATICTEXT8 = wxNewId();
+const long VZModule::ID_CUSTOM1 = wxNewId();
 const long VZModule::ID_STATICTEXT15 = wxNewId();
 const long VZModule::ID_SLIDERENVDEPTH = wxNewId();
 const long VZModule::ID_BMPKEYBOARD = wxNewId();
-const long VZModule::ID_STATICTEXT7 = wxNewId();
+const long VZModule::ID_CUSTOM2 = wxNewId();
+const long VZModule::ID_SCROLLEDWINDOW1 = wxNewId();
 const long VZModule::ID_CMBKEYVELCURVE = wxNewId();
 const long VZModule::ID_SLIDERVELSENSITIVITY = wxNewId();
 const long VZModule::ID_SLIDERAMPSENS = wxNewId();
@@ -42,6 +43,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	wxBoxSizer* BoxSizer2;
 	wxFlexGridSizer* FlexGridSizer10;
 	wxFlexGridSizer* FlexGridSizer11;
+	wxFlexGridSizer* FlexGridSizer1;
 	wxFlexGridSizer* FlexGridSizer4;
 	wxFlexGridSizer* FlexGridSizer5;
 	wxFlexGridSizer* FlexGridSizer6;
@@ -55,10 +57,9 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	wxStaticBoxSizer* StaticBoxSizer6;
 	wxStaticBoxSizer* StaticBoxSizer7;
 
-	Create(parent, id, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("id"));
+	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	m_pSizerModule = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Module"));
 	FlexGridSizer6 = new wxFlexGridSizer(1, 0, 0, 0);
-	FlexGridSizer6->AddGrowableCol(1);
 	FlexGridSizer6->AddGrowableCol(2);
 	FlexGridSizer6->AddGrowableRow(0);
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
@@ -70,7 +71,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	m_pChkExtPhase->SetValue(false);
 	m_pChkExtPhase->SetToolTip(_("External phase"));
 	BoxSizer2->Add(m_pChkExtPhase, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-	FlexGridSizer6->Add(BoxSizer2, 1, wxALL|wxEXPAND, 5);
+	FlexGridSizer6->Add(BoxSizer2, 0, wxALL|wxEXPAND, 5);
 	StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("DCO"));
 	FlexGridSizer4 = new wxFlexGridSizer(0, 1, 0, 0);
 	m_pLblWaveform = new wxStaticText(this, ID_STATICTEXT4, _("Waveform"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
@@ -107,7 +108,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	BoxSizer1->Add(m_pChkX16, 1, wxALL|wxEXPAND, 5);
 	FlexGridSizer4->Add(BoxSizer1, 1, wxALL|wxEXPAND, 5);
 	StaticBoxSizer2->Add(FlexGridSizer4, 0, wxALIGN_LEFT, 0);
-	FlexGridSizer6->Add(StaticBoxSizer2, 1, wxALL|wxEXPAND, 5);
+	FlexGridSizer6->Add(StaticBoxSizer2, 0, wxALL|wxEXPAND, 5);
 	StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("DCA"));
 	FlexGridSizer5 = new wxFlexGridSizer(1, 0, 0, 0);
 	FlexGridSizer5->AddGrowableCol(0);
@@ -117,8 +118,8 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	FlexGridSizer7 = new wxFlexGridSizer(1, 0, 0, 0);
 	FlexGridSizer7->AddGrowableCol(0);
 	FlexGridSizer7->AddGrowableRow(0);
-	StaticText6 = new wxStaticText(this, ID_STATICTEXT8, _("ENV"), wxDefaultPosition, wxSize(122,13), wxALIGN_CENTRE, _T("ID_STATICTEXT8"));
-	FlexGridSizer7->Add(StaticText6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	m_pGraphDCA = new EnvelopeGraph(this);
+	FlexGridSizer7->Add(m_pGraphDCA, 1, wxALL|wxEXPAND, 5);
 	FlexGridSizer8 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer8->AddGrowableRow(1);
 	m_pLblDepth = new wxStaticText(this, ID_STATICTEXT15, _("Depth"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT15"));
@@ -127,17 +128,26 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	m_pSliderEnvDepth->SetToolTip(_("DCA Amplitued envelope depth"));
 	FlexGridSizer8->Add(m_pSliderEnvDepth, 1, wxALL|wxEXPAND|wxFIXED_MINSIZE, 5);
 	FlexGridSizer7->Add(FlexGridSizer8, 1, wxALL|wxEXPAND, 5);
-	StaticBoxSizer4->Add(FlexGridSizer7, 0, wxEXPAND, 0);
+	StaticBoxSizer4->Add(FlexGridSizer7, 1, wxEXPAND, 0);
 	FlexGridSizer5->Add(StaticBoxSizer4, 1, wxALL|wxEXPAND, 5);
 	StaticBoxSizer5 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Key Follow"));
 	FlexGridSizer9 = new wxFlexGridSizer(0, 1, 0, 0);
 	FlexGridSizer9->AddGrowableCol(0);
-	FlexGridSizer9->AddGrowableRow(1);
-	m_pBmpKeyboard = new wxStaticBitmap(this, ID_BMPKEYBOARD, keyboard_xpm, wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_BMPKEYBOARD"));
-	FlexGridSizer9->Add(m_pBmpKeyboard, 1, wxALL|wxEXPAND, 5);
-	StaticText5 = new wxStaticText(this, ID_STATICTEXT7, _("ENV"), wxDefaultPosition, wxSize(122,13), wxALIGN_CENTRE, _T("ID_STATICTEXT7"));
-	FlexGridSizer9->Add(StaticText5, 1, wxALL|wxEXPAND, 5);
-	StaticBoxSizer5->Add(FlexGridSizer9, 0, wxEXPAND, 0);
+	FlexGridSizer9->AddGrowableRow(0);
+	ScrolledWindow1 = new wxScrolledWindow(this, ID_SCROLLEDWINDOW1, wxDefaultPosition, wxDefaultSize, wxVSCROLL|wxHSCROLL, _T("ID_SCROLLEDWINDOW1"));
+	FlexGridSizer1 = new wxFlexGridSizer(0, 1, 0, 0);
+	FlexGridSizer1->AddGrowableCol(0);
+	FlexGridSizer1->AddGrowableRow(1);
+	m_pBmpKeyboard = new wxStaticBitmap(ScrolledWindow1, ID_BMPKEYBOARD, wxBitmap(keyboard_xpm), wxDefaultPosition, wxDefaultSize, wxSIMPLE_BORDER, _T("ID_BMPKEYBOARD"));
+	m_pBmpKeyboard->SetMinSize(wxSize(100,-1));
+	FlexGridSizer1->Add(m_pBmpKeyboard, 1, wxALL|wxEXPAND, 5);
+	m_pGraphKeyfollow = new EnvelopeGraph(ScrolledWindow1);
+	FlexGridSizer1->Add(m_pGraphKeyfollow, 1, wxALL|wxEXPAND, 5);
+	ScrolledWindow1->SetSizer(FlexGridSizer1);
+	FlexGridSizer1->Fit(ScrolledWindow1);
+	FlexGridSizer1->SetSizeHints(ScrolledWindow1);
+	FlexGridSizer9->Add(ScrolledWindow1, 1, wxALL|wxEXPAND, 5);
+	StaticBoxSizer5->Add(FlexGridSizer9, 1, wxEXPAND, 0);
 	FlexGridSizer5->Add(StaticBoxSizer5, 1, wxALL|wxEXPAND, 5);
 	StaticBoxSizer6 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Key Velocity"));
 	FlexGridSizer10 = new wxFlexGridSizer(0, 1, 0, 0);
@@ -166,7 +176,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	FlexGridSizer11->Add(m_pSliderAmpSens, 1, wxALL|wxEXPAND|wxFIXED_MINSIZE, 5);
 	StaticBoxSizer7->Add(FlexGridSizer11, 0, wxEXPAND, 0);
 	FlexGridSizer5->Add(StaticBoxSizer7, 1, wxALL|wxEXPAND, 5);
-	StaticBoxSizer3->Add(FlexGridSizer5, 0, wxEXPAND, 0);
+	StaticBoxSizer3->Add(FlexGridSizer5, 1, wxEXPAND, 0);
 	FlexGridSizer6->Add(StaticBoxSizer3, 1, wxALL|wxEXPAND, 5);
 	m_pSizerModule->Add(FlexGridSizer6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	SetSizer(m_pSizerModule);
@@ -185,6 +195,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	Connect(ID_SLIDERVELSENSITIVITY,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZModule::OnKeyVelSens);
 	Connect(ID_SLIDERAMPSENS,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZModule::OnSensitivity);
 	//*)
+	m_pGraphDCA->SetMaxNodes(8);
 }
 
 VZModule::~VZModule()
@@ -225,6 +236,12 @@ void VZModule::UpdateGui()
     m_pCmbKeyVelCurve->SetSelection(m_pVoice->GetModuleVelCurve(m_nModule));
     m_pSliderAmpSens->SetValue(m_pVoice->GetCCSensitivity(m_nModule));
     m_pSliderEnvDepth->SetValue(m_pVoice->GetDCAEnvDepth(m_nModule));
+    Envelope* pEnvelope = m_pVoice->GetDCAEnvelope(m_nModule);
+    m_pGraphDCA->Clear(false);
+    for(unsigned int nNode = 0; nNode < pEnvelope->GetSteps(); ++nNode)
+    {
+        //!@todo Set steps - tricky due to use of slope rather than x,y
+    }
 }
 
 void VZModule::OnEnable(wxCommandEvent& event)

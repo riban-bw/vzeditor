@@ -33,13 +33,13 @@ VZLine::VZLine(wxWindow* parent, wxByte line) :
 	m_pCmbLine->Append(_("MIX"));
 	m_pCmbLine->Append(_("RING"));
 	m_pCmbLine->Append(_("PHASE"));
-	FlexGridSizer1->Add(m_pCmbLine, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer1->Add(m_pCmbLine, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	m_pVzModule1 = new VZModule(this,ID_VZMODULE1,wxDefaultPosition,wxDefaultSize);
 	BoxSizer2->Add(m_pVzModule1, 1, wxALL|wxEXPAND, 5);
 	m_pVzModule2 = new VZModule(this,ID_VZMODULE2,wxDefaultPosition,wxDefaultSize);
 	BoxSizer2->Add(m_pVzModule2, 1, wxALL|wxEXPAND, 5);
-	FlexGridSizer1->Add(BoxSizer2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+	FlexGridSizer1->Add(BoxSizer2, 1, wxALL|wxEXPAND, 5);
 	m_pSizerLine->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
 	SetSizer(m_pSizerLine);
 	m_pSizerLine->Fit(this);

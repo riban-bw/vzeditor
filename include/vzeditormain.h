@@ -221,7 +221,7 @@ class VZ_EditorFrame: public wxFrame
         void UpdateMidiPorts();
         void OnClose(wxCloseEvent& event);
         void AutoSend(); //!< Send voice data after each parameter change
-
+        int GetPortId(PmDeviceInfo* pInfo); //!< Get MIDI port ID from device info pointer (-1 if not found)
 
         //!@todo Add function to play MIDI notes / CC
 

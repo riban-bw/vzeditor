@@ -2,9 +2,11 @@
 #define VZMODULE_H
 
 //(*Headers(VZModule)
+#include "envelopegraph.h"
 #include <wx/checkbox.h>
 #include <wx/choice.h>
 #include <wx/panel.h>
+#include <wx/scrolwin.h>
 #include <wx/sizer.h>
 #include <wx/slider.h>
 #include <wx/statbmp.h>
@@ -35,12 +37,15 @@ class VZModule: public wxPanel
 
 
 		//(*Declarations(VZModule)
+		EnvelopeGraph* m_pGraphDCA;
+		EnvelopeGraph* m_pGraphKeyfollow;
 		wxCheckBox* m_pChkEnable;
 		wxCheckBox* m_pChkExtPhase;
 		wxCheckBox* m_pChkFixedFreq;
 		wxCheckBox* m_pChkX16;
 		wxChoice* m_pCmbKeyVelCurve;
 		wxChoice* m_pCmbWaveform;
+		wxScrolledWindow* ScrolledWindow1;
 		wxSlider* m_pSliderAmpSens;
 		wxSlider* m_pSliderDetuneFine;
 		wxSlider* m_pSliderDetuneOctave;
@@ -50,8 +55,6 @@ class VZModule: public wxPanel
 		wxStaticBoxSizer* m_pSizerModule;
 		wxStaticText* StaticText3;
 		wxStaticText* StaticText4;
-		wxStaticText* StaticText5;
-		wxStaticText* StaticText6;
 		wxStaticText* m_pLblDepth;
 		wxStaticText* m_pLblWaveform;
 		//*)
@@ -69,11 +72,12 @@ class VZModule: public wxPanel
 		static const long ID_SLIDERDETUNEFINE;
 		static const long ID_CHKFIXEDFREQ;
 		static const long ID_CHKX16;
-		static const long ID_STATICTEXT8;
+		static const long ID_CUSTOM1;
 		static const long ID_STATICTEXT15;
 		static const long ID_SLIDERENVDEPTH;
 		static const long ID_BMPKEYBOARD;
-		static const long ID_STATICTEXT7;
+		static const long ID_CUSTOM2;
+		static const long ID_SCROLLEDWINDOW1;
 		static const long ID_CMBKEYVELCURVE;
 		static const long ID_SLIDERVELSENSITIVITY;
 		static const long ID_SLIDERAMPSENS;

@@ -1,14 +1,13 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxPanel" name="VZModule">
-		<pos_arg>1</pos_arg>
-		<size_arg>1</size_arg>
+		<id_arg>0</id_arg>
 		<object class="wxStaticBoxSizer" variable="m_pSizerModule" member="yes">
 			<label>Module</label>
 			<object class="sizeritem">
 				<object class="wxFlexGridSizer" variable="FlexGridSizer6" member="no">
 					<rows>1</rows>
-					<growablecols>1,2</growablecols>
+					<growablecols>2</growablecols>
 					<growablerows>0</growablerows>
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer2" member="no">
@@ -37,7 +36,6 @@
 						</object>
 						<flag>wxALL|wxEXPAND</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxStaticBoxSizer" variable="StaticBoxSizer2" member="no">
@@ -144,7 +142,6 @@
 						</object>
 						<flag>wxALL|wxEXPAND</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxStaticBoxSizer" variable="StaticBoxSizer3" member="no">
@@ -163,12 +160,13 @@
 													<growablecols>0</growablecols>
 													<growablerows>0</growablerows>
 													<object class="sizeritem">
-														<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText6" member="yes">
-															<label>ENV</label>
-															<size>122,13</size>
-															<style>wxALIGN_CENTRE</style>
+														<object class="Custom" name="ID_CUSTOM1" subclass="EnvelopeGraph" variable="m_pGraphDCA" member="yes">
+															<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
+															<include_file>envelopegraph.h</include_file>
+															<local_include>1</local_include>
+															<style></style>
 														</object>
-														<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+														<flag>wxALL|wxEXPAND</flag>
 														<border>5</border>
 														<option>1</option>
 													</object>
@@ -203,6 +201,7 @@
 													</object>
 												</object>
 												<flag>wxEXPAND</flag>
+												<option>1</option>
 											</object>
 										</object>
 										<flag>wxALL|wxEXPAND</flag>
@@ -216,20 +215,34 @@
 												<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">
 													<cols>1</cols>
 													<growablecols>0</growablecols>
-													<growablerows>1</growablerows>
+													<growablerows>0</growablerows>
 													<object class="sizeritem">
-														<object class="wxStaticBitmap" name="ID_BMPKEYBOARD" variable="m_pBmpKeyboard" member="yes">
-															<bitmap code="keyboard_xpm" />
-														</object>
-														<flag>wxALL|wxEXPAND</flag>
-														<border>5</border>
-														<option>1</option>
-													</object>
-													<object class="sizeritem">
-														<object class="wxStaticText" name="ID_STATICTEXT7" variable="StaticText5" member="yes">
-															<label>ENV</label>
-															<size>122,13</size>
-															<style>wxALIGN_CENTRE</style>
+														<object class="wxScrolledWindow" name="ID_SCROLLEDWINDOW1" variable="ScrolledWindow1" member="yes">
+															<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
+																<cols>1</cols>
+																<growablecols>0</growablecols>
+																<growablerows>1</growablerows>
+																<object class="sizeritem">
+																	<object class="wxStaticBitmap" name="ID_BMPKEYBOARD" variable="m_pBmpKeyboard" member="yes">
+																		<bitmap code="wxBitmap(keyboard_xpm)" />
+																		<minsize>100,-1</minsize>
+																	</object>
+																	<flag>wxALL|wxEXPAND</flag>
+																	<border>5</border>
+																	<option>1</option>
+																</object>
+																<object class="sizeritem">
+																	<object class="Custom" name="ID_CUSTOM2" subclass="EnvelopeGraph" variable="m_pGraphKeyfollow" member="yes">
+																		<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
+																		<include_file>envelopegraph.h</include_file>
+																		<local_include>1</local_include>
+																		<style></style>
+																	</object>
+																	<flag>wxALL|wxEXPAND</flag>
+																	<border>5</border>
+																	<option>1</option>
+																</object>
+															</object>
 														</object>
 														<flag>wxALL|wxEXPAND</flag>
 														<border>5</border>
@@ -237,6 +250,7 @@
 													</object>
 												</object>
 												<flag>wxEXPAND</flag>
+												<option>1</option>
 											</object>
 										</object>
 										<flag>wxALL|wxEXPAND</flag>
@@ -318,6 +332,7 @@
 									</object>
 								</object>
 								<flag>wxEXPAND</flag>
+								<option>1</option>
 							</object>
 						</object>
 						<flag>wxALL|wxEXPAND</flag>
