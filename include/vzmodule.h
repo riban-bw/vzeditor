@@ -45,7 +45,7 @@ class VZModule: public wxPanel
 		wxCheckBox* m_pChkX16;
 		wxChoice* m_pCmbKeyVelCurve;
 		wxChoice* m_pCmbWaveform;
-		wxScrolledWindow* ScrolledWindow1;
+		wxScrolledWindow* m_pScrollKeyfollow;
 		wxSlider* m_pSliderAmpSens;
 		wxSlider* m_pSliderDetuneFine;
 		wxSlider* m_pSliderDetuneOctave;
@@ -55,7 +55,6 @@ class VZModule: public wxPanel
 		wxStaticBoxSizer* m_pSizerModule;
 		wxStaticText* StaticText3;
 		wxStaticText* StaticText4;
-		wxStaticText* m_pLblDepth;
 		wxStaticText* m_pLblWaveform;
 		//*)
 
@@ -73,11 +72,10 @@ class VZModule: public wxPanel
 		static const long ID_CHKFIXEDFREQ;
 		static const long ID_CHKX16;
 		static const long ID_CUSTOM1;
-		static const long ID_STATICTEXT15;
 		static const long ID_SLIDERENVDEPTH;
+		static const long ID_SCROLLEDWINDOW1;
 		static const long ID_BMPKEYBOARD;
 		static const long ID_CUSTOM2;
-		static const long ID_SCROLLEDWINDOW1;
 		static const long ID_CMBKEYVELCURVE;
 		static const long ID_SLIDERVELSENSITIVITY;
 		static const long ID_SLIDERAMPSENS;

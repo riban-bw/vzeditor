@@ -95,16 +95,26 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxArrayString asValidate;
     m_validateVoiceName.SetStyle(wxFILTER_INCLUDE_CHAR_LIST);
     for(char c = 'A'; c <= 'Z'; ++c)
-        asValidate.Add(wxString::Format(wxT("%c"), c));
+        asValidate.Add(wxString::Format("%c", c));
     for(char c = '0'; c <= '9'; ++c)
-        asValidate.Add(wxString::Format(wxT("%c"), c));
-    asValidate.Add(wxT(" "));
-    asValidate.Add(wxT("-"));
-    asValidate.Add(wxT("/"));
-    asValidate.Add(wxT("."));
+        asValidate.Add(wxString::Format("%c", c));
+    asValidate.Add(" ");
+    asValidate.Add("-");
+    asValidate.Add("/");
+    asValidate.Add(".");
     m_validateVoiceName.SetIncludes(wxArrayString(asValidate));
 
     //(*Initialize(VZ_EditorFrame)
+    wxBoxSizer* BoxSizer10;
+    wxBoxSizer* BoxSizer11;
+    wxBoxSizer* BoxSizer12;
+    wxBoxSizer* BoxSizer13;
+    wxBoxSizer* BoxSizer14;
+    wxBoxSizer* BoxSizer15;
+    wxBoxSizer* BoxSizer16;
+    wxBoxSizer* BoxSizer17;
+    wxBoxSizer* BoxSizer18;
+    wxBoxSizer* BoxSizer19;
     wxBoxSizer* BoxSizer1;
     wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer3;
@@ -112,23 +122,10 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer5;
     wxBoxSizer* BoxSizer6;
     wxBoxSizer* BoxSizer7;
-    wxFlexGridSizer* FlexGridSizer10;
-    wxFlexGridSizer* FlexGridSizer11;
-    wxFlexGridSizer* FlexGridSizer12;
-    wxFlexGridSizer* FlexGridSizer13;
-    wxFlexGridSizer* FlexGridSizer14;
-    wxFlexGridSizer* FlexGridSizer15;
-    wxFlexGridSizer* FlexGridSizer16;
-    wxFlexGridSizer* FlexGridSizer1;
-    wxFlexGridSizer* FlexGridSizer2;
-    wxFlexGridSizer* FlexGridSizer3;
-    wxFlexGridSizer* FlexGridSizer4;
-    wxFlexGridSizer* FlexGridSizer5;
+    wxBoxSizer* BoxSizer8;
+    wxBoxSizer* BoxSizer9;
+    wxBoxSizer* m_pSizerMain;
     wxFlexGridSizer* FlexGridSizer6;
-    wxFlexGridSizer* FlexGridSizer7;
-    wxFlexGridSizer* FlexGridSizer8;
-    wxFlexGridSizer* FlexGridSizer9;
-    wxFlexGridSizer* m_pFlexgridGlobalParameters;
     wxMenu* Menu1;
     wxMenu* Menu2;
     wxMenuBar* MenuBar1;
@@ -144,44 +141,39 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     	FrameIcon.CopyFromBitmap(wxBitmap(icon_xpm));
     	SetIcon(FrameIcon);
     }
-    m_pSizerMain = new wxFlexGridSizer(0, 1, 0, 0);
-    m_pSizerMain->AddGrowableCol(0);
-    m_pSizerMain->AddGrowableRow(1);
-    FlexGridSizer1 = new wxFlexGridSizer(0, 0, 0, 0);
+    m_pSizerMain = new wxBoxSizer(wxVERTICAL);
+    BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
     StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("MIDI Input Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
-    FlexGridSizer1->Add(StaticText2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pCmbInPort = new wxChoice(this, ID_CMBINPORT, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CMBINPORT"));
-    FlexGridSizer1->Add(m_pCmbInPort, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(m_pCmbInPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("MIDI Output Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
-    FlexGridSizer1->Add(StaticText1, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pCmbOutPort = new wxChoice(this, ID_CMBOUTPORT, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CMBOUTPORT"));
-    FlexGridSizer1->Add(m_pCmbOutPort, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(m_pCmbOutPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pChkAutoUpdate = new wxCheckBox(this, ID_CHKAUTOUPDATE, _("Auto Update"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHKAUTOUPDATE"));
     m_pChkAutoUpdate->SetValue(false);
-    FlexGridSizer1->Add(m_pChkAutoUpdate, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(m_pChkAutoUpdate, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnSend = new wxButton(this, ID_BTNSEND, _("Send"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNSEND"));
-    FlexGridSizer1->Add(m_pBtnSend, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(m_pBtnSend, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnGetVoice = new wxButton(this, ID_BTNGETVOICE, _("Get Voice"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNGETVOICE"));
     m_pBtnGetVoice->Disable();
-    FlexGridSizer1->Add(m_pBtnGetVoice, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(m_pBtnGetVoice, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnGetOperation = new wxButton(this, IID_BTNGETOPERATION, _("Get Operation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("IID_BTNGETOPERATION"));
     m_pBtnGetOperation->Disable();
-    FlexGridSizer1->Add(m_pBtnGetOperation, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(m_pBtnGetOperation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnSaveDump = new wxButton(this, ID_BTNSAVEDUMP, _("Save Dump"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNSAVEDUMP"));
-    FlexGridSizer1->Add(m_pBtnSaveDump, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pSizerMain->Add(FlexGridSizer1, 1, wxALL|wxEXPAND, 5);
+    BoxSizer8->Add(m_pBtnSaveDump, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pSizerMain->Add(BoxSizer8, 0, wxALL|wxEXPAND, 5);
     m_pNotebook = new wxNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_NOPAGETHEME, _T("ID_NOTEBOOK"));
     m_pPnlLibrary = new wxPanel(m_pNotebook, ID_PNLLIBRARY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLLIBRARY"));
-    FlexGridSizer9 = new wxFlexGridSizer(2, 0, 0, 0);
-    FlexGridSizer9->AddGrowableCol(0);
-    FlexGridSizer9->AddGrowableRow(1);
-    BoxSizer2 = new wxBoxSizer(wxHORIZONTAL);
-    FlexGridSizer9->Add(BoxSizer2, 1, wxALL|wxEXPAND, 5);
+    BoxSizer2 = new wxBoxSizer(wxVERTICAL);
     m_pLstLib = new SortableList(m_pPnlLibrary,ID_LSTLIB);
-    FlexGridSizer9->Add(m_pLstLib, 1, wxALL|wxEXPAND, 5);
-    m_pPnlLibrary->SetSizer(FlexGridSizer9);
-    FlexGridSizer9->Fit(m_pPnlLibrary);
-    FlexGridSizer9->SetSizeHints(m_pPnlLibrary);
+    BoxSizer2->Add(m_pLstLib, 1, wxALL|wxEXPAND, 5);
+    m_pPnlLibrary->SetSizer(BoxSizer2);
+    BoxSizer2->Fit(m_pPnlLibrary);
+    BoxSizer2->SetSizeHints(m_pPnlLibrary);
     m_pPnlVoice = new wxPanel(m_pNotebook, ID_PNLVOICE, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLVOICE"));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
     SplitterWindow1 = new wxSplitterWindow(m_pPnlVoice, ID_SPLITTERWINDOW1, wxDefaultPosition, wxDefaultSize, wxSP_3D, _T("ID_SPLITTERWINDOW1"));
@@ -201,25 +193,20 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     BoxSizer3->Fit(m_pScrollWinVoiceEditor);
     BoxSizer3->SetSizeHints(m_pScrollWinVoiceEditor);
     m_pScrollwindowGlobalParameters = new wxScrolledWindow(SplitterWindow1, ID_SCROLLEDWINDOW2, wxDefaultPosition, wxDefaultSize, wxVSCROLL, _T("ID_SCROLLEDWINDOW2"));
-    m_pFlexgridGlobalParameters = new wxFlexGridSizer(0, 1, 0, 0);
-    m_pFlexgridGlobalParameters->AddGrowableCol(0);
-    m_pFlexgridGlobalParameters->AddGrowableRow(3);
-    m_pFlexgridGlobalParameters->AddGrowableRow(4);
-    FlexGridSizer4 = new wxFlexGridSizer(0, 0, 0, 0);
-    FlexGridSizer4->AddGrowableCol(1);
+    m_pFlexgridGlobalParameters = new wxBoxSizer(wxVERTICAL);
+    BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
     StaticText3 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT3, _("Voice Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
-    FlexGridSizer4->Add(StaticText3, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer9->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pTxtVoiceName = new wxTextCtrl(m_pScrollwindowGlobalParameters, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, m_validateVoiceName, _T("ID_TEXTCTRL1"));
     m_pTxtVoiceName->SetMaxLength(12);
-    FlexGridSizer4->Add(m_pTxtVoiceName, 1, wxALL|wxEXPAND, 5);
-    m_pFlexgridGlobalParameters->Add(FlexGridSizer4, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer7 = new wxFlexGridSizer(0, 2, 0, 0);
-    FlexGridSizer7->AddGrowableCol(1);
+    BoxSizer9->Add(m_pTxtVoiceName, 1, wxALL|wxEXPAND, 5);
+    m_pFlexgridGlobalParameters->Add(BoxSizer9, 0, wxALL|wxEXPAND, 5);
+    BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
     StaticText30 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT30, _("Level"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT30"));
-    FlexGridSizer7->Add(StaticText30, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer10->Add(StaticText30, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderLevel = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERLEVEL, 99, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERLEVEL"));
-    FlexGridSizer7->Add(m_pSliderLevel, 1, wxALL|wxEXPAND, 5);
-    m_pFlexgridGlobalParameters->Add(FlexGridSizer7, 1, wxALL|wxEXPAND, 5);
+    BoxSizer10->Add(m_pSliderLevel, 1, wxALL|wxEXPAND, 5);
+    m_pFlexgridGlobalParameters->Add(BoxSizer10, 0, wxALL|wxEXPAND, 5);
     StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("DCO"));
     FlexGridSizer6 = new wxFlexGridSizer(0, 2, 0, 0);
     FlexGridSizer6->AddGrowableCol(1);
@@ -244,18 +231,16 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pCmbVelCurve->Append(_("Curve 8"));
     FlexGridSizer6->Add(m_pCmbVelCurve, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer3->Add(FlexGridSizer6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pFlexgridGlobalParameters->Add(StaticBoxSizer3, 1, wxALL|wxEXPAND, 5);
+    m_pFlexgridGlobalParameters->Add(StaticBoxSizer3, 0, wxALL|wxEXPAND, 5);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("Tremelo"));
-    FlexGridSizer3 = new wxFlexGridSizer(1, 0, 0, 0);
-    FlexGridSizer3->AddGrowableRow(0);
-    FlexGridSizer15 = new wxFlexGridSizer(0, 1, 0, 0);
+    BoxSizer11 = new wxBoxSizer(wxVERTICAL);
     wxString __wxRadioBoxChoices_1[2] =
     {
     	_("Off"),
     	_("On")
     };
     m_pRadioTremeloMulti = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOTREMELOMULTI, _("Multi"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_1, 1, 0, wxDefaultValidator, _T("ID_RADIOTREMELOMULTI"));
-    FlexGridSizer15->Add(m_pRadioTremeloMulti, 1, wxALL|wxEXPAND, 5);
+    BoxSizer11->Add(m_pRadioTremeloMulti, 0, wxALL|wxEXPAND, 5);
     wxString __wxRadioBoxChoices_2[4] =
     {
     	_("Triangle"),
@@ -264,43 +249,37 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     	_("Square")
     };
     m_pRadioTremeloWaveform = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOTREMELOWAVEFORM, _("Waveform"), wxDefaultPosition, wxDefaultSize, 4, __wxRadioBoxChoices_2, 1, wxRA_HORIZONTAL, wxDefaultValidator, _T("ID_RADIOTREMELOWAVEFORM"));
-    FlexGridSizer15->Add(m_pRadioTremeloWaveform, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer3->Add(FlexGridSizer15, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer12 = new wxFlexGridSizer(0, 1, 0, 0);
-    FlexGridSizer12->AddGrowableRow(1);
+    BoxSizer11->Add(m_pRadioTremeloWaveform, 0, wxALL|wxEXPAND, 5);
+    StaticBoxSizer1->Add(BoxSizer11, 0, wxALL|wxEXPAND, 5);
+    BoxSizer12 = new wxBoxSizer(wxVERTICAL);
     StaticText6 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT6, _("Depth"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
-    FlexGridSizer12->Add(StaticText6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer12->Add(StaticText6, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderTremeloDepth = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERTREMELODEPTH, 0, 0, 99, wxDefaultPosition, wxSize(20,100), wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERTREMELODEPTH"));
-    FlexGridSizer12->Add(m_pSliderTremeloDepth, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer3->Add(FlexGridSizer12, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer13 = new wxFlexGridSizer(0, 1, 0, 0);
-    FlexGridSizer13->AddGrowableRow(1);
+    BoxSizer12->Add(m_pSliderTremeloDepth, 1, wxALL, 5);
+    StaticBoxSizer1->Add(BoxSizer12, 0, wxALL|wxEXPAND, 5);
+    BoxSizer13 = new wxBoxSizer(wxVERTICAL);
     StaticText5 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT5, _("Rate"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
-    FlexGridSizer13->Add(StaticText5, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer13->Add(StaticText5, 0, wxALL|wxEXPAND, 5);
     m_pSliderTremeloRate = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERTREMELORATE, 0, 0, 99, wxDefaultPosition, wxSize(20,100), wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERTREMELORATE"));
-    m_pSliderTremeloRate->SetMinSize(wxSize(0,0));
-    FlexGridSizer13->Add(m_pSliderTremeloRate, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer3->Add(FlexGridSizer13, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer14 = new wxFlexGridSizer(0, 1, 0, 0);
-    FlexGridSizer14->AddGrowableRow(1);
+    BoxSizer13->Add(m_pSliderTremeloRate, 1, wxALL, 5);
+    StaticBoxSizer1->Add(BoxSizer13, 0, wxALL|wxEXPAND, 5);
+    BoxSizer14 = new wxBoxSizer(wxVERTICAL);
     StaticText4 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT4, _("Delay"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
-    FlexGridSizer14->Add(StaticText4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer14->Add(StaticText4, 0, wxALL, 5);
     m_pSliderTremeloDelay = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERTREMELODELAY, 0, 0, 99, wxDefaultPosition, wxSize(20,100), wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERTREMELODELAY"));
-    FlexGridSizer14->Add(m_pSliderTremeloDelay, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer3->Add(FlexGridSizer14, 1, wxALL|wxEXPAND, 5);
-    StaticBoxSizer1->Add(FlexGridSizer3, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
+    BoxSizer14->Add(m_pSliderTremeloDelay, 1, wxALL, 5);
+    StaticBoxSizer1->Add(BoxSizer14, 0, wxALL|wxEXPAND, 5);
     m_pFlexgridGlobalParameters->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer2 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("Vibrato"));
-    FlexGridSizer5 = new wxFlexGridSizer(1, 0, 0, 0);
-    FlexGridSizer5->AddGrowableRow(0);
-    BoxSizer4 = new wxBoxSizer(wxVERTICAL);
+    BoxSizer15 = new wxBoxSizer(wxHORIZONTAL);
+    BoxSizer16 = new wxBoxSizer(wxVERTICAL);
     wxString __wxRadioBoxChoices_3[2] =
     {
     	_("Off"),
     	_("On")
     };
     m_pRadioVibratoMulti = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOBOX3, _("Multi"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_3, 1, 0, wxDefaultValidator, _T("ID_RADIOBOX3"));
-    BoxSizer4->Add(m_pRadioVibratoMulti, 1, wxALL|wxEXPAND, 5);
+    BoxSizer16->Add(m_pRadioVibratoMulti, 1, wxALL|wxEXPAND, 5);
     wxString __wxRadioBoxChoices_4[4] =
     {
     	_("Triangle"),
@@ -309,31 +288,28 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     	_("Square")
     };
     m_pRadioVibratoWaveform = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOBOX4, _("Waveform"), wxDefaultPosition, wxDefaultSize, 4, __wxRadioBoxChoices_4, 1, wxRA_HORIZONTAL, wxDefaultValidator, _T("ID_RADIOBOX4"));
-    BoxSizer4->Add(m_pRadioVibratoWaveform, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer5->Add(BoxSizer4, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    FlexGridSizer8 = new wxFlexGridSizer(0, 1, 0, 0);
-    FlexGridSizer8->AddGrowableRow(1);
+    BoxSizer16->Add(m_pRadioVibratoWaveform, 1, wxALL|wxEXPAND, 5);
+    BoxSizer15->Add(BoxSizer16, 0, wxALL|wxEXPAND, 5);
+    BoxSizer4 = new wxBoxSizer(wxVERTICAL);
     StaticText7 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT7, _("Depth"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
-    FlexGridSizer8->Add(StaticText7, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer4->Add(StaticText7, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderVibratoDepth = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDER5, 0, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER5"));
-    FlexGridSizer8->Add(m_pSliderVibratoDepth, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer5->Add(FlexGridSizer8, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer10 = new wxFlexGridSizer(0, 1, 0, 0);
-    FlexGridSizer10->AddGrowableRow(1);
+    BoxSizer4->Add(m_pSliderVibratoDepth, 1, wxALL, 5);
+    BoxSizer15->Add(BoxSizer4, 0, wxALL|wxEXPAND, 5);
+    BoxSizer17 = new wxBoxSizer(wxVERTICAL);
     StaticText8 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT8, _("Rate"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
-    FlexGridSizer10->Add(StaticText8, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer17->Add(StaticText8, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderVibratoRate = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDER4, 0, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER4"));
-    FlexGridSizer10->Add(m_pSliderVibratoRate, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer5->Add(FlexGridSizer10, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer11 = new wxFlexGridSizer(0, 1, 0, 0);
-    FlexGridSizer11->AddGrowableRow(1);
+    BoxSizer17->Add(m_pSliderVibratoRate, 1, wxALL, 5);
+    BoxSizer15->Add(BoxSizer17, 0, wxALL|wxEXPAND, 5);
+    BoxSizer18 = new wxBoxSizer(wxVERTICAL);
     StaticText9 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT9, _("Delay"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
-    FlexGridSizer11->Add(StaticText9, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer18->Add(StaticText9, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderVibratoDelay = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDER6, 0, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER6"));
-    FlexGridSizer11->Add(m_pSliderVibratoDelay, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer5->Add(FlexGridSizer11, 1, wxALL|wxEXPAND, 5);
-    StaticBoxSizer2->Add(FlexGridSizer5, 1, wxALL|wxEXPAND, 5);
-    m_pFlexgridGlobalParameters->Add(StaticBoxSizer2, 1, wxALL|wxEXPAND, 5);
+    BoxSizer18->Add(m_pSliderVibratoDelay, 1, wxALL, 5);
+    BoxSizer15->Add(BoxSizer18, 0, wxALL|wxEXPAND, 5);
+    StaticBoxSizer2->Add(BoxSizer15, 1, wxALL|wxEXPAND, 5);
+    m_pFlexgridGlobalParameters->Add(StaticBoxSizer2, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pScrollwindowGlobalParameters->SetSizer(m_pFlexgridGlobalParameters);
     m_pFlexgridGlobalParameters->Fit(m_pScrollwindowGlobalParameters);
     m_pFlexgridGlobalParameters->SetSizeHints(m_pScrollwindowGlobalParameters);
@@ -353,20 +329,17 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     BoxSizer6->Fit(ScrolledWindow1);
     BoxSizer6->SetSizeHints(ScrolledWindow1);
     ScrolledWindow2 = new wxScrolledWindow(SplitterWindow2, ID_SCROLLEDWINDOW4, wxDefaultPosition, wxDefaultSize, wxVSCROLL, _T("ID_SCROLLEDWINDOW4"));
-    FlexGridSizer2 = new wxFlexGridSizer(0, 1, 0, 0);
-    FlexGridSizer2->AddGrowableCol(0);
-    FlexGridSizer2->AddGrowableRow(0);
-    FlexGridSizer16 = new wxFlexGridSizer(0, 0, 0, 0);
-    FlexGridSizer16->AddGrowableCol(1);
+    BoxSizer7 = new wxBoxSizer(wxVERTICAL);
+    BoxSizer19 = new wxBoxSizer(wxHORIZONTAL);
     StaticText12 = new wxStaticText(ScrolledWindow2, ID_STATICTEXT13, _("Voice Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT13"));
-    FlexGridSizer16->Add(StaticText12, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer19->Add(StaticText12, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pTxtOperationName = new wxTextCtrl(ScrolledWindow2, ID_TXTOPERATIONNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, m_validateVoiceName, _T("ID_TXTOPERATIONNAME"));
     m_pTxtOperationName->SetMaxLength(12);
-    FlexGridSizer16->Add(m_pTxtOperationName, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer2->Add(FlexGridSizer16, 1, wxALL|wxEXPAND, 5);
-    ScrolledWindow2->SetSizer(FlexGridSizer2);
-    FlexGridSizer2->Fit(ScrolledWindow2);
-    FlexGridSizer2->SetSizeHints(ScrolledWindow2);
+    BoxSizer19->Add(m_pTxtOperationName, 1, wxALL, 5);
+    BoxSizer7->Add(BoxSizer19, 0, wxALL|wxEXPAND, 5);
+    ScrolledWindow2->SetSizer(BoxSizer7);
+    BoxSizer7->Fit(ScrolledWindow2);
+    BoxSizer7->SetSizeHints(ScrolledWindow2);
     SplitterWindow2->SplitVertically(ScrolledWindow1, ScrolledWindow2);
     BoxSizer5->Add(SplitterWindow2, 1, wxALL|wxEXPAND, 5);
     m_pPnlOperation->SetSizer(BoxSizer5);
@@ -376,10 +349,8 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pNotebook->AddPage(m_pPnlVoice, _("Voice Editor"), false);
     m_pNotebook->AddPage(m_pPnlOperation, _("Operation Editor"), false);
     m_pSizerMain->Add(m_pNotebook, 1, wxALL|wxEXPAND, 5);
-    BoxSizer7 = new wxBoxSizer(wxHORIZONTAL);
     m_pKeyboard = new KeyboardOctave(this,ID_KBD);
-    BoxSizer7->Add(m_pKeyboard, 1, wxALL|wxEXPAND, 5);
-    m_pSizerMain->Add(BoxSizer7, 1, wxALL|wxEXPAND, 5);
+    m_pSizerMain->Add(m_pKeyboard, 0, wxALL|wxEXPAND, 5);
     SetSizer(m_pSizerMain);
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
@@ -439,15 +410,17 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     Connect(wxID_ANY, wxEVT_MIDI_INPUT,(wxObjectEventFunction)&VZ_EditorFrame::OnMidiReceive);
     Connect(wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&VZ_EditorFrame::OnClose);
 
-    wxConfig configPersist(wxTheApp->GetAppName(), wxT("riban"),wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+    wxConfig configPersist(wxTheApp->GetAppName(), "riban",wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
     int nX, nY, nWidth, nHeight;
     bool bX;
+    configPersist.Read("persist/keyboard", &bX, false);
+    m_pKeyboard->Show(bX);
     //Position window
-    configPersist.Read(wxT("persist/left"), &nX, 0);
-    configPersist.Read(wxT("persist/top"), &nY, 0);
-    configPersist.Read(wxT("persist/width"), &nWidth, 800);
-    configPersist.Read(wxT("persist/height"), &nHeight, 600);
-    configPersist.Read(wxT("persist/maximised"), &bX, false);
+    configPersist.Read("persist/left", &nX, 0);
+    configPersist.Read("persist/top", &nY, 0);
+    configPersist.Read("persist/width", &nWidth, 800);
+    configPersist.Read("persist/height", &nHeight, 600);
+    configPersist.Read("persist/maximised", &bX, false);
     Maximize(bX);
     SetSize(nWidth, nHeight);
       //Check saved location is visible
@@ -467,7 +440,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pMidiIn = (wxMidiInDevice*)NULL;
     UpdateMidiPorts();
 
-    configPersist.Read(wxT("persist/midi_in"), &nX, 0);
+    configPersist.Read("persist/midi_in", &nX, 0);
     if(m_pCmbInPort->GetCount())
     {
         if((int)m_pCmbInPort->GetCount() - 1 < nX)
@@ -477,7 +450,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
         event.SetClientData(m_pCmbInPort->GetClientData(0));
         OnInPortSelect(event);
     }
-    configPersist.Read(wxT("persist/midi_out"), &nX, 0);
+    configPersist.Read("persist/midi_out", &nX, 0);
     if(m_pCmbOutPort->GetCount())
     {
         if((int)m_pCmbOutPort->GetCount() - 1 < nX)
@@ -488,7 +461,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
         OnOutPortSelect(event);
     }
     bool bAuto;
-    configPersist.Read(wxT("persist/auto_update"), &bAuto, false);
+    configPersist.Read("persist/auto_update", &bAuto, false);
     m_pChkAutoUpdate->SetValue(bAuto);
     m_pvzLib = new VZLibrary();
     m_pLstLib->SetData(m_pvzLib);
@@ -510,17 +483,17 @@ VZ_EditorFrame::~VZ_EditorFrame()
 
 void VZ_EditorFrame::OnClose(wxCloseEvent& event)
 {
-    wxConfig configPersist(wxTheApp->GetAppName(), wxT("riban"),wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
-    configPersist.Write(wxT("persist/midi_out"), m_pCmbOutPort->GetSelection());
-    configPersist.Write(wxT("persist/auto_update"), m_pChkAutoUpdate->IsChecked());
-    configPersist.Write(wxT("persist/midi_in"), m_pCmbInPort->GetSelection());
-    configPersist.Write(wxT("persist/maximised"), IsMaximized());
+    wxConfig configPersist(wxTheApp->GetAppName(), "riban",wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
+    configPersist.Write("persist/midi_out", m_pCmbOutPort->GetSelection());
+    configPersist.Write("persist/auto_update", m_pChkAutoUpdate->IsChecked());
+    configPersist.Write("persist/midi_in", m_pCmbInPort->GetSelection());
+    configPersist.Write("persist/maximised", IsMaximized());
 	if(!IsMaximized() && !IsIconized())
 	{
-        configPersist.Write(wxT("persist/width"), GetSize().GetWidth());
-        configPersist.Write(wxT("persist/height"), GetSize().GetHeight());
-        configPersist.Write(wxT("persist/left"), GetPosition().x);
-        configPersist.Write(wxT("persist/top"), GetPosition().y);
+        configPersist.Write("persist/width", GetSize().GetWidth());
+        configPersist.Write("persist/height", GetSize().GetHeight());
+        configPersist.Write("persist/left", GetPosition().x);
+        configPersist.Write("persist/top", GetPosition().y);
 	}
 	CloseInput();
 	CloseOutput();
@@ -614,7 +587,7 @@ void VZ_EditorFrame::OnMidiReceive(wxCommandEvent &event)
         }
 //        unsigned int nChannel = (*(pSysExMsg + 4) & 0x0F);
         unsigned int nType = *(pSysExMsg + 5);
-//        m_pLstLog->Append(wxString::Format(wxT("VZ-1/VZ-10 SysEx message. Length %ld. Channel %d. Type %d"), lLength, nChannel + 1, nType));
+//        m_pLstLog->Append(wxString::Format("VZ-1/VZ-10 SysEx message. Length %ld. Channel %d. Type %d", lLength, nChannel + 1, nType));
         switch(nType)
         {
             case MESSAGE_TYPE_VOICE:
@@ -695,29 +668,29 @@ void VZ_EditorFrame::Save(unsigned int nType)
     {
         case 0:
             //Library
-            dlg.SetWildcard(wxT("Library files (*.xml)|*.xml|All files (*.*)|*.*"));
+            dlg.SetWildcard("Library files (*.xml)|*.xml|All files (*.*)|*.*");
             break;
         case 1:
             //Voice
-            dlg.SetFilename(wxString::Format(wxT("%s.vzt"), m_pVoice->GetName().c_str()));
-            dlg.SetWildcard(wxT("VZ tone files (*.vzt)|*.vzt|All files (*.*)|*.*"));
+            dlg.SetFilename(wxString::Format("%s.vzt", m_pVoice->GetName().c_str()));
+            dlg.SetWildcard("VZ tone files (*.vzt)|*.vzt|All files (*.*)|*.*");
             break;
         case 2:
             //Operation data
-            dlg.SetFilename(wxString::Format(wxT("%s.vzo"), m_pOperation->GetName().c_str()));
-            dlg.SetWildcard(wxT("VZ operation files (*.vzo)|*.vzo|All files (*.*)|*.*"));
+            dlg.SetFilename(wxString::Format("%s.vzo", m_pOperation->GetName().c_str()));
+            dlg.SetWildcard("VZ operation files (*.vzo)|*.vzo|All files (*.*)|*.*");
             break;
         default:
             return;
     }
     if(dlg.ShowModal() == wxID_CANCEL)
         return;
-    if(wxFileExists(dlg.GetPath()) && wxMessageBox(wxT("Do you want to overwrite exiting file?"), wxT("Warning"), wxYES_NO|wxICON_WARNING) != wxYES)
+    if(wxFileExists(dlg.GetPath()) && wxMessageBox("Do you want to overwrite existing file?", "Warning", wxYES_NO|wxICON_WARNING) != wxYES)
             return;
     wxFile file(dlg.GetPath(), wxFile::write);
     if(!file.IsOpened())
     {
-        wxMessageBox(wxT("Failed to save file"), wxT("Error"), wxICON_ERROR);
+        wxMessageBox("Failed to save file", "Error", wxICON_ERROR);
         return;
     }
     vzsysex* pSysex = NULL;
@@ -741,7 +714,7 @@ void VZ_EditorFrame::Save(unsigned int nType)
     {
         pSysex->Validate(true);
         if(file.Write(pSysex->GetSysEx(), pSysex->GetSize()) != pSysex->GetSize())
-            wxMessageBox(wxT("Error - corrupt file"), wxT("Error"), wxICON_ERROR);
+            wxMessageBox("Error - corrupt file", "Error", wxICON_ERROR);
     }
     file.Close();
 }
@@ -749,19 +722,19 @@ void VZ_EditorFrame::Save(unsigned int nType)
 bool VZ_EditorFrame::LoadFile(wxString sFilename)
 {
     if(!wxFileExists(sFilename)) {
-        wxMessageBox(wxT("File does not exist"), wxT("Error"), wxICON_ERROR);
+        wxMessageBox("File does not exist", "Error", wxICON_ERROR);
         return false;
     }
     wxFile file(sFilename, wxFile::read);
     if(!file.IsOpened())
     {
-        wxMessageBox(wxT("Failed to open file"), wxT("Error"), wxICON_ERROR);
+        wxMessageBox("Failed to open file", "Error", wxICON_ERROR);
         return false;
     }
     wxByte acSysex[file.Length()];
     if(file.Length() < VZ_HEADER_SIZE || file.Length() != file.Read(acSysex, file.Length()))
     {
-        wxMessageBox(wxT("Failed to read file"), wxT("Error"), wxICON_ERROR);
+        wxMessageBox("Failed to read file", "Error", wxICON_ERROR);
         file.Close();
         return false;
     }
@@ -790,7 +763,7 @@ bool VZ_EditorFrame::LoadFile(wxString sFilename)
     }
     if(bFail)
     {
-        wxMessageBox(wxT("This does not appear to be a valid VZ file"), wxT("Error"), wxICON_ERROR);
+        wxMessageBox("This does not appear to be a valid VZ file", "Error", wxICON_ERROR);
         return false;
     }
     return true;
@@ -903,12 +876,12 @@ void VZ_EditorFrame::OnRadioVibratoWaveformSelect(wxCommandEvent& event)
 
 void VZ_EditorFrame::OnOpenFile(wxCommandEvent& event)
 {
-    wxFileDialog dlg(this, wxEmptyString, wxEmptyString, wxEmptyString,wxT("Library files (*.xml)|*.xml|VZ tone files (*vzt)|*.vzt|VZ operation files (*vzo)|*.vzo|All files (*.*)|*.*"), wxFD_OPEN);
+    wxFileDialog dlg(this, wxEmptyString, wxEmptyString, wxEmptyString,"Library files (*.xml)|*.xml|VZ tone files (*vzt)|*.vzt|VZ operation files (*vzo)|*.vzo|All files (*.*)|*.*", wxFD_OPEN);
     dlg.SetFilterIndex(m_pNotebook->GetSelection());
     if(dlg.ShowModal() == wxID_CANCEL)
         return;
     wxFileName fnFilename(dlg.GetPath());
-    if(fnFilename.GetExt().Lower().IsSameAs(wxT("xml")))
+    if(fnFilename.GetExt().Lower().IsSameAs("xml"))
     {
         if(m_pvzLib->IsDirty())
             ; //!@todo Handle dirty library
@@ -928,7 +901,7 @@ void VZ_EditorFrame::OnLibActivate(wxListEvent& event)
 {
     wxString sFilename = m_pLstLib->GetItemFilename(event.GetIndex());
     wxString sType = m_pLstLib->GetItemType(event.GetIndex());
-    if(LoadFile(wxT("library/") + sFilename)) //!@todo configure path to library
+    if(LoadFile("library/" + sFilename)) //!@todo configure path to library
         m_pNotebook->SetSelection(1);
 }
 
@@ -1034,7 +1007,7 @@ void VZ_EditorFrame::OnVibratoDelayChanged(wxScrollEvent& event)
 
 void VZ_EditorFrame::OnBtnSaveDump(wxCommandEvent& event)
 {
-    wxFileDialog dlg(this, wxT("Select filename and folder to save new library"), wxEmptyString, wxT("NewLibrary.xml"), wxT("Library files (*.xml)|*.xml|All files (*.*)|*.*"), wxFD_SAVE);
+    wxFileDialog dlg(this, "Select filename and folder to save new library", wxEmptyString, "NewLibrary.xml", "Library files (*.xml)|*.xml|All files (*.*)|*.*", wxFD_SAVE);
     if(dlg.ShowModal() == wxID_CANCEL)
         return;
     m_vzSave.SaveToDisk(dlg.GetPath());

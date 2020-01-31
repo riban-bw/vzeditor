@@ -158,6 +158,7 @@ class VZ_EditorFrame: public wxFrame
         VZLine* m_pLine2;
         VZLine* m_pLine3;
         VZLine* m_pLine4;
+        wxBoxSizer* m_pFlexgridGlobalParameters;
         wxButton* m_pBtnGetOperation;
         wxButton* m_pBtnGetVoice;
         wxButton* m_pBtnSaveDump;
@@ -166,7 +167,6 @@ class VZ_EditorFrame: public wxFrame
         wxChoice* m_pCmbInPort;
         wxChoice* m_pCmbOutPort;
         wxChoice* m_pCmbVelCurve;
-        wxFlexGridSizer* m_pSizerMain;
         wxMenuItem* MenuItem3;
         wxMenuItem* MenuItem4;
         wxNotebook* m_pNotebook;

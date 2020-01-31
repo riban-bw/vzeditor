@@ -5,19 +5,16 @@
 		<centered>1</centered>
 		<icon code="wxBitmap(icon_xpm)" />
 		<id_arg>0</id_arg>
-		<object class="wxFlexGridSizer" variable="m_pSizerMain" member="yes">
-			<cols>1</cols>
-			<growablecols>0</growablecols>
-			<growablerows>1</growablerows>
+		<object class="wxBoxSizer" variable="m_pSizerMain" member="no">
+			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
-				<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
+				<object class="wxBoxSizer" variable="BoxSizer8" member="no">
 					<object class="sizeritem">
 						<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
 							<label>MIDI Input Port</label>
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxChoice" name="ID_CMBINPORT" variable="m_pCmbInPort" member="yes">
@@ -26,7 +23,6 @@
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
@@ -34,13 +30,16 @@
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxChoice" name="ID_CMBOUTPORT" variable="m_pCmbOutPort" member="yes">
 							<size>181,27</size>
 							<handler function="OnOutPortSelect" entry="EVT_CHOICE" />
 						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+					</object>
+					<object class="spacer">
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
 						<option>1</option>
@@ -51,7 +50,6 @@
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_BTNSEND" variable="m_pBtnSend" member="yes">
@@ -60,7 +58,6 @@
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_BTNGETVOICE" variable="m_pBtnGetVoice" member="yes">
@@ -70,7 +67,6 @@
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="IID_BTNGETOPERATION" variable="m_pBtnGetOperation" member="yes">
@@ -80,7 +76,6 @@
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_BTNSAVEDUMP" variable="m_pBtnSaveDump" member="yes">
@@ -89,28 +84,18 @@
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 				</object>
 				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
-				<option>1</option>
 			</object>
 			<object class="sizeritem">
 				<object class="wxNotebook" name="ID_NOTEBOOK" variable="m_pNotebook" member="yes">
 					<style>wxNB_NOPAGETHEME</style>
 					<object class="notebookpage">
 						<object class="wxPanel" name="ID_PNLLIBRARY" variable="m_pPnlLibrary" member="yes">
-							<object class="wxFlexGridSizer" variable="FlexGridSizer9" member="no">
-								<rows>2</rows>
-								<growablecols>0</growablecols>
-								<growablerows>1</growablerows>
-								<object class="sizeritem">
-									<object class="wxBoxSizer" variable="BoxSizer2" member="no" />
-									<flag>wxALL|wxEXPAND</flag>
-									<border>5</border>
-									<option>1</option>
-								</object>
+							<object class="wxBoxSizer" variable="BoxSizer2" member="no">
+								<orient>wxVERTICAL</orient>
 								<object class="sizeritem">
 									<object class="Custom" name="ID_LSTLIB" subclass="SortableList" variable="m_pLstLib" member="yes">
 										<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
@@ -185,20 +170,16 @@
 										</object>
 										<object class="wxScrolledWindow" name="ID_SCROLLEDWINDOW2" variable="m_pScrollwindowGlobalParameters" member="yes">
 											<style>wxVSCROLL</style>
-											<object class="wxFlexGridSizer" variable="m_pFlexgridGlobalParameters" member="no">
-												<cols>1</cols>
-												<growablecols>0</growablecols>
-												<growablerows>3,4</growablerows>
+											<object class="wxBoxSizer" variable="m_pFlexgridGlobalParameters" member="yes">
+												<orient>wxVERTICAL</orient>
 												<object class="sizeritem">
-													<object class="wxFlexGridSizer" variable="FlexGridSizer4" member="no">
-														<growablecols>1</growablecols>
+													<object class="wxBoxSizer" variable="BoxSizer9" member="no">
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
 																<label>Voice Name</label>
 															</object>
 															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 															<border>5</border>
-															<option>1</option>
 														</object>
 														<object class="sizeritem">
 															<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="m_pTxtVoiceName" member="yes">
@@ -213,19 +194,15 @@
 													</object>
 													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
-													<option>1</option>
 												</object>
 												<object class="sizeritem">
-													<object class="wxFlexGridSizer" variable="FlexGridSizer7" member="no">
-														<cols>2</cols>
-														<growablecols>1</growablecols>
+													<object class="wxBoxSizer" variable="BoxSizer10" member="no">
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT30" variable="StaticText30" member="yes">
 																<label>Level</label>
 															</object>
 															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 															<border>5</border>
-															<option>1</option>
 														</object>
 														<object class="sizeritem">
 															<object class="wxSlider" name="ID_SLIDERLEVEL" variable="m_pSliderLevel" member="yes">
@@ -241,7 +218,6 @@
 													</object>
 													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
-													<option>1</option>
 												</object>
 												<object class="sizeritem">
 													<object class="wxStaticBoxSizer" variable="StaticBoxSizer3" member="no">
@@ -323,143 +299,120 @@
 													</object>
 													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
-													<option>1</option>
 												</object>
 												<object class="sizeritem">
 													<object class="wxStaticBoxSizer" variable="StaticBoxSizer1" member="no">
 														<label>Tremelo</label>
 														<object class="sizeritem">
-															<object class="wxFlexGridSizer" variable="FlexGridSizer3" member="no">
-																<rows>1</rows>
-																<growablerows>0</growablerows>
+															<object class="wxBoxSizer" variable="BoxSizer11" member="no">
+																<orient>wxVERTICAL</orient>
 																<object class="sizeritem">
-																	<object class="wxFlexGridSizer" variable="FlexGridSizer15" member="no">
-																		<cols>1</cols>
-																		<object class="sizeritem">
-																			<object class="wxRadioBox" name="ID_RADIOTREMELOMULTI" variable="m_pRadioTremeloMulti" member="yes">
-																				<label>Multi</label>
-																				<content>
-																					<item>Off</item>
-																					<item>On</item>
-																				</content>
-																				<default>-1</default>
-																				<handler function="OnRadioTremeloMultiSelect" entry="EVT_RADIOBOX" />
-																			</object>
-																			<flag>wxALL|wxEXPAND</flag>
-																			<border>5</border>
-																			<option>1</option>
-																		</object>
-																		<object class="sizeritem">
-																			<object class="wxRadioBox" name="ID_RADIOTREMELOWAVEFORM" variable="m_pRadioTremeloWaveform" member="yes">
-																				<label>Waveform</label>
-																				<content>
-																					<item>Triangle</item>
-																					<item>Saw Up</item>
-																					<item>Saw Down</item>
-																					<item>Square</item>
-																				</content>
-																				<default>-1</default>
-																				<style>wxRA_HORIZONTAL</style>
-																				<handler function="OnRadioTremeloWaveformSelect" entry="EVT_RADIOBOX" />
-																			</object>
-																			<flag>wxALL|wxEXPAND</flag>
-																			<border>5</border>
-																			<option>1</option>
-																		</object>
+																	<object class="wxRadioBox" name="ID_RADIOTREMELOMULTI" variable="m_pRadioTremeloMulti" member="yes">
+																		<label>Multi</label>
+																		<content>
+																			<item>Off</item>
+																			<item>On</item>
+																		</content>
+																		<default>-1</default>
+																		<handler function="OnRadioTremeloMultiSelect" entry="EVT_RADIOBOX" />
 																	</object>
 																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
-																	<option>1</option>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxFlexGridSizer" variable="FlexGridSizer12" member="no">
-																		<cols>1</cols>
-																		<growablerows>1</growablerows>
-																		<object class="sizeritem">
-																			<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
-																				<label>Depth</label>
-																			</object>
-																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																			<border>5</border>
-																			<option>1</option>
-																		</object>
-																		<object class="sizeritem">
-																			<object class="wxSlider" name="ID_SLIDERTREMELODEPTH" variable="m_pSliderTremeloDepth" member="yes">
-																				<max>99</max>
-																				<size>20,100</size>
-																				<style>wxSL_VERTICAL|wxSL_INVERSE</style>
-																				<handler function="OnTremeloDepthChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
-																			</object>
-																			<flag>wxALL|wxEXPAND</flag>
-																			<border>5</border>
-																			<option>1</option>
-																		</object>
+																	<object class="wxRadioBox" name="ID_RADIOTREMELOWAVEFORM" variable="m_pRadioTremeloWaveform" member="yes">
+																		<label>Waveform</label>
+																		<content>
+																			<item>Triangle</item>
+																			<item>Saw Up</item>
+																			<item>Saw Down</item>
+																			<item>Square</item>
+																		</content>
+																		<default>-1</default>
+																		<style>wxRA_HORIZONTAL</style>
+																		<handler function="OnRadioTremeloWaveformSelect" entry="EVT_RADIOBOX" />
 																	</object>
 																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
-																	<option>1</option>
 																</object>
+															</object>
+															<flag>wxALL|wxEXPAND</flag>
+															<border>5</border>
+														</object>
+														<object class="sizeritem">
+															<object class="wxBoxSizer" variable="BoxSizer12" member="no">
+																<orient>wxVERTICAL</orient>
 																<object class="sizeritem">
-																	<object class="wxFlexGridSizer" variable="FlexGridSizer13" member="no">
-																		<cols>1</cols>
-																		<growablerows>1</growablerows>
-																		<object class="sizeritem">
-																			<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText5" member="yes">
-																				<label>Rate</label>
-																			</object>
-																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																			<border>5</border>
-																			<option>1</option>
-																		</object>
-																		<object class="sizeritem">
-																			<object class="wxSlider" name="ID_SLIDERTREMELORATE" variable="m_pSliderTremeloRate" member="yes">
-																				<max>99</max>
-																				<size>20,100</size>
-																				<minsize>0,0</minsize>
-																				<style>wxSL_VERTICAL|wxSL_INVERSE</style>
-																				<handler function="OnTremeloRateChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
-																			</object>
-																			<flag>wxALL|wxEXPAND</flag>
-																			<border>5</border>
-																			<option>1</option>
-																		</object>
+																	<object class="wxStaticText" name="ID_STATICTEXT6" variable="StaticText6" member="yes">
+																		<label>Depth</label>
 																	</object>
-																	<flag>wxALL|wxEXPAND</flag>
+																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																	<border>5</border>
-																	<option>1</option>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxFlexGridSizer" variable="FlexGridSizer14" member="no">
-																		<cols>1</cols>
-																		<growablerows>1</growablerows>
-																		<object class="sizeritem">
-																			<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
-																				<label>Delay</label>
-																			</object>
-																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-																			<border>5</border>
-																			<option>1</option>
-																		</object>
-																		<object class="sizeritem">
-																			<object class="wxSlider" name="ID_SLIDERTREMELODELAY" variable="m_pSliderTremeloDelay" member="yes">
-																				<max>99</max>
-																				<size>20,100</size>
-																				<style>wxSL_VERTICAL|wxSL_INVERSE</style>
-																				<handler function="OnTremeloDelayChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
-																			</object>
-																			<flag>wxALL|wxEXPAND</flag>
-																			<border>5</border>
-																			<option>1</option>
-																		</object>
+																	<object class="wxSlider" name="ID_SLIDERTREMELODEPTH" variable="m_pSliderTremeloDepth" member="yes">
+																		<max>99</max>
+																		<size>20,100</size>
+																		<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+																		<handler function="OnTremeloDepthChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																	</object>
-																	<flag>wxALL|wxEXPAND</flag>
+																	<flag>wxALL</flag>
 																	<border>5</border>
 																	<option>1</option>
 																</object>
 															</object>
-															<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
+															<flag>wxALL|wxEXPAND</flag>
 															<border>5</border>
-															<option>1</option>
+														</object>
+														<object class="sizeritem">
+															<object class="wxBoxSizer" variable="BoxSizer13" member="no">
+																<orient>wxVERTICAL</orient>
+																<object class="sizeritem">
+																	<object class="wxStaticText" name="ID_STATICTEXT5" variable="StaticText5" member="yes">
+																		<label>Rate</label>
+																	</object>
+																	<flag>wxALL|wxEXPAND</flag>
+																	<border>5</border>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxSlider" name="ID_SLIDERTREMELORATE" variable="m_pSliderTremeloRate" member="yes">
+																		<max>99</max>
+																		<size>20,100</size>
+																		<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+																		<handler function="OnTremeloRateChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+																	</object>
+																	<flag>wxALL</flag>
+																	<border>5</border>
+																	<option>1</option>
+																</object>
+															</object>
+															<flag>wxALL|wxEXPAND</flag>
+															<border>5</border>
+														</object>
+														<object class="sizeritem">
+															<object class="wxBoxSizer" variable="BoxSizer14" member="no">
+																<orient>wxVERTICAL</orient>
+																<object class="sizeritem">
+																	<object class="wxStaticText" name="ID_STATICTEXT4" variable="StaticText4" member="yes">
+																		<label>Delay</label>
+																	</object>
+																	<flag>wxALL</flag>
+																	<border>5</border>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxSlider" name="ID_SLIDERTREMELODELAY" variable="m_pSliderTremeloDelay" member="yes">
+																		<max>99</max>
+																		<size>20,100</size>
+																		<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+																		<handler function="OnTremeloDelayChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
+																	</object>
+																	<flag>wxALL</flag>
+																	<border>5</border>
+																	<option>1</option>
+																</object>
+															</object>
+															<flag>wxALL|wxEXPAND</flag>
+															<border>5</border>
 														</object>
 													</object>
 													<flag>wxALL|wxEXPAND</flag>
@@ -470,11 +423,9 @@
 													<object class="wxStaticBoxSizer" variable="StaticBoxSizer2" member="no">
 														<label>Vibrato</label>
 														<object class="sizeritem">
-															<object class="wxFlexGridSizer" variable="FlexGridSizer5" member="no">
-																<rows>1</rows>
-																<growablerows>0</growablerows>
+															<object class="wxBoxSizer" variable="BoxSizer15" member="no">
 																<object class="sizeritem">
-																	<object class="wxBoxSizer" variable="BoxSizer4" member="no">
+																	<object class="wxBoxSizer" variable="BoxSizer16" member="no">
 																		<orient>wxVERTICAL</orient>
 																		<object class="sizeritem">
 																			<object class="wxRadioBox" name="ID_RADIOBOX3" variable="m_pRadioVibratoMulti" member="yes">
@@ -508,21 +459,18 @@
 																			<option>1</option>
 																		</object>
 																	</object>
-																	<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
-																	<option>1</option>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxFlexGridSizer" variable="FlexGridSizer8" member="no">
-																		<cols>1</cols>
-																		<growablerows>1</growablerows>
+																	<object class="wxBoxSizer" variable="BoxSizer4" member="no">
+																		<orient>wxVERTICAL</orient>
 																		<object class="sizeritem">
 																			<object class="wxStaticText" name="ID_STATICTEXT7" variable="StaticText7" member="yes">
 																				<label>Depth</label>
 																			</object>
 																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																			<border>5</border>
-																			<option>1</option>
 																		</object>
 																		<object class="sizeritem">
 																			<object class="wxSlider" name="ID_SLIDER5" variable="m_pSliderVibratoDepth" member="yes">
@@ -530,26 +478,23 @@
 																				<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 																				<handler function="OnVibratoDepthChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																			</object>
-																			<flag>wxALL|wxEXPAND</flag>
+																			<flag>wxALL</flag>
 																			<border>5</border>
 																			<option>1</option>
 																		</object>
 																	</object>
 																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
-																	<option>1</option>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxFlexGridSizer" variable="FlexGridSizer10" member="no">
-																		<cols>1</cols>
-																		<growablerows>1</growablerows>
+																	<object class="wxBoxSizer" variable="BoxSizer17" member="no">
+																		<orient>wxVERTICAL</orient>
 																		<object class="sizeritem">
 																			<object class="wxStaticText" name="ID_STATICTEXT8" variable="StaticText8" member="yes">
 																				<label>Rate</label>
 																			</object>
 																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																			<border>5</border>
-																			<option>1</option>
 																		</object>
 																		<object class="sizeritem">
 																			<object class="wxSlider" name="ID_SLIDER4" variable="m_pSliderVibratoRate" member="yes">
@@ -557,26 +502,23 @@
 																				<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 																				<handler function="OnVibratoRateChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																			</object>
-																			<flag>wxALL|wxEXPAND</flag>
+																			<flag>wxALL</flag>
 																			<border>5</border>
 																			<option>1</option>
 																		</object>
 																	</object>
 																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
-																	<option>1</option>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxFlexGridSizer" variable="FlexGridSizer11" member="no">
-																		<cols>1</cols>
-																		<growablerows>1</growablerows>
+																	<object class="wxBoxSizer" variable="BoxSizer18" member="no">
+																		<orient>wxVERTICAL</orient>
 																		<object class="sizeritem">
 																			<object class="wxStaticText" name="ID_STATICTEXT9" variable="StaticText9" member="yes">
 																				<label>Delay</label>
 																			</object>
 																			<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 																			<border>5</border>
-																			<option>1</option>
 																		</object>
 																		<object class="sizeritem">
 																			<object class="wxSlider" name="ID_SLIDER6" variable="m_pSliderVibratoDelay" member="yes">
@@ -584,14 +526,13 @@
 																				<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 																				<handler function="OnVibratoDelayChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																			</object>
-																			<flag>wxALL|wxEXPAND</flag>
+																			<flag>wxALL</flag>
 																			<border>5</border>
 																			<option>1</option>
 																		</object>
 																	</object>
 																	<flag>wxALL|wxEXPAND</flag>
 																	<border>5</border>
-																	<option>1</option>
 																</object>
 															</object>
 															<flag>wxALL|wxEXPAND</flag>
@@ -599,7 +540,7 @@
 															<option>1</option>
 														</object>
 													</object>
-													<flag>wxALL|wxEXPAND</flag>
+													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 													<border>5</border>
 													<option>1</option>
 												</object>
@@ -629,20 +570,16 @@
 										</object>
 										<object class="wxScrolledWindow" name="ID_SCROLLEDWINDOW4" variable="ScrolledWindow2" member="yes">
 											<style>wxVSCROLL</style>
-											<object class="wxFlexGridSizer" variable="FlexGridSizer2" member="no">
-												<cols>1</cols>
-												<growablecols>0</growablecols>
-												<growablerows>0</growablerows>
+											<object class="wxBoxSizer" variable="BoxSizer7" member="no">
+												<orient>wxVERTICAL</orient>
 												<object class="sizeritem">
-													<object class="wxFlexGridSizer" variable="FlexGridSizer16" member="no">
-														<growablecols>1</growablecols>
+													<object class="wxBoxSizer" variable="BoxSizer19" member="no">
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT13" variable="StaticText12" member="yes">
 																<label>Voice Name</label>
 															</object>
 															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 															<border>5</border>
-															<option>1</option>
 														</object>
 														<object class="sizeritem">
 															<object class="wxTextCtrl" name="ID_TXTOPERATIONNAME" variable="m_pTxtOperationName" member="yes">
@@ -650,14 +587,13 @@
 																<validator>m__validateVoiceName</validator>
 																<handler function="OnTxtVoiceNameText" entry="EVT_TEXT" />
 															</object>
-															<flag>wxALL|wxEXPAND</flag>
+															<flag>wxALL</flag>
 															<border>5</border>
 															<option>1</option>
 														</object>
 													</object>
 													<flag>wxALL|wxEXPAND</flag>
 													<border>5</border>
-													<option>1</option>
 												</object>
 											</object>
 										</object>
@@ -676,23 +612,15 @@
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
-				<object class="wxBoxSizer" variable="BoxSizer7" member="no">
-					<object class="sizeritem">
-						<object class="Custom" name="ID_KBD" subclass="KeyboardOctave" variable="m_pKeyboard" member="yes">
-							<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-							<include_file>keyboardoctave.h</include_file>
-							<local_include>1</local_include>
-							<style></style>
-							<hidden>1</hidden>
-						</object>
-						<flag>wxALL|wxEXPAND</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
+				<object class="Custom" name="ID_KBD" subclass="KeyboardOctave" variable="m_pKeyboard" member="yes">
+					<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
+					<include_file>keyboardoctave.h</include_file>
+					<local_include>1</local_include>
+					<style></style>
+					<hidden>1</hidden>
 				</object>
 				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
-				<option>1</option>
 			</object>
 		</object>
 		<object class="wxMenuBar" variable="MenuBar1" member="no">
