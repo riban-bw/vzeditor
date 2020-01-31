@@ -19,7 +19,7 @@ class VZLibrary
 {
     public:
         /** Construct VZLibrary obect */
-        VZLibrary(const wxString &sFilename = wxT("library/vzlibrary.xml"));
+        VZLibrary(const wxString &sFilename = "library/vzlibrary.xml");
         /** Destruct VZLibrary obect */
         virtual ~VZLibrary();
 
@@ -41,7 +41,7 @@ class VZLibrary
 
         bool IsValid() { return m_bValid; };
 
-        bool AddEntry(const wxString &sName, const wxString &sFilename, const wxString &sDescription = wxEmptyString, const wxString &sGroup = wxEmptyString, const wxString &sType = wxT("vzvoice"));
+        bool AddEntry(const wxString &sName, const wxString &sFilename, const wxString &sDescription = wxEmptyString, const wxString &sGroup = wxEmptyString, const wxString &sType = "vzvoice");
 
         bool RemoveEntry(wxString sFilename);
 

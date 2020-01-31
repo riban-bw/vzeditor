@@ -28,7 +28,7 @@ bool VZLibrary::Load(const wxString &sFilename)
     wxXmlDocument xmlDoc;
     if(!wxFileExists(sFilename))
     {
-        wxXmlNode nodeRoot(NULL, wxXML_ELEMENT_NODE, wxT("vzlibrary"));
+        wxXmlNode nodeRoot(NULL, wxXML_ELEMENT_NODE, "vzlibrary");
         xmlDoc.SetRoot(&nodeRoot);
         if(!xmlDoc.Save(sFilename))
             return false;
@@ -41,10 +41,10 @@ bool VZLibrary::Load(const wxString &sFilename)
     {
         vzLibEntry* pEntry = new vzLibEntry;
         pEntry->type = pNode->GetName();
-        pEntry->name = pNode->GetAttribute(wxT("name"), wxT("New Voice"));
-        pEntry->description = pNode->GetAttribute(wxT("description"), wxEmptyString);
-        pEntry->group = pNode->GetAttribute(wxT("group"), wxEmptyString);
-        pEntry->filename = pNode->GetAttribute(wxT("filename"), wxString::Format(wxT("%s.syx"), pEntry->name.c_str()));
+        pEntry->name = pNode->GetAttribute("name", "New Voice");
+        pEntry->description = pNode->GetAttribute("description", wxEmptyString);
+        pEntry->group = pNode->GetAttribute("group", wxEmptyString);
+        pEntry->filename = pNode->GetAttribute("filename", wxString::Format("%s.syx", pEntry->name.c_str()));
         m_vEntries.push_back(pEntry);
         pNode = pNode->GetNext();
     }
@@ -57,17 +57,17 @@ bool VZLibrary::Save()
 {
     //!@todo Use filename as parameter
     wxXmlDocument xmlDoc;
-    wxXmlNode* pNode = new wxXmlNode(NULL, wxXML_ELEMENT_NODE, wxT("vzlibrary"));
+    wxXmlNode* pNode = new wxXmlNode(NULL, wxXML_ELEMENT_NODE, "vzlibrary");
     xmlDoc.SetRoot(pNode);
     //iterate in reverse because we are adding each node to the root so it ends up at start of document
     for(vector<vzLibEntry*>::reverse_iterator it = m_vEntries.rbegin(); it != m_vEntries.rend(); ++it)
     {
         vzLibEntry* pEntry = *it;
         pNode = new wxXmlNode(xmlDoc.GetRoot(), wxXML_ELEMENT_NODE, pEntry->type);
-        pNode->AddAttribute(wxT("name"), pEntry->name);
-        pNode->AddAttribute(wxT("group"), pEntry->group);
-        pNode->AddAttribute(wxT("description"), pEntry->description);
-        pNode->AddAttribute(wxT("filename"), pEntry->filename);
+        pNode->AddAttribute("name", pEntry->name);
+        pNode->AddAttribute("group", pEntry->group);
+        pNode->AddAttribute("description", pEntry->description);
+        pNode->AddAttribute("filename", pEntry->filename);
     }
     m_bDirty = xmlDoc.Save(m_sFilename);
     return m_bDirty;
@@ -77,7 +77,7 @@ void VZLibrary::Close()
 {
    if(m_bDirty)
     {
-        if(wxMessageBox(wxT("Save changes to library?"), wxT("Unsaved changes"), wxYES_NO|wxCENTRE) == wxYES)
+        if(wxMessageBox("Save changes to library?", "Unsaved changes", wxYES_NO|wxCENTRE) == wxYES)
             Save();
     }
     ClearData();

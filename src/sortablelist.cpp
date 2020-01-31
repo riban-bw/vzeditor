@@ -62,22 +62,22 @@ SortableList::SortableList(wxWindow* parent, wxWindowID id):
 {
     wxListItem col0;
     col0.SetId(0);
-    col0.SetText(wxT("Name"));
+    col0.SetText("Name");
     col0.SetWidth(200);
     InsertColumn(0, col0);
     wxListItem col1;
     col1.SetId(1);
-    col1.SetText(wxT("Description"));
+    col1.SetText("Description");
     col1.SetWidth(400);
     InsertColumn(1, col1);
     wxListItem col2;
     col2.SetId(2);
-    col2.SetText(wxT("Group"));
+    col2.SetText("Group");
     col2.SetWidth(200);
     InsertColumn(2, col2);
     wxListItem col3;
     col3.SetId(3);
-    col3.SetText(wxT("Type"));
+    col3.SetText("Type");
     col3.SetWidth(200);
     InsertColumn(3, col3);
     Connect(wxEVT_KEY_UP, (wxObjectEventFunction)&SortableList::OnKeyUp);
@@ -111,7 +111,7 @@ wxString SortableList::OnGetItemText(long item, long column) const{
                 return pData->type;
         }
     }
-    return wxT("");
+    return "";
 }
 
 wxString SortableList::GetItemFilename(long item)
@@ -136,38 +136,38 @@ void SortableList::Sort(long column)
     //Reset all columm titles
     wxListItem col;
     GetColumn(0, col);
-    col.SetText(wxT("Name"));
+    col.SetText("Name");
     SetColumn(0, col);
     GetColumn(1, col);
-    col.SetText(wxT("Description"));
+    col.SetText("Description");
     SetColumn(1, col);
     GetColumn(2, col);
-    col.SetText(wxT("Group"));
+    col.SetText("Group");
     SetColumn(2, col);
     GetColumn(3, col);
-    col.SetText(wxT("Type"));
+    col.SetText("Type");
     SetColumn(3, col);
     GetColumn(column, col);
     switch(column)
     {
         case 0:
             sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByNameAsc:SortByNameDesc);
-            col.SetText(bAscending?wxT("▲ Name"):wxT("▼ Name"));
+            col.SetText(bAscending?"▲ Name":"▼ Name");
             SetColumn(column, col);
             break;
         case 1:
             sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByDescriptionAsc:SortByDescriptionDesc);
-            col.SetText(bAscending?wxT("▲ Description"):wxT("▼ Description"));
+            col.SetText(bAscending?"▲ Description":"▼ Description");
             SetColumn(column, col);
             break;
         case 2:
             sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByGroupAsc:SortByGroupDesc);
-            col.SetText(bAscending?wxT("▲ Group"):wxT("▼ Group"));
+            col.SetText(bAscending?"▲ Group":"▼ Group");
             SetColumn(column, col);
             break;
         case 3:
             sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByTypeAsc:SortByTypeDesc);
-            col.SetText(bAscending?wxT("▲ Type"):wxT("▼ Type"));
+            col.SetText(bAscending?"▲ Type":"▼ Type");
             SetColumn(column, col);
             break;
         default:
@@ -193,7 +193,7 @@ void SortableList::OnKeyUp(wxKeyEvent& event)
         long lIndex = -1;
         while((lIndex = GetNextItem(lIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND)
         {
-            if(wxMessageBox(wxT("Delete ") + OnGetItemText(lIndex, 0), wxT("Delete item"), wxYES_NO | wxCENTRE) != wxYES)
+            if(wxMessageBox("Delete " + OnGetItemText(lIndex, 0), "Delete item", wxYES_NO | wxCENTRE) != wxYES)
                 continue;
             DeleteItem(lIndex);
         }
