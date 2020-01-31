@@ -80,5 +80,7 @@ Operation editor is not yet implemented but should work similar to voice editor,
 # Notes
 
 Each voice and operation data is saved as an individual file.
+
 Library points to these files so deleting or moving files may break library.
+
 MIDI ports are not dynamically updated. Adding a port will not show in the list whilst VZEditor is running and removing a port may crash VZEditor (issue #2).
