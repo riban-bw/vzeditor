@@ -20,6 +20,7 @@
 					<object class="sizeritem">
 						<object class="wxChoice" name="ID_CMBINPORT" variable="m_pCmbInPort" member="yes">
 							<size>181,27</size>
+							<tooltip>Select MIDI input port</tooltip>
 							<handler function="OnInPortSelect" entry="EVT_CHOICE" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -35,10 +36,19 @@
 					<object class="sizeritem">
 						<object class="wxChoice" name="ID_CMBOUTPORT" variable="m_pCmbOutPort" member="yes">
 							<size>181,27</size>
+							<tooltip>Select MIDI output port</tooltip>
 							<handler function="OnOutPortSelect" entry="EVT_CHOICE" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
+					</object>
+					<object class="sizeritem">
+						<object class="wxCheckBox" name="ID_CHECKBOX_Keyboard" variable="m_pChkKeyboard" member="yes">
+							<label>Keyboard</label>
+						</object>
+						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<border>5</border>
+						<option>1</option>
 					</object>
 					<object class="spacer">
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -48,6 +58,7 @@
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="ID_CHKAUTOUPDATE" variable="m_pChkAutoUpdate" member="yes">
 							<label>Auto Update</label>
+							<tooltip>Enable automatic, immediate send of changes</tooltip>
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
@@ -55,6 +66,7 @@
 					<object class="sizeritem">
 						<object class="wxButton" name="ID_BTNSEND" variable="m_pBtnSend" member="yes">
 							<label>Send</label>
+							<tooltip>Send data to MIDI output</tooltip>
 							<handler function="OnBtnSendClick" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -64,6 +76,7 @@
 						<object class="wxButton" name="ID_BTNGETVOICE" variable="m_pBtnGetVoice" member="yes">
 							<label>Get Voice</label>
 							<enabled>0</enabled>
+							<tooltip>Load voice data recieved from MIDI input</tooltip>
 							<handler function="OnBtnGetVoice" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -73,6 +86,7 @@
 						<object class="wxButton" name="IID_BTNGETOPERATION" variable="m_pBtnGetOperation" member="yes">
 							<label>Get Operation</label>
 							<enabled>0</enabled>
+							<tooltip>Load operational data recieved from MIDI input</tooltip>
 							<handler function="OnBtnGetOperation" entry="EVT_BUTTON" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -92,6 +106,7 @@
 			</object>
 			<object class="sizeritem">
 				<object class="wxNotebook" name="ID_NOTEBOOK" variable="m_pNotebook" member="yes">
+					<tooltip>Select voice library tab</tooltip>
 					<style>wxNB_NOPAGETHEME</style>
 					<object class="notebookpage">
 						<object class="wxPanel" name="ID_PNLLIBRARY" variable="m_pPnlLibrary" member="yes">
@@ -114,6 +129,7 @@
 					</object>
 					<object class="notebookpage">
 						<object class="wxPanel" name="ID_PNLVOICE" variable="m_pPnlVoice" member="yes">
+							<tooltip>Select voice editor tab</tooltip>
 							<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 								<object class="sizeritem">
 									<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW1" variable="SplitterWindow1" member="yes">
@@ -186,6 +202,7 @@
 															<object class="wxTextCtrl" name="ID_TEXTCTRL1" variable="m_pTxtVoiceName" member="yes">
 																<maxlength>12</maxlength>
 																<validator>m__validateVoiceName</validator>
+																<tooltip>Edit voice name</tooltip>
 																<handler function="OnTxtVoiceNameText" entry="EVT_TEXT" />
 															</object>
 															<flag>wxALL|wxEXPAND</flag>
@@ -209,6 +226,7 @@
 															<object class="wxSlider" name="ID_SLIDERLEVEL" variable="m_pSliderLevel" member="yes">
 																<value>99</value>
 																<max>99</max>
+																<tooltip>Set voice output level</tooltip>
 																<style>wxSL_INVERSE</style>
 																<handler function="OnLevelChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 															</object>
@@ -239,6 +257,7 @@
 																	<object class="wxSlider" name="ID_SLIDEROCTAVE" variable="m_pSliderOctave" member="yes">
 																		<min>-2</min>
 																		<max>2</max>
+																		<tooltip>Set DCO octave</tooltip>
 																		<style>wxSL_HORIZONTAL</style>
 																		<handler function="OnOctaveChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																	</object>
@@ -258,6 +277,7 @@
 																<object class="sizeritem">
 																	<object class="wxSlider" name="ID_SLIDERVELSENS" variable="m_pSliderVelSens" member="yes">
 																		<max>31</max>
+																		<tooltip>Set DCO velocity sensitivity</tooltip>
 																		<style>wxSL_HORIZONTAL</style>
 																		<handler function="OnDcoVelSensChange" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																	</object>
@@ -286,6 +306,7 @@
 																			<item>Curve 8</item>
 																		</content>
 																		<selection>0</selection>
+																		<tooltip>Select DCO curve</tooltip>
 																		<handler function="OnCmbVelCurveSelect" entry="EVT_CHOICE" />
 																	</object>
 																	<flag>wxALL|wxEXPAND</flag>
@@ -315,6 +336,7 @@
 																			<item>On</item>
 																		</content>
 																		<default>-1</default>
+																		<tooltip>Select tremelo multi</tooltip>
 																		<handler function="OnRadioTremeloMultiSelect" entry="EVT_RADIOBOX" />
 																	</object>
 																	<flag>wxALL|wxEXPAND</flag>
@@ -330,6 +352,7 @@
 																			<item>Square</item>
 																		</content>
 																		<default>-1</default>
+																		<tooltip>Select tremelo waveform</tooltip>
 																		<style>wxRA_HORIZONTAL</style>
 																		<handler function="OnRadioTremeloWaveformSelect" entry="EVT_RADIOBOX" />
 																	</object>
@@ -354,6 +377,7 @@
 																	<object class="wxSlider" name="ID_SLIDERTREMELODEPTH" variable="m_pSliderTremeloDepth" member="yes">
 																		<max>99</max>
 																		<size>20,100</size>
+																		<tooltip>Set tremelo depth</tooltip>
 																		<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 																		<handler function="OnTremeloDepthChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																	</object>
@@ -379,6 +403,7 @@
 																	<object class="wxSlider" name="ID_SLIDERTREMELORATE" variable="m_pSliderTremeloRate" member="yes">
 																		<max>99</max>
 																		<size>20,100</size>
+																		<tooltip>Set tremelo rate</tooltip>
 																		<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 																		<handler function="OnTremeloRateChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																	</object>
@@ -404,6 +429,7 @@
 																	<object class="wxSlider" name="ID_SLIDERTREMELODELAY" variable="m_pSliderTremeloDelay" member="yes">
 																		<max>99</max>
 																		<size>20,100</size>
+																		<tooltip>Set tremelo delay</tooltip>
 																		<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 																		<handler function="OnTremeloDelayChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																	</object>
@@ -436,6 +462,7 @@
 																					<item>On</item>
 																				</content>
 																				<default>-1</default>
+																				<tooltip>Select vibrato multi</tooltip>
 																				<handler function="OnRadioVibratoMultiSelect" entry="EVT_RADIOBOX" />
 																			</object>
 																			<flag>wxALL|wxEXPAND</flag>
@@ -452,6 +479,7 @@
 																					<item>Square</item>
 																				</content>
 																				<default>-1</default>
+																				<tooltip>Select vibrato waveform</tooltip>
 																				<style>wxRA_HORIZONTAL</style>
 																				<handler function="OnRadioVibratoWaveformSelect" entry="EVT_RADIOBOX" />
 																			</object>
@@ -476,6 +504,7 @@
 																		<object class="sizeritem">
 																			<object class="wxSlider" name="ID_SLIDER5" variable="m_pSliderVibratoDepth" member="yes">
 																				<max>99</max>
+																				<tooltip>Set vibrato depth</tooltip>
 																				<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 																				<handler function="OnVibratoDepthChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																			</object>
@@ -500,6 +529,7 @@
 																		<object class="sizeritem">
 																			<object class="wxSlider" name="ID_SLIDER4" variable="m_pSliderVibratoRate" member="yes">
 																				<max>99</max>
+																				<tooltip>Set vibrato rate</tooltip>
 																				<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 																				<handler function="OnVibratoRateChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																			</object>
@@ -524,6 +554,7 @@
 																		<object class="sizeritem">
 																			<object class="wxSlider" name="ID_SLIDER6" variable="m_pSliderVibratoDelay" member="yes">
 																				<max>99</max>
+																				<tooltip>Set vibrato delay</tooltip>
 																				<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 																				<handler function="OnVibratoDelayChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																			</object>
@@ -558,6 +589,7 @@
 					</object>
 					<object class="notebookpage">
 						<object class="wxPanel" name="ID_PNLOPERATION" variable="m_pPnlOperation" member="yes">
+							<tooltip>Select operation editor tab</tooltip>
 							<object class="wxBoxSizer" variable="BoxSizer5" member="no">
 								<object class="sizeritem">
 									<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW2" variable="SplitterWindow2" member="yes">
@@ -577,7 +609,7 @@
 													<object class="wxBoxSizer" variable="BoxSizer19" member="no">
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT13" variable="StaticText12" member="yes">
-																<label>Voice Name</label>
+																<label>Operation Name</label>
 															</object>
 															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 															<border>5</border>
@@ -586,6 +618,7 @@
 															<object class="wxTextCtrl" name="ID_TXTOPERATIONNAME" variable="m_pTxtOperationName" member="yes">
 																<maxlength>12</maxlength>
 																<validator>m__validateVoiceName</validator>
+																<tooltip>Edit operation name</tooltip>
 																<handler function="OnTxtVoiceNameText" entry="EVT_TEXT" />
 															</object>
 															<flag>wxALL</flag>
@@ -613,12 +646,11 @@
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
-				<object class="Custom" name="ID_KBD" subclass="KeyboardOctave" variable="m_pKeyboard" member="yes">
+				<object class="Custom" name="ID_KBD" subclass="Keyboard" variable="m_pKeyboard" member="yes">
 					<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-					<include_file>keyboardoctave.h</include_file>
+					<include_file>keyboard.h</include_file>
 					<local_include>1</local_include>
 					<style></style>
-					<hidden>1</hidden>
 				</object>
 				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
@@ -656,7 +688,7 @@
 				</object>
 			</object>
 		</object>
-		<object class="wxStatusBar" name="ID_STATUSBAR1" variable="StatusBar1" member="yes">
+		<object class="wxStatusBar" name="ID_STATUSBAR1" variable="m_pStatusbar" member="yes">
 			<fields>1</fields>
 			<widths>-1</widths>
 			<styles>wxSB_NORMAL</styles>

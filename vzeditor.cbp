@@ -16,6 +16,7 @@
 					<Add option="-g" />
 					<Add option="-D__WXDEBUG__" />
 					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
+					<Add directory="include" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="$(#wx)/lib/gcc_dll/mswud" />
@@ -34,6 +35,7 @@
 				<Compiler>
 					<Add option="-O2" />
 					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
+					<Add directory="include" />
 				</Compiler>
 				<ResourceCompiler>
 					<Add directory="$(#wx)/lib/gcc_dll/mswu" />
@@ -65,7 +67,7 @@
 		</Linker>
 		<Unit filename="include/envelope.h" />
 		<Unit filename="include/envelopeeditor.h" />
-		<Unit filename="include/keyboardoctave.h" />
+		<Unit filename="include/keyboard.h" />
 		<Unit filename="include/keyfollow.h" />
 		<Unit filename="include/pminternal.h" />
 		<Unit filename="include/pmutil.h" />
@@ -88,7 +90,7 @@
 		</Unit>
 		<Unit filename="src/envelope.cpp" />
 		<Unit filename="src/envelopeeditor.cpp" />
-		<Unit filename="src/keyboardoctave.cpp" />
+		<Unit filename="src/keyboard.cpp" />
 		<Unit filename="src/keyfollow.cpp" />
 		<Unit filename="src/pmutil.c">
 			<Option compilerVar="CC" />
@@ -119,7 +121,6 @@
 		<Unit filename="src/wxMidiDatabase.cpp" />
 		<Unit filename="wxEnvelopeGraph/include/envelopegraph.h" />
 		<Unit filename="wxEnvelopeGraph/src/envelopegraph.cpp" />
-		<Unit filename="wxsmith/keyboardoctave.wxs" />
 		<Unit filename="wxsmith/vzeditorframe.wxs" />
 		<Unit filename="wxsmith/vzline.wxs" />
 		<Unit filename="wxsmith/vzmodule.wxs" />
@@ -134,7 +135,6 @@
 					<wxFrame wxs="wxsmith/vzeditorframe.wxs" src="src/vzeditormain.cpp" hdr="include/vzeditormain.h" fwddecl="0" i18n="1" name="VZ_EditorFrame" language="CPP" />
 					<wxPanel wxs="wxsmith/vzline.wxs" src="src/vzline.cpp" hdr="include/vzline.h" fwddecl="0" i18n="1" name="VZLine" language="CPP" />
 					<wxPanel wxs="wxsmith/vzmodule.wxs" src="src/vzmodule.cpp" hdr="include/vzmodule.h" fwddecl="0" i18n="1" name="VZModule" language="CPP" />
-					<wxPanel wxs="wxsmith/keyboardoctave.wxs" src="src/keyboardoctave.cpp" hdr="include/keyboardoctave.h" fwddecl="0" i18n="1" name="KeyboardOctave" language="CPP" />
 				</resources>
 			</wxsmith>
 		</Extensions>

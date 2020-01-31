@@ -11,7 +11,7 @@
 #define VZ_EDITORMAIN_H
 
 //(*Headers(VZ_EditorFrame)
-#include "keyboardoctave.h"
+#include "keyboard.h"
 #include "sortablelist.h"
 #include "vzline.h"
 #include <wx/button.h>
@@ -85,6 +85,7 @@ class VZ_EditorFrame: public wxFrame
         void OnVibratoDelayChanged(wxScrollEvent& event);
         void OnBtnGetOperation(wxCommandEvent& event);
         void OnBtnSaveDump(wxCommandEvent& event);
+        void OnChkKeyboard(wxCommandEvent& event);
         //*)
         void OnGridSort(wxCommandEvent& event);
         void OnLibSort(wxListEvent& event);
@@ -95,6 +96,7 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_CMBINPORT;
         static const long ID_STATICTEXT1;
         static const long ID_CMBOUTPORT;
+        static const long ID_CHECKBOX_Keyboard;
         static const long ID_CHKAUTOUPDATE;
         static const long ID_BTNSEND;
         static const long ID_BTNGETVOICE;
@@ -152,7 +154,7 @@ class VZ_EditorFrame: public wxFrame
         //*)
 
         //(*Declarations(VZ_EditorFrame)
-        KeyboardOctave* m_pKeyboard;
+        Keyboard* m_pKeyboard;
         SortableList* m_pLstLib;
         VZLine* m_pLine1;
         VZLine* m_pLine2;
@@ -164,6 +166,7 @@ class VZ_EditorFrame: public wxFrame
         wxButton* m_pBtnSaveDump;
         wxButton* m_pBtnSend;
         wxCheckBox* m_pChkAutoUpdate;
+        wxCheckBox* m_pChkKeyboard;
         wxChoice* m_pCmbInPort;
         wxChoice* m_pCmbOutPort;
         wxChoice* m_pCmbVelCurve;
@@ -206,7 +209,7 @@ class VZ_EditorFrame: public wxFrame
         wxStaticText* StaticText8;
         wxStaticText* StaticText9;
         wxStaticText* m_pLblVelCurve;
-        wxStatusBar* StatusBar1;
+        wxStatusBar* m_pStatusbar;
         wxTextCtrl* m_pTxtOperationName;
         wxTextCtrl* m_pTxtVoiceName;
         //*)
@@ -228,6 +231,8 @@ class VZ_EditorFrame: public wxFrame
         void UpdateVoiceGui(); //!< Update voice editor GUI
         void UpdateOperationGui(); //!< Update operation data editor GUI
         void OnVzSave();
+        void OnKeyboardNoteOn(wxCommandEvent& event); // Handle on-screen MIDI keyboard note-on events
+        void OnKeyboardNoteOff(wxCommandEvent& event); // Handle on-screen MIDI keyboard note-off events
 
         void OnMidiReceive(wxCommandEvent& event); //!< Handle MIDI receive events
         wxMidiSystem* m_pMidi;

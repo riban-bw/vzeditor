@@ -13,6 +13,7 @@
 						<item>RING</item>
 						<item>PHASE</item>
 					</content>
+					<tooltip>Select line phase</tooltip>
 					<handler function="OnLine" entry="EVT_CHOICE" />
 				</object>
 				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

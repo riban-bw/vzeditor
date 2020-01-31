@@ -28,6 +28,7 @@ const long VZ_EditorFrame::ID_STATICTEXT2 = wxNewId();
 const long VZ_EditorFrame::ID_CMBINPORT = wxNewId();
 const long VZ_EditorFrame::ID_STATICTEXT1 = wxNewId();
 const long VZ_EditorFrame::ID_CMBOUTPORT = wxNewId();
+const long VZ_EditorFrame::ID_CHECKBOX_Keyboard = wxNewId();
 const long VZ_EditorFrame::ID_CHKAUTOUPDATE = wxNewId();
 const long VZ_EditorFrame::ID_BTNSEND = wxNewId();
 const long VZ_EditorFrame::ID_BTNGETVOICE = wxNewId();
@@ -87,6 +88,8 @@ const long VZ_EditorFrame::ID_STATUSBAR1 = wxNewId();
 BEGIN_EVENT_TABLE(VZ_EditorFrame,wxFrame)
     //(*EventTable(VZ_EditorFrame)
     //*)
+    EVT_COMMAND(ID_KBD, KEYBOARD_NOTE_ON_EVENT, VZ_EditorFrame::OnKeyboardNoteOn)
+    EVT_COMMAND(ID_KBD, KEYBOARD_NOTE_OFF_EVENT, VZ_EditorFrame::OnKeyboardNoteOff)
 END_EVENT_TABLE()
 
 VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
@@ -147,27 +150,37 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("MIDI Input Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
     BoxSizer8->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pCmbInPort = new wxChoice(this, ID_CMBINPORT, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CMBINPORT"));
+    m_pCmbInPort->SetToolTip(_("Select MIDI input port"));
     BoxSizer8->Add(m_pCmbInPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("MIDI Output Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
     BoxSizer8->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pCmbOutPort = new wxChoice(this, ID_CMBOUTPORT, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CMBOUTPORT"));
+    m_pCmbOutPort->SetToolTip(_("Select MIDI output port"));
     BoxSizer8->Add(m_pCmbOutPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pChkKeyboard = new wxCheckBox(this, ID_CHECKBOX_Keyboard, _("Keyboard"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX_Keyboard"));
+    m_pChkKeyboard->SetValue(false);
+    BoxSizer8->Add(m_pChkKeyboard, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer8->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pChkAutoUpdate = new wxCheckBox(this, ID_CHKAUTOUPDATE, _("Auto Update"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHKAUTOUPDATE"));
     m_pChkAutoUpdate->SetValue(false);
+    m_pChkAutoUpdate->SetToolTip(_("Enable automatic, immediate send of changes"));
     BoxSizer8->Add(m_pChkAutoUpdate, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnSend = new wxButton(this, ID_BTNSEND, _("Send"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNSEND"));
+    m_pBtnSend->SetToolTip(_("Send data to MIDI output"));
     BoxSizer8->Add(m_pBtnSend, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnGetVoice = new wxButton(this, ID_BTNGETVOICE, _("Get Voice"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNGETVOICE"));
     m_pBtnGetVoice->Disable();
+    m_pBtnGetVoice->SetToolTip(_("Load voice data recieved from MIDI input"));
     BoxSizer8->Add(m_pBtnGetVoice, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnGetOperation = new wxButton(this, IID_BTNGETOPERATION, _("Get Operation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("IID_BTNGETOPERATION"));
     m_pBtnGetOperation->Disable();
+    m_pBtnGetOperation->SetToolTip(_("Load operational data recieved from MIDI input"));
     BoxSizer8->Add(m_pBtnGetOperation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pBtnSaveDump = new wxButton(this, ID_BTNSAVEDUMP, _("Save Dump"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNSAVEDUMP"));
     BoxSizer8->Add(m_pBtnSaveDump, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSizerMain->Add(BoxSizer8, 0, wxALL|wxEXPAND, 5);
     m_pNotebook = new wxNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_NOPAGETHEME, _T("ID_NOTEBOOK"));
+    m_pNotebook->SetToolTip(_("Select voice library tab"));
     m_pPnlLibrary = new wxPanel(m_pNotebook, ID_PNLLIBRARY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLLIBRARY"));
     BoxSizer2 = new wxBoxSizer(wxVERTICAL);
     m_pLstLib = new SortableList(m_pPnlLibrary,ID_LSTLIB);
@@ -176,6 +189,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     BoxSizer2->Fit(m_pPnlLibrary);
     BoxSizer2->SetSizeHints(m_pPnlLibrary);
     m_pPnlVoice = new wxPanel(m_pNotebook, ID_PNLVOICE, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLVOICE"));
+    m_pPnlVoice->SetToolTip(_("Select voice editor tab"));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
     SplitterWindow1 = new wxSplitterWindow(m_pPnlVoice, ID_SPLITTERWINDOW1, wxDefaultPosition, wxDefaultSize, wxSP_3D, _T("ID_SPLITTERWINDOW1"));
     SplitterWindow1->SetMinimumPaneSize(10);
@@ -200,12 +214,14 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     BoxSizer9->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pTxtVoiceName = new wxTextCtrl(m_pScrollwindowGlobalParameters, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, m_validateVoiceName, _T("ID_TEXTCTRL1"));
     m_pTxtVoiceName->SetMaxLength(12);
+    m_pTxtVoiceName->SetToolTip(_("Edit voice name"));
     BoxSizer9->Add(m_pTxtVoiceName, 1, wxALL|wxEXPAND, 5);
     m_pFlexgridGlobalParameters->Add(BoxSizer9, 0, wxALL|wxEXPAND, 5);
     BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
     StaticText30 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT30, _("Level"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT30"));
     BoxSizer10->Add(StaticText30, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderLevel = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERLEVEL, 99, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERLEVEL"));
+    m_pSliderLevel->SetToolTip(_("Set voice output level"));
     BoxSizer10->Add(m_pSliderLevel, 1, wxALL|wxEXPAND, 5);
     m_pFlexgridGlobalParameters->Add(BoxSizer10, 0, wxALL|wxEXPAND, 5);
     StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("DCO"));
@@ -214,10 +230,12 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     StaticText10 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT10, _("Octave"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
     FlexGridSizer6->Add(StaticText10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderOctave = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDEROCTAVE, 0, -2, 2, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL, wxDefaultValidator, _T("ID_SLIDEROCTAVE"));
+    m_pSliderOctave->SetToolTip(_("Set DCO octave"));
     FlexGridSizer6->Add(m_pSliderOctave, 1, wxALL|wxEXPAND, 5);
     StaticText11 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT11, _("Velocity\nSensitivity"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE, _T("ID_STATICTEXT11"));
     FlexGridSizer6->Add(StaticText11, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderVelSens = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERVELSENS, 0, 0, 31, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL, wxDefaultValidator, _T("ID_SLIDERVELSENS"));
+    m_pSliderVelSens->SetToolTip(_("Set DCO velocity sensitivity"));
     FlexGridSizer6->Add(m_pSliderVelSens, 1, wxALL|wxEXPAND, 5);
     m_pLblVelCurve = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT12, _("Curve"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT12"));
     FlexGridSizer6->Add(m_pLblVelCurve, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -230,6 +248,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pCmbVelCurve->Append(_("Curve 6"));
     m_pCmbVelCurve->Append(_("Curve 7"));
     m_pCmbVelCurve->Append(_("Curve 8"));
+    m_pCmbVelCurve->SetToolTip(_("Select DCO curve"));
     FlexGridSizer6->Add(m_pCmbVelCurve, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer3->Add(FlexGridSizer6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pFlexgridGlobalParameters->Add(StaticBoxSizer3, 0, wxALL|wxEXPAND, 5);
@@ -241,6 +260,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     	_("On")
     };
     m_pRadioTremeloMulti = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOTREMELOMULTI, _("Multi"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_1, 1, 0, wxDefaultValidator, _T("ID_RADIOTREMELOMULTI"));
+    m_pRadioTremeloMulti->SetToolTip(_("Select tremelo multi"));
     BoxSizer11->Add(m_pRadioTremeloMulti, 0, wxALL|wxEXPAND, 5);
     wxString __wxRadioBoxChoices_2[4] =
     {
@@ -250,24 +270,28 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     	_("Square")
     };
     m_pRadioTremeloWaveform = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOTREMELOWAVEFORM, _("Waveform"), wxDefaultPosition, wxDefaultSize, 4, __wxRadioBoxChoices_2, 1, wxRA_HORIZONTAL, wxDefaultValidator, _T("ID_RADIOTREMELOWAVEFORM"));
+    m_pRadioTremeloWaveform->SetToolTip(_("Select tremelo waveform"));
     BoxSizer11->Add(m_pRadioTremeloWaveform, 0, wxALL|wxEXPAND, 5);
     StaticBoxSizer1->Add(BoxSizer11, 0, wxALL|wxEXPAND, 5);
     BoxSizer12 = new wxBoxSizer(wxVERTICAL);
     StaticText6 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT6, _("Depth"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT6"));
     BoxSizer12->Add(StaticText6, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderTremeloDepth = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERTREMELODEPTH, 0, 0, 99, wxDefaultPosition, wxSize(20,100), wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERTREMELODEPTH"));
+    m_pSliderTremeloDepth->SetToolTip(_("Set tremelo depth"));
     BoxSizer12->Add(m_pSliderTremeloDepth, 1, wxALL, 5);
     StaticBoxSizer1->Add(BoxSizer12, 0, wxALL|wxEXPAND, 5);
     BoxSizer13 = new wxBoxSizer(wxVERTICAL);
     StaticText5 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT5, _("Rate"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT5"));
     BoxSizer13->Add(StaticText5, 0, wxALL|wxEXPAND, 5);
     m_pSliderTremeloRate = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERTREMELORATE, 0, 0, 99, wxDefaultPosition, wxSize(20,100), wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERTREMELORATE"));
+    m_pSliderTremeloRate->SetToolTip(_("Set tremelo rate"));
     BoxSizer13->Add(m_pSliderTremeloRate, 1, wxALL, 5);
     StaticBoxSizer1->Add(BoxSizer13, 0, wxALL|wxEXPAND, 5);
     BoxSizer14 = new wxBoxSizer(wxVERTICAL);
     StaticText4 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT4, _("Delay"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT4"));
     BoxSizer14->Add(StaticText4, 0, wxALL, 5);
     m_pSliderTremeloDelay = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERTREMELODELAY, 0, 0, 99, wxDefaultPosition, wxSize(20,100), wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERTREMELODELAY"));
+    m_pSliderTremeloDelay->SetToolTip(_("Set tremelo delay"));
     BoxSizer14->Add(m_pSliderTremeloDelay, 1, wxALL, 5);
     StaticBoxSizer1->Add(BoxSizer14, 0, wxALL|wxEXPAND, 5);
     m_pFlexgridGlobalParameters->Add(StaticBoxSizer1, 1, wxALL|wxEXPAND, 5);
@@ -280,6 +304,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     	_("On")
     };
     m_pRadioVibratoMulti = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOBOX3, _("Multi"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_3, 1, 0, wxDefaultValidator, _T("ID_RADIOBOX3"));
+    m_pRadioVibratoMulti->SetToolTip(_("Select vibrato multi"));
     BoxSizer16->Add(m_pRadioVibratoMulti, 1, wxALL|wxEXPAND, 5);
     wxString __wxRadioBoxChoices_4[4] =
     {
@@ -289,24 +314,28 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     	_("Square")
     };
     m_pRadioVibratoWaveform = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOBOX4, _("Waveform"), wxDefaultPosition, wxDefaultSize, 4, __wxRadioBoxChoices_4, 1, wxRA_HORIZONTAL, wxDefaultValidator, _T("ID_RADIOBOX4"));
+    m_pRadioVibratoWaveform->SetToolTip(_("Select vibrato waveform"));
     BoxSizer16->Add(m_pRadioVibratoWaveform, 1, wxALL|wxEXPAND, 5);
     BoxSizer15->Add(BoxSizer16, 0, wxALL|wxEXPAND, 5);
     BoxSizer4 = new wxBoxSizer(wxVERTICAL);
     StaticText7 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT7, _("Depth"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT7"));
     BoxSizer4->Add(StaticText7, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderVibratoDepth = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDER5, 0, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER5"));
+    m_pSliderVibratoDepth->SetToolTip(_("Set vibrato depth"));
     BoxSizer4->Add(m_pSliderVibratoDepth, 1, wxALL, 5);
     BoxSizer15->Add(BoxSizer4, 0, wxALL|wxEXPAND, 5);
     BoxSizer17 = new wxBoxSizer(wxVERTICAL);
     StaticText8 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT8, _("Rate"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT8"));
     BoxSizer17->Add(StaticText8, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderVibratoRate = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDER4, 0, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER4"));
+    m_pSliderVibratoRate->SetToolTip(_("Set vibrato rate"));
     BoxSizer17->Add(m_pSliderVibratoRate, 1, wxALL, 5);
     BoxSizer15->Add(BoxSizer17, 0, wxALL|wxEXPAND, 5);
     BoxSizer18 = new wxBoxSizer(wxVERTICAL);
     StaticText9 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT9, _("Delay"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT9"));
     BoxSizer18->Add(StaticText9, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSliderVibratoDelay = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDER6, 0, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDER6"));
+    m_pSliderVibratoDelay->SetToolTip(_("Set vibrato delay"));
     BoxSizer18->Add(m_pSliderVibratoDelay, 1, wxALL, 5);
     BoxSizer15->Add(BoxSizer18, 0, wxALL|wxEXPAND, 5);
     StaticBoxSizer2->Add(BoxSizer15, 1, wxALL|wxEXPAND, 5);
@@ -320,6 +349,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     BoxSizer1->Fit(m_pPnlVoice);
     BoxSizer1->SetSizeHints(m_pPnlVoice);
     m_pPnlOperation = new wxPanel(m_pNotebook, ID_PNLOPERATION, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLOPERATION"));
+    m_pPnlOperation->SetToolTip(_("Select operation editor tab"));
     BoxSizer5 = new wxBoxSizer(wxHORIZONTAL);
     SplitterWindow2 = new wxSplitterWindow(m_pPnlOperation, ID_SPLITTERWINDOW2, wxDefaultPosition, wxDefaultSize, wxSP_3D, _T("ID_SPLITTERWINDOW2"));
     SplitterWindow2->SetMinimumPaneSize(10);
@@ -332,10 +362,11 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     ScrolledWindow2 = new wxScrolledWindow(SplitterWindow2, ID_SCROLLEDWINDOW4, wxDefaultPosition, wxDefaultSize, wxVSCROLL, _T("ID_SCROLLEDWINDOW4"));
     BoxSizer7 = new wxBoxSizer(wxVERTICAL);
     BoxSizer19 = new wxBoxSizer(wxHORIZONTAL);
-    StaticText12 = new wxStaticText(ScrolledWindow2, ID_STATICTEXT13, _("Voice Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT13"));
+    StaticText12 = new wxStaticText(ScrolledWindow2, ID_STATICTEXT13, _("Operation Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT13"));
     BoxSizer19->Add(StaticText12, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pTxtOperationName = new wxTextCtrl(ScrolledWindow2, ID_TXTOPERATIONNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, m_validateVoiceName, _T("ID_TXTOPERATIONNAME"));
     m_pTxtOperationName->SetMaxLength(12);
+    m_pTxtOperationName->SetToolTip(_("Edit operation name"));
     BoxSizer19->Add(m_pTxtOperationName, 1, wxALL, 5);
     BoxSizer7->Add(BoxSizer19, 0, wxALL|wxEXPAND, 5);
     ScrolledWindow2->SetSizer(BoxSizer7);
@@ -350,7 +381,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pNotebook->AddPage(m_pPnlVoice, _("Voice Editor"), false);
     m_pNotebook->AddPage(m_pPnlOperation, _("Operation Editor"), false);
     m_pSizerMain->Add(m_pNotebook, 1, wxALL|wxEXPAND, 5);
-    m_pKeyboard = new KeyboardOctave(this,ID_KBD);
+    m_pKeyboard = new Keyboard(this,ID_KBD);
     m_pSizerMain->Add(m_pKeyboard, 0, wxALL|wxEXPAND, 5);
     SetSizer(m_pSizerMain);
     MenuBar1 = new wxMenuBar();
@@ -367,12 +398,12 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     Menu2->Append(MenuItem2);
     MenuBar1->Append(Menu2, _("Help"));
     SetMenuBar(MenuBar1);
-    StatusBar1 = new wxStatusBar(this, ID_STATUSBAR1, 0, _T("ID_STATUSBAR1"));
+    m_pStatusbar = new wxStatusBar(this, ID_STATUSBAR1, 0, _T("ID_STATUSBAR1"));
     int __wxStatusBarWidths_1[1] = { -1 };
     int __wxStatusBarStyles_1[1] = { wxSB_NORMAL };
-    StatusBar1->SetFieldsCount(1,__wxStatusBarWidths_1);
-    StatusBar1->SetStatusStyles(1,__wxStatusBarStyles_1);
-    SetStatusBar(StatusBar1);
+    m_pStatusbar->SetFieldsCount(1,__wxStatusBarWidths_1);
+    m_pStatusbar->SetStatusStyles(1,__wxStatusBarStyles_1);
+    SetStatusBar(m_pStatusbar);
     SetSizer(m_pSizerMain);
     Layout();
     Center();
@@ -415,7 +446,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     int nX, nY, nWidth, nHeight;
     bool bX;
     configPersist.Read("persist/keyboard", &bX, false);
-    m_pKeyboard->Show(bX);
+    //m_pKeyboard->Show(bX);
     //Position window
     configPersist.Read("persist/left", &nX, 0);
     configPersist.Read("persist/top", &nY, 0);
@@ -1012,4 +1043,24 @@ void VZ_EditorFrame::OnBtnSaveDump(wxCommandEvent& event)
     if(dlg.ShowModal() == wxID_CANCEL)
         return;
     m_vzSave.SaveToDisk(dlg.GetPath());
+}
+
+void VZ_EditorFrame::OnChkKeyboard(wxCommandEvent& event)
+{
+    m_pKeyboard->Show(event.IsChecked());
+    Refresh();
+}
+
+void VZ_EditorFrame::OnKeyboardNoteOn(wxCommandEvent& event)
+{
+    m_pStatusbar->SetStatusText(wxString::Format("Note on: %d", event.GetInt()));
+    if(m_pMidiOut)
+        m_pMidiOut->NoteOn(0, event.GetInt(), 100);
+}
+
+void VZ_EditorFrame::OnKeyboardNoteOff(wxCommandEvent& event)
+{
+    m_pStatusbar->SetStatusText(wxString::Format("Note off: %d", event.GetInt()));
+    if(m_pMidiOut)
+        m_pMidiOut->NoteOff(0, event.GetInt(), 100);
 }

@@ -30,6 +30,7 @@ VZLine::VZLine(wxWindow* parent, wxByte line) :
 	m_pCmbLine->Append(_("MIX"));
 	m_pCmbLine->Append(_("RING"));
 	m_pCmbLine->Append(_("PHASE"));
+	m_pCmbLine->SetToolTip(_("Select line phase"));
 	m_pSizerLine->Add(m_pCmbLine, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
 	BoxSizer2 = new wxBoxSizer(wxVERTICAL);
 	m_pVzModule1 = new VZModule(this,ID_VZMODULE1,wxDefaultPosition,wxDefaultSize);

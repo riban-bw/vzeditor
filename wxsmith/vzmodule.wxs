@@ -24,7 +24,7 @@
 							<object class="sizeritem">
 								<object class="wxCheckBox" name="ID_CHKEXTPHASE" variable="m_pChkExtPhase" member="yes">
 									<label>Ext Phase</label>
-									<tooltip>External phase</tooltip>
+									<tooltip>Enable external phase</tooltip>
 									<handler function="OnExtPhase" entry="EVT_CHECKBOX" />
 								</object>
 								<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -59,7 +59,7 @@
 										<item>Noise 2</item>
 									</content>
 									<selection>0</selection>
-									<tooltip>DCO Waveform</tooltip>
+									<tooltip>Select DCO Waveform</tooltip>
 									<handler function="OnWaveform" entry="EVT_CHOICE" />
 								</object>
 								<flag>wxALL|wxEXPAND</flag>
@@ -76,7 +76,7 @@
 								<object class="wxSlider" name="ID_SLIDERDETUNEOCTAVE" variable="m_pSliderDetuneOctave" member="yes">
 									<min>-128</min>
 									<max>127</max>
-									<tooltip>Detune DCO in semitone steps</tooltip>
+									<tooltip>Set DCO detune in semitone steps</tooltip>
 									<handler function="OnDetuneCourse" entry="EVT_COMMAND_SCROLL_CHANGED" />
 								</object>
 								<flag>wxALL|wxEXPAND</flag>
@@ -93,7 +93,7 @@
 								<object class="wxSlider" name="ID_SLIDERDETUNEFINE" variable="m_pSliderDetuneFine" member="yes">
 									<value>32</value>
 									<max>63</max>
-									<tooltip>Detune DCO in 1.6 cent steps</tooltip>
+									<tooltip>Set DCO detune in 1.6 cent steps</tooltip>
 									<handler function="OnDetuneFine" entry="EVT_COMMAND_SCROLL_CHANGED" />
 								</object>
 								<flag>wxALL|wxEXPAND</flag>
@@ -104,7 +104,7 @@
 									<object class="sizeritem">
 										<object class="wxCheckBox" name="ID_CHKFIXEDFREQ" variable="m_pChkFixedFreq" member="yes">
 											<label>Fixed Freq</label>
-											<tooltip>DCO Fixed frequency</tooltip>
+											<tooltip>Select DCO fixed frequency</tooltip>
 											<handler function="OnFixedFreq" entry="EVT_CHECKBOX" />
 										</object>
 										<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -113,7 +113,7 @@
 									<object class="sizeritem">
 										<object class="wxCheckBox" name="ID_CHKX16" variable="m_pChkX16" member="yes">
 											<label>x16</label>
-											<tooltip>DCO frequency detune multiplier</tooltip>
+											<tooltip>Select DCO frequency detune multiplier</tooltip>
 											<handler function="OnX16" entry="EVT_CHECKBOX" />
 										</object>
 										<flag>wxALL|wxEXPAND</flag>
@@ -150,7 +150,7 @@
 												<object class="wxSlider" name="ID_SLIDERENVDEPTH" variable="m_pSliderEnvDepth" member="yes">
 													<value>99</value>
 													<max>99</max>
-													<tooltip>DCA Amplitued envelope depth</tooltip>
+													<tooltip>Set DCA amplitued envelope depth</tooltip>
 													<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 													<handler function="OnEnvDepth" entry="EVT_COMMAND_SCROLL_CHANGED" />
 												</object>
@@ -216,7 +216,7 @@
 														<item>Curve 8</item>
 													</content>
 													<selection>0</selection>
-													<tooltip>DCA key velocity curve</tooltip>
+													<tooltip>Select DCA key velocity curve</tooltip>
 													<handler function="OnKeyVelCurve" entry="EVT_CHOICE" />
 												</object>
 												<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
@@ -225,7 +225,7 @@
 											<object class="sizeritem">
 												<object class="wxSlider" name="ID_SLIDERVELSENSITIVITY" variable="m_pSliderVelSensitivity" member="yes">
 													<max>31</max>
-													<tooltip>DCA key velocity sensitivity</tooltip>
+													<tooltip>Set DCA key velocity sensitivity</tooltip>
 													<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 													<handler function="OnKeyVelSens" entry="EVT_COMMAND_SCROLL_CHANGED" />
 												</object>
@@ -245,7 +245,7 @@
 												<object class="wxSlider" name="ID_SLIDERAMPSENS" variable="m_pSliderAmpSens" member="yes">
 													<value>7</value>
 													<max>7</max>
-													<tooltip>DCA Sensititivy to external modulation</tooltip>
+													<tooltip>Set DCA sensititivy to external modulation</tooltip>
 													<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 													<handler function="OnSensitivity" entry="EVT_COMMAND_SCROLL_CHANGED" />
 												</object>
