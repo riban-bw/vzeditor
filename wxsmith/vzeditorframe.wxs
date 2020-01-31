@@ -4,6 +4,7 @@
 		<title>riban Casio VZ-x Voice Editor and Library</title>
 		<centered>1</centered>
 		<icon code="wxBitmap(icon_xpm)" />
+		<size>-1,-1</size>
 		<id_arg>0</id_arg>
 		<object class="wxBoxSizer" variable="m_pSizerMain" member="no">
 			<orient>wxVERTICAL</orient>

@@ -23,7 +23,7 @@ VZLine::VZLine(wxWindow* parent, wxByte line) :
 	//(*Initialize(VZLine)
 	wxBoxSizer* BoxSizer2;
 
-	Create(parent, wxID_ANY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("wxID_ANY"));
+	Create(parent, wxID_ANY, wxDefaultPosition, wxSize(-1,-1), wxTAB_TRAVERSAL, _T("wxID_ANY"));
 	SetMinSize(wxSize(-1,-1));
 	m_pSizerLine = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Internal Line"));
 	m_pCmbLine = new wxChoice(this, ID_CHOICE1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
@@ -38,8 +38,8 @@ VZLine::VZLine(wxWindow* parent, wxByte line) :
 	BoxSizer2->Add(m_pVzModule2, 1, wxALL|wxEXPAND, 5);
 	m_pSizerLine->Add(BoxSizer2, 1, wxALL|wxEXPAND, 5);
 	SetSizer(m_pSizerLine);
-	m_pSizerLine->Fit(this);
-	m_pSizerLine->SetSizeHints(this);
+	SetSizer(m_pSizerLine);
+	Layout();
 
 	Connect(ID_CHOICE1,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZLine::OnLine);
 	//*)

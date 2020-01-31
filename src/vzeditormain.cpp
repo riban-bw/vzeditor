@@ -136,6 +136,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer3;
 
     Create(parent, wxID_ANY, _("riban Casio VZ-x Voice Editor and Library"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
+    SetClientSize(wxSize(-1,-1));
     {
     	wxIcon FrameIcon;
     	FrameIcon.CopyFromBitmap(wxBitmap(icon_xpm));
@@ -372,8 +373,8 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     StatusBar1->SetFieldsCount(1,__wxStatusBarWidths_1);
     StatusBar1->SetStatusStyles(1,__wxStatusBarStyles_1);
     SetStatusBar(StatusBar1);
-    m_pSizerMain->Fit(this);
-    m_pSizerMain->SetSizeHints(this);
+    SetSizer(m_pSizerMain);
+    Layout();
     Center();
 
     Connect(ID_CMBINPORT,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnInPortSelect);

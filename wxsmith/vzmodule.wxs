@@ -1,14 +1,12 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxPanel" name="VZModule">
+		<size>-1,-1</size>
 		<id_arg>0</id_arg>
 		<object class="wxStaticBoxSizer" variable="m_pSizerModule" member="yes">
 			<label>Module</label>
 			<object class="sizeritem">
-				<object class="wxFlexGridSizer" variable="FlexGridSizer6" member="no">
-					<rows>1</rows>
-					<growablecols>2</growablecols>
-					<growablerows>0</growablerows>
+				<object class="wxBoxSizer" variable="BoxSizer5" member="no">
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer2" member="no">
 							<orient>wxVERTICAL</orient>
@@ -133,10 +131,7 @@
 						<object class="wxStaticBoxSizer" variable="StaticBoxSizer3" member="no">
 							<label>DCA</label>
 							<object class="sizeritem">
-								<object class="wxFlexGridSizer" variable="FlexGridSizer5" member="no">
-									<rows>1</rows>
-									<growablecols>0,1</growablecols>
-									<growablerows>0</growablerows>
+								<object class="wxBoxSizer" variable="BoxSizer4" member="no">
 									<object class="sizeritem">
 										<object class="wxStaticBoxSizer" variable="StaticBoxSizer4" member="no">
 											<label>Amplitude Envelope</label>
@@ -172,27 +167,30 @@
 											<label>Key Follow</label>
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">
-												<object class="wxScrolledWindow" name="ID_SCROLLEDWINDOW1" variable="m_pScrollKeyfollow" member="yes" />
-												<flag>wxALIGN_LEFT</flag>
-												<border>5</border>
-											</object>
-											<object class="sizeritem">
-												<object class="wxStaticBitmap" name="ID_BMPKEYBOARD" variable="m_pBmpKeyboard" member="yes">
-													<bitmap code="wxBitmap(keyboard_xpm)" />
-													<minsize>100,-1</minsize>
-													<style>0</style>
+												<object class="wxScrolledWindow" name="ID_SCROLLEDWINDOW1" variable="m_pScrollKeyfollow" member="yes">
+													<object class="wxBoxSizer" variable="BoxSizer3" member="no">
+														<orient>wxVERTICAL</orient>
+														<object class="sizeritem">
+															<object class="wxStaticBitmap" name="ID_BMPKEYBOARD" variable="m_pBmpKeyboard" member="yes">
+																<bitmap code="wxBitmap(keyboard_xpm)" />
+																<style>0</style>
+															</object>
+															<flag>wxALIGN_LEFT</flag>
+														</object>
+														<object class="sizeritem">
+															<object class="Custom" name="ID_CUSTOM2" subclass="EnvelopeGraph" variable="m_pGraphKeyfollow" member="yes">
+																<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
+																<include_file>envelopegraph.h</include_file>
+																<local_include>1</local_include>
+																<style></style>
+															</object>
+															<flag>wxALL|wxEXPAND</flag>
+															<border>5</border>
+															<option>1</option>
+														</object>
+													</object>
 												</object>
 												<flag>wxEXPAND</flag>
-												<border>5</border>
-											</object>
-											<object class="sizeritem">
-												<object class="Custom" name="ID_CUSTOM2" subclass="EnvelopeGraph" variable="m_pGraphKeyfollow" member="yes">
-													<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
-													<include_file>envelopegraph.h</include_file>
-													<local_include>1</local_include>
-													<style></style>
-												</object>
-												<flag>wxALL</flag>
 												<border>5</border>
 												<option>1</option>
 											</object>
@@ -238,7 +236,6 @@
 										</object>
 										<flag>wxALL|wxEXPAND</flag>
 										<border>5</border>
-										<option>1</option>
 									</object>
 									<object class="sizeritem">
 										<object class="wxStaticBoxSizer" variable="StaticBoxSizer7" member="no">
@@ -259,10 +256,10 @@
 										</object>
 										<flag>wxALL|wxEXPAND</flag>
 										<border>5</border>
-										<option>1</option>
 									</object>
 								</object>
-								<flag>wxEXPAND</flag>
+								<flag>wxALL|wxEXPAND</flag>
+								<border>5</border>
 								<option>1</option>
 							</object>
 						</object>
@@ -271,7 +268,7 @@
 						<option>1</option>
 					</object>
 				</object>
-				<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+				<flag>wxALL|wxEXPAND</flag>
 				<border>5</border>
 				<option>1</option>
 			</object>

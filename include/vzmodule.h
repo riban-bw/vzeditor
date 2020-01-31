@@ -73,9 +73,9 @@ class VZModule: public wxPanel
 		static const long ID_CHKX16;
 		static const long ID_CUSTOM1;
 		static const long ID_SLIDERENVDEPTH;
-		static const long ID_SCROLLEDWINDOW1;
 		static const long ID_BMPKEYBOARD;
 		static const long ID_CUSTOM2;
+		static const long ID_SCROLLEDWINDOW1;
 		static const long ID_CMBKEYVELCURVE;
 		static const long ID_SLIDERVELSENSITIVITY;
 		static const long ID_SLIDERAMPSENS;

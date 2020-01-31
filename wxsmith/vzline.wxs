@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <wxsmith>
 	<object class="wxPanel" name="VZLine">
+		<size>-1,-1</size>
 		<minsize>-1,-1</minsize>
 		<id_arg>0</id_arg>
 		<object class="wxStaticBoxSizer" variable="m_pSizerLine" member="yes">
