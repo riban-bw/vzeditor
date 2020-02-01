@@ -123,10 +123,8 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer18;
     wxBoxSizer* BoxSizer19;
     wxBoxSizer* BoxSizer1;
-    wxBoxSizer* BoxSizer20;
     wxBoxSizer* BoxSizer21;
     wxBoxSizer* BoxSizer2;
-    wxBoxSizer* BoxSizer3;
     wxBoxSizer* BoxSizer4;
     wxBoxSizer* BoxSizer5;
     wxBoxSizer* BoxSizer6;
@@ -196,23 +194,23 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pPnlVoice = new wxPanel(m_pNotebook, ID_PNLVOICE, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLVOICE"));
     m_pPnlVoice->SetToolTip(_("Select voice editor tab"));
     BoxSizer1 = new wxBoxSizer(wxHORIZONTAL);
-    SplitterWindow1 = new wxSplitterWindow(m_pPnlVoice, ID_SPLITTERWINDOW1, wxDefaultPosition, wxDefaultSize, wxSP_3D, _T("ID_SPLITTERWINDOW1"));
-    SplitterWindow1->SetMinimumPaneSize(10);
-    SplitterWindow1->SetSashGravity(1);
-    m_pScrollWinVoiceEditor = new wxScrolledWindow(SplitterWindow1, ID_SCROLLEDWINDOW1, wxDefaultPosition, wxDefaultSize, wxVSCROLL|wxHSCROLL, _T("ID_SCROLLEDWINDOW1"));
-    BoxSizer3 = new wxBoxSizer(wxVERTICAL);
+    m_pSplitterMain = new wxSplitterWindow(m_pPnlVoice, ID_SPLITTERWINDOW1, wxDefaultPosition, wxDefaultSize, wxSP_3D, _T("ID_SPLITTERWINDOW1"));
+    m_pSplitterMain->SetMinimumPaneSize(10);
+    m_pSplitterMain->SetSashGravity(1);
+    m_pScrollWinVoiceEditor = new wxScrolledWindow(m_pSplitterMain, ID_SCROLLEDWINDOW1, wxDefaultPosition, wxDefaultSize, wxVSCROLL|wxHSCROLL, _T("ID_SCROLLEDWINDOW1"));
+    m_pSizerLines = new wxBoxSizer(wxVERTICAL);
     m_pLine1 = new VZLine(m_pScrollWinVoiceEditor, 0);
-    BoxSizer3->Add(m_pLine1, 1, wxALL|wxEXPAND, 5);
+    m_pSizerLines->Add(m_pLine1, 1, wxALL|wxEXPAND, 5);
     m_pLine2 = new VZLine(m_pScrollWinVoiceEditor, 1);
-    BoxSizer3->Add(m_pLine2, 1, wxALL|wxEXPAND, 5);
+    m_pSizerLines->Add(m_pLine2, 1, wxALL|wxEXPAND, 5);
     m_pLine3 = new VZLine(m_pScrollWinVoiceEditor, 2);
-    BoxSizer3->Add(m_pLine3, 1, wxALL|wxEXPAND, 5);
+    m_pSizerLines->Add(m_pLine3, 1, wxALL|wxEXPAND, 5);
     m_pLine4 = new VZLine(m_pScrollWinVoiceEditor, 3);
-    BoxSizer3->Add(m_pLine4, 1, wxALL|wxEXPAND, 5);
-    m_pScrollWinVoiceEditor->SetSizer(BoxSizer3);
-    BoxSizer3->Fit(m_pScrollWinVoiceEditor);
-    BoxSizer3->SetSizeHints(m_pScrollWinVoiceEditor);
-    m_pScrollwindowGlobalParameters = new wxScrolledWindow(SplitterWindow1, ID_SCROLLEDWINDOW2, wxDefaultPosition, wxDefaultSize, wxVSCROLL, _T("ID_SCROLLEDWINDOW2"));
+    m_pSizerLines->Add(m_pLine4, 1, wxALL|wxEXPAND, 5);
+    m_pScrollWinVoiceEditor->SetSizer(m_pSizerLines);
+    m_pSizerLines->Fit(m_pScrollWinVoiceEditor);
+    m_pSizerLines->SetSizeHints(m_pScrollWinVoiceEditor);
+    m_pScrollwindowGlobalParameters = new wxScrolledWindow(m_pSplitterMain, ID_SCROLLEDWINDOW2, wxDefaultPosition, wxDefaultSize, wxVSCROLL, _T("ID_SCROLLEDWINDOW2"));
     m_pFlexgridGlobalParameters = new wxBoxSizer(wxVERTICAL);
     BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
     StaticText3 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT3, _("Voice Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
@@ -220,7 +218,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pTxtVoiceName = new wxTextCtrl(m_pScrollwindowGlobalParameters, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, m_validateVoiceName, _T("ID_TEXTCTRL1"));
     m_pTxtVoiceName->SetMaxLength(12);
     m_pTxtVoiceName->SetToolTip(_("Edit voice name"));
-    BoxSizer9->Add(m_pTxtVoiceName, 1, wxALL|wxEXPAND, 5);
+    BoxSizer9->Add(m_pTxtVoiceName, 1, wxALL, 5);
     m_pFlexgridGlobalParameters->Add(BoxSizer9, 0, wxALL|wxEXPAND, 5);
     BoxSizer10 = new wxBoxSizer(wxHORIZONTAL);
     StaticText30 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT30, _("Level"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT30"));
@@ -348,8 +346,8 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pScrollwindowGlobalParameters->SetSizer(m_pFlexgridGlobalParameters);
     m_pFlexgridGlobalParameters->Fit(m_pScrollwindowGlobalParameters);
     m_pFlexgridGlobalParameters->SetSizeHints(m_pScrollwindowGlobalParameters);
-    SplitterWindow1->SplitVertically(m_pScrollWinVoiceEditor, m_pScrollwindowGlobalParameters);
-    BoxSizer1->Add(SplitterWindow1, 1, wxALL|wxEXPAND, 5);
+    m_pSplitterMain->SplitVertically(m_pScrollWinVoiceEditor, m_pScrollwindowGlobalParameters);
+    BoxSizer1->Add(m_pSplitterMain, 1, wxALL|wxEXPAND, 5);
     m_pPnlVoice->SetSizer(BoxSizer1);
     BoxSizer1->Fit(m_pPnlVoice);
     BoxSizer1->SetSizeHints(m_pPnlVoice);
@@ -386,7 +384,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pNotebook->AddPage(m_pPnlVoice, _("Voice Editor"), false);
     m_pNotebook->AddPage(m_pPnlOperation, _("Operation Editor"), false);
     m_pSizerMain->Add(m_pNotebook, 1, wxALL|wxEXPAND, 5);
-    BoxSizer20 = new wxBoxSizer(wxHORIZONTAL);
+    m_pSizerKeyboard = new wxBoxSizer(wxHORIZONTAL);
     BoxSizer21 = new wxBoxSizer(wxVERTICAL);
     StaticText13 = new wxStaticText(this, ID_STATICTEXT14, _("MIDI Channel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT14"));
     BoxSizer21->Add(StaticText13, 0, wxALL|wxEXPAND, 5);
@@ -398,10 +396,10 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pSpnProgram = new wxSpinCtrl(this, ID_SPINCTRL1, _T("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 128, 1, _T("ID_SPINCTRL1"));
     m_pSpnProgram->SetValue(_T("1"));
     BoxSizer21->Add(m_pSpnProgram, 0, wxALL, 5);
-    BoxSizer20->Add(BoxSizer21, 0, wxALL|wxEXPAND, 5);
+    m_pSizerKeyboard->Add(BoxSizer21, 0, wxALL|wxEXPAND, 5);
     m_pKeyboard = new Keyboard(this,ID_KBD);
-    BoxSizer20->Add(m_pKeyboard, 1, wxALL|wxEXPAND, 5);
-    m_pSizerMain->Add(BoxSizer20, 0, wxALL|wxEXPAND, 5);
+    m_pSizerKeyboard->Add(m_pKeyboard, 1, wxALL|wxEXPAND, 5);
+    m_pSizerMain->Add(m_pSizerKeyboard, 0, wxALL|wxEXPAND, 5);
     SetSizer(m_pSizerMain);
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
@@ -468,7 +466,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     int nX, nY, nWidth, nHeight;
     bool bX;
     configPersist.Read("persist/keyboard", &bX, false);
-    m_pKeyboard->Show(bX);
+    m_pSizerKeyboard->Show(bX);
     m_pChkKeyboard->SetValue(bX);
     //Position window
     configPersist.Read("persist/left", &nX, 0);
@@ -1071,9 +1069,8 @@ void VZ_EditorFrame::OnBtnSaveDump(wxCommandEvent& event)
 
 void VZ_EditorFrame::OnChkKeyboard(wxCommandEvent& event)
 {
-    m_pKeyboard->Show(event.IsChecked());
+    m_pSizerKeyboard->Show(event.IsChecked());
     m_pSizerMain->Layout();
-    Refresh();
 }
 
 void VZ_EditorFrame::OnKeyboardNoteOn(wxCommandEvent& event)

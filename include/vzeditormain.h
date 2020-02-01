@@ -168,6 +168,8 @@ class VZ_EditorFrame: public wxFrame
         VZLine* m_pLine3;
         VZLine* m_pLine4;
         wxBoxSizer* m_pFlexgridGlobalParameters;
+        wxBoxSizer* m_pSizerKeyboard;
+        wxBoxSizer* m_pSizerLines;
         wxBoxSizer* m_pSizerMain;
         wxButton* m_pBtnGetOperation;
         wxButton* m_pBtnGetVoice;
@@ -203,8 +205,8 @@ class VZ_EditorFrame: public wxFrame
         wxSlider* m_pSliderVibratoRate;
         wxSpinCtrl* m_pSpnKeyChannel;
         wxSpinCtrl* m_pSpnProgram;
-        wxSplitterWindow* SplitterWindow1;
         wxSplitterWindow* SplitterWindow2;
+        wxSplitterWindow* m_pSplitterMain;
         wxStaticText* StaticText10;
         wxStaticText* StaticText11;
         wxStaticText* StaticText12;

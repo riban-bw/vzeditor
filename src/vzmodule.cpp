@@ -23,7 +23,6 @@ const long VZModule::ID_CUSTOM1 = wxNewId();
 const long VZModule::ID_SLIDERENVDEPTH = wxNewId();
 const long VZModule::ID_BMPKEYBOARD = wxNewId();
 const long VZModule::ID_CUSTOM2 = wxNewId();
-const long VZModule::ID_SCROLLEDWINDOW1 = wxNewId();
 const long VZModule::ID_CMBKEYVELCURVE = wxNewId();
 const long VZModule::ID_SLIDERVELSENSITIVITY = wxNewId();
 const long VZModule::ID_SLIDERAMPSENS = wxNewId();
@@ -40,7 +39,6 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	//(*Initialize(VZModule)
 	wxBoxSizer* BoxSizer1;
 	wxBoxSizer* BoxSizer2;
-	wxBoxSizer* BoxSizer3;
 	wxBoxSizer* BoxSizer4;
 	wxBoxSizer* BoxSizer5;
 	wxStaticBoxSizer* StaticBoxSizer2;
@@ -108,16 +106,10 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	StaticBoxSizer4->Add(m_pSliderEnvDepth, 0, wxALL|wxEXPAND|wxFIXED_MINSIZE, 5);
 	BoxSizer4->Add(StaticBoxSizer4, 1, wxALL|wxEXPAND, 5);
 	StaticBoxSizer5 = new wxStaticBoxSizer(wxVERTICAL, this, _("Key Follow"));
-	m_pScrollKeyfollow = new wxScrolledWindow(this, ID_SCROLLEDWINDOW1, wxDefaultPosition, wxDefaultSize, wxVSCROLL|wxHSCROLL, _T("ID_SCROLLEDWINDOW1"));
-	BoxSizer3 = new wxBoxSizer(wxVERTICAL);
-	m_pBmpKeyboard = new wxStaticBitmap(m_pScrollKeyfollow, ID_BMPKEYBOARD, wxBitmap(keyboard_xpm), wxDefaultPosition, wxDefaultSize, 0, _T("ID_BMPKEYBOARD"));
-	BoxSizer3->Add(m_pBmpKeyboard, 0, wxALIGN_LEFT, 0);
-	m_pGraphKeyfollow = new EnvelopeGraph(m_pScrollKeyfollow);
-	BoxSizer3->Add(m_pGraphKeyfollow, 1, wxALL|wxEXPAND, 5);
-	m_pScrollKeyfollow->SetSizer(BoxSizer3);
-	BoxSizer3->Fit(m_pScrollKeyfollow);
-	BoxSizer3->SetSizeHints(m_pScrollKeyfollow);
-	StaticBoxSizer5->Add(m_pScrollKeyfollow, 1, wxEXPAND, 5);
+	m_pBmpKeyboard = new wxStaticBitmap(this, ID_BMPKEYBOARD, wxBitmap(keyboard_xpm), wxDefaultPosition, wxDefaultSize, 0, _T("ID_BMPKEYBOARD"));
+	StaticBoxSizer5->Add(m_pBmpKeyboard, 0, wxALL|wxEXPAND, 5);
+	m_pGraphKeyfollow = new EnvelopeGraph(this);
+	StaticBoxSizer5->Add(m_pGraphKeyfollow, 1, wxALL|wxEXPAND, 5);
 	BoxSizer4->Add(StaticBoxSizer5, 1, wxALL|wxEXPAND, 5);
 	StaticBoxSizer6 = new wxStaticBoxSizer(wxVERTICAL, this, _("Key Velocity"));
 	m_pCmbKeyVelCurve = new wxChoice(this, ID_CMBKEYVELCURVE, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBKEYVELCURVE"));
@@ -160,7 +152,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
 	Connect(ID_SLIDERAMPSENS,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZModule::OnSensitivity);
 	//*)
 	m_pGraphDCA->SetMaxNodes(8);
-	m_pScrollKeyfollow->SetScrollRate(10,10);
+	m_pGraphKeyfollow->SetMaxNodes(6);
 }
 
 VZModule::~VZModule()
@@ -190,7 +182,6 @@ void VZModule::UpdateGui()
     }
     if(!m_pVoice)
         return;
-    m_pChkEnable->SetValue(m_pVoice->IsModuleEnabled(m_nModule));
     m_pChkExtPhase->SetValue(m_pVoice->IsExtPhase(m_nModule));
     m_pCmbWaveform->SetSelection(m_pVoice->GetWaveform(m_nModule));
     m_pSliderDetuneOctave->SetValue(m_pVoice->GetDetuneCourse(m_nModule));
@@ -207,6 +198,7 @@ void VZModule::UpdateGui()
     {
         //!@todo Set steps - tricky due to use of slope rather than x,y
     }
+    Enable(m_pVoice->IsModuleEnabled(m_nModule));
 }
 
 void VZModule::OnEnable(wxCommandEvent& event)
@@ -214,6 +206,19 @@ void VZModule::OnEnable(wxCommandEvent& event)
     if(!m_pVoice)
         return;
     m_pVoice->EnableModule(m_nModule, event.IsChecked());
+    EnableControls(event.IsChecked());
+}
+
+void VZModule::EnableControls(bool bEnable)
+{
+    // Enable / disable controls (not enable checkbox)
+    const wxWindowList& windowList = this->GetChildren();
+    for(wxWindowList::compatibility_iterator node = windowList.GetFirst(); node; node = node->GetNext())
+    {
+        wxWindow *pWindow = node->GetData();
+        if(pWindow != m_pChkEnable)
+            pWindow->Enable(bEnable);
+    }
 }
 
 void VZModule::OnExtPhase(wxCommandEvent& event)

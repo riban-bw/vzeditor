@@ -6,7 +6,6 @@
 #include <wx/checkbox.h>
 #include <wx/choice.h>
 #include <wx/panel.h>
-#include <wx/scrolwin.h>
 #include <wx/sizer.h>
 #include <wx/slider.h>
 #include <wx/statbmp.h>
@@ -45,7 +44,6 @@ class VZModule: public wxPanel
 		wxCheckBox* m_pChkX16;
 		wxChoice* m_pCmbKeyVelCurve;
 		wxChoice* m_pCmbWaveform;
-		wxScrolledWindow* m_pScrollKeyfollow;
 		wxSlider* m_pSliderAmpSens;
 		wxSlider* m_pSliderDetuneFine;
 		wxSlider* m_pSliderDetuneOctave;
@@ -75,7 +73,6 @@ class VZModule: public wxPanel
 		static const long ID_SLIDERENVDEPTH;
 		static const long ID_BMPKEYBOARD;
 		static const long ID_CUSTOM2;
-		static const long ID_SCROLLEDWINDOW1;
 		static const long ID_CMBKEYVELCURVE;
 		static const long ID_SLIDERVELSENSITIVITY;
 		static const long ID_SLIDERAMPSENS;
@@ -99,6 +96,7 @@ class VZModule: public wxPanel
 		void OnKeyVelSens(wxScrollEvent& event);
 		void OnSensitivity(wxScrollEvent& event);
 		//*)
+		void EnableControls(bool bEnable);
 
 		DECLARE_EVENT_TABLE()
 };

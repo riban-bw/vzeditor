@@ -167,30 +167,21 @@
 											<label>Key Follow</label>
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">
-												<object class="wxScrolledWindow" name="ID_SCROLLEDWINDOW1" variable="m_pScrollKeyfollow" member="yes">
-													<object class="wxBoxSizer" variable="BoxSizer3" member="no">
-														<orient>wxVERTICAL</orient>
-														<object class="sizeritem">
-															<object class="wxStaticBitmap" name="ID_BMPKEYBOARD" variable="m_pBmpKeyboard" member="yes">
-																<bitmap code="wxBitmap(keyboard_xpm)" />
-																<style>0</style>
-															</object>
-															<flag>wxALIGN_LEFT</flag>
-														</object>
-														<object class="sizeritem">
-															<object class="Custom" name="ID_CUSTOM2" subclass="EnvelopeGraph" variable="m_pGraphKeyfollow" member="yes">
-																<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
-																<include_file>envelopegraph.h</include_file>
-																<local_include>1</local_include>
-																<style></style>
-															</object>
-															<flag>wxALL|wxEXPAND</flag>
-															<border>5</border>
-															<option>1</option>
-														</object>
-													</object>
+												<object class="wxStaticBitmap" name="ID_BMPKEYBOARD" variable="m_pBmpKeyboard" member="yes">
+													<bitmap code="wxBitmap(keyboard_xpm)" />
+													<style>0</style>
 												</object>
-												<flag>wxEXPAND</flag>
+												<flag>wxALL|wxEXPAND</flag>
+												<border>5</border>
+											</object>
+											<object class="sizeritem">
+												<object class="Custom" name="ID_CUSTOM2" subclass="EnvelopeGraph" variable="m_pGraphKeyfollow" member="yes">
+													<creating_code>$(THIS) = new $(CLASS)($(PARENT));</creating_code>
+													<include_file>envelopegraph.h</include_file>
+													<local_include>1</local_include>
+													<style></style>
+												</object>
+												<flag>wxALL|wxEXPAND</flag>
 												<border>5</border>
 												<option>1</option>
 											</object>

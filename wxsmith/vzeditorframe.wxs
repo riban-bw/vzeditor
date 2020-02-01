@@ -130,12 +130,12 @@
 							<tooltip>Select voice editor tab</tooltip>
 							<object class="wxBoxSizer" variable="BoxSizer1" member="no">
 								<object class="sizeritem">
-									<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW1" variable="SplitterWindow1" member="yes">
+									<object class="wxSplitterWindow" name="ID_SPLITTERWINDOW1" variable="m_pSplitterMain" member="yes">
 										<sashgravity>1.000000</sashgravity>
 										<minpanesize>10</minpanesize>
 										<orientation>vertical</orientation>
 										<object class="wxScrolledWindow" name="ID_SCROLLEDWINDOW1" variable="m_pScrollWinVoiceEditor" member="yes">
-											<object class="wxBoxSizer" variable="BoxSizer3" member="no">
+											<object class="wxBoxSizer" variable="m_pSizerLines" member="yes">
 												<orient>wxVERTICAL</orient>
 												<object class="sizeritem">
 													<object class="Custom" name="ID_LINE1" subclass="VZLine" variable="m_pLine1" member="yes">
@@ -203,7 +203,7 @@
 																<tooltip>Edit voice name</tooltip>
 																<handler function="OnTxtVoiceNameText" entry="EVT_TEXT" />
 															</object>
-															<flag>wxALL|wxEXPAND</flag>
+															<flag>wxALL</flag>
 															<border>5</border>
 															<option>1</option>
 														</object>
@@ -644,7 +644,7 @@
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
-				<object class="wxBoxSizer" variable="BoxSizer20" member="no">
+				<object class="wxBoxSizer" variable="m_pSizerKeyboard" member="yes">
 					<object class="sizeritem">
 						<object class="wxBoxSizer" variable="BoxSizer21" member="no">
 							<orient>wxVERTICAL</orient>
