@@ -152,22 +152,22 @@ void SortableList::Sort(long column)
     {
         case 0:
             sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByNameAsc:SortByNameDesc);
-            col.SetText(bAscending?"▲ Name":"▼ Name");
+            col.SetText(wxString::FromUTF8(bAscending?"▲ Name":"▼ Name"));
             SetColumn(column, col);
             break;
         case 1:
             sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByDescriptionAsc:SortByDescriptionDesc);
-            col.SetText(bAscending?"▲ Description":"▼ Description");
+            col.SetText(wxString::FromUTF8(bAscending?"▲ Description":"▼ Description"));
             SetColumn(column, col);
             break;
         case 2:
             sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByGroupAsc:SortByGroupDesc);
-            col.SetText(bAscending?"▲ Group":"▼ Group");
+            col.SetText(wxString::FromUTF8(bAscending?"▲ Group":"▼ Group"));
             SetColumn(column, col);
             break;
         case 3:
             sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByTypeAsc:SortByTypeDesc);
-            col.SetText(bAscending?"▲ Type":"▼ Type");
+            col.SetText(wxString::FromUTF8(bAscending?"▲ Type":"▼ Type"));
             SetColumn(column, col);
             break;
         default:
