@@ -1,37 +1,46 @@
+/***************************************************************
+ * Name:      vzoperation.h
+ * Purpose:   Implements VZOperation class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2019-01-10
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
 #include "vzoperation.h"
 
-vzoperation::vzoperation() :
-    vzsysex(VZ_OPERATION_PAYLOAD_SIZE)
+VZOperation::VZOperation() :
+    VZSysex(VZ_OPERATION_PAYLOAD_SIZE)
 {
     Validate(true);
 }
 
-vzoperation::vzoperation(wxByte* pData, bool bPayload) :
-    vzsysex(VZ_OPERATION_PAYLOAD_SIZE, pData, bPayload)
+VZOperation::VZOperation(wxByte* pData, bool bPayload) :
+    VZSysex(VZ_OPERATION_PAYLOAD_SIZE, pData, bPayload)
 {
     Validate(true);
     m_bModified = false;
 }
 
-vzoperation::~vzoperation()
+VZOperation::~VZOperation()
 {
 }
 
-bool vzoperation::Validate(bool bFix)
+bool VZOperation::Validate(bool bFix)
 {
-    vzsysex::Validate(bFix);
+    VZSysex::Validate(bFix);
     m_bModified |= ValidateByte(m_pSysEx + 5, 0x01, bFix);
     m_bModified |= ValidateByte(m_pSysEx + 6, 0x40, bFix);
     m_bModified |= ValidateByte(m_pSysEx + 7 + m_nPayloadSize, Checksum(m_pSysEx + 7, m_nPayloadSize), bFix);
     return m_bModified;
 }
 
-unsigned int vzoperation::GetMode()
+unsigned int VZOperation::GetMode()
 {
     return GetValue(0, 0x0F);
 }
 
-bool vzoperation::SetMode(unsigned int nMode)
+bool VZOperation::SetMode(unsigned int nMode)
 {
     if(nMode > 8)
         return false;
@@ -39,7 +48,7 @@ bool vzoperation::SetMode(unsigned int nMode)
     return true;
 }
 
-wxString vzoperation::GetName()
+wxString VZOperation::GetName()
 {
     wxString sName;
     for(unsigned int nIndex = 0; nIndex < 12; ++nIndex)
@@ -49,7 +58,7 @@ wxString vzoperation::GetName()
     return sName.Trim();
 }
 
-void vzoperation::SetName(wxString sName)
+void VZOperation::SetName(wxString sName)
 {
     sName.Truncate(12);
     sName.Pad(12 - sName.Length());
@@ -57,25 +66,25 @@ void vzoperation::SetName(wxString sName)
         PutByteToSysex(1 + nIndex, sName[nIndex]);
 }
 
-bool vzoperation::IsXfade()
+bool VZOperation::IsXfade()
 {
     return 0x02 == (GetByteFromSysex(15) & 0x02);
 }
 
-bool vzoperation::EnableXfade(bool bEnable)
+bool VZOperation::EnableXfade(bool bEnable)
 {
     PutByteToSysex(15, bEnable?0x02:0x00);
     return true;
 }
 
-unsigned int vzoperation::GetSplitPoint(unsigned int nPoint)
+unsigned int VZOperation::GetSplitPoint(unsigned int nPoint)
 {
     if(nPoint > 3)
         return 0;
     return (GetByteFromSysex(16 + nPoint) & 0x7F);
 }
 
-bool vzoperation::SetSplitPoint(unsigned int nPoint, unsigned int nKey)
+bool VZOperation::SetSplitPoint(unsigned int nPoint, unsigned int nKey)
 {
     if(nPoint > 3 || nKey > 0x7F)
         return false;
@@ -83,14 +92,14 @@ bool vzoperation::SetSplitPoint(unsigned int nPoint, unsigned int nKey)
     return true;
 }
 
-unsigned int vzoperation::GetXfadeMin(unsigned int nPoint)
+unsigned int VZOperation::GetXfadeMin(unsigned int nPoint)
 {
     if(nPoint > 3)
         return 0;
     return GetByteFromSysex(20 + nPoint * 2);
 }
 
-bool vzoperation::SetXfadeMin(unsigned int nPoint, unsigned int nValue)
+bool VZOperation::SetXfadeMin(unsigned int nPoint, unsigned int nValue)
 {
     if(nPoint > 3 || nValue > 0x78)
         return false;
@@ -98,14 +107,14 @@ bool vzoperation::SetXfadeMin(unsigned int nPoint, unsigned int nValue)
     return true;
 }
 
-unsigned int vzoperation::GetXfadeMax(unsigned int nPoint)
+unsigned int VZOperation::GetXfadeMax(unsigned int nPoint)
 {
     if(nPoint > 3)
         return 0;
     return GetByteFromSysex(21 + nPoint * 2);
 }
 
-bool vzoperation::SetXfadeMax(unsigned int nPoint, unsigned int nValue)
+bool VZOperation::SetXfadeMax(unsigned int nPoint, unsigned int nValue)
 {
     if(nPoint > 3 || nValue > 0x78)
         return false;
@@ -113,14 +122,14 @@ bool vzoperation::SetXfadeMax(unsigned int nPoint, unsigned int nValue)
     return true;
 }
 
-bool vzoperation::IsCard(unsigned int nCombi)
+bool VZOperation::IsCard(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(28 + nCombi * 100, 0x40) != 0);
 }
 
-bool vzoperation::SelectCard(unsigned int nCombi, bool bCard)
+bool VZOperation::SelectCard(unsigned int nCombi, bool bCard)
 {
     if(nCombi > 3)
         return false;
@@ -129,14 +138,14 @@ bool vzoperation::SelectCard(unsigned int nCombi, bool bCard)
 }
 
 
-unsigned int vzoperation::GetVoice(unsigned int nCombi)
+unsigned int VZOperation::GetVoice(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
     return GetValue(28 + nCombi * 100, 0x3F);
 }
 
-bool vzoperation::SetVoice(unsigned int nCombi, unsigned int nVoice)
+bool VZOperation::SetVoice(unsigned int nCombi, unsigned int nVoice)
 {
     if(nCombi > 3 || nVoice > 63)
         return false;
@@ -144,14 +153,14 @@ bool vzoperation::SetVoice(unsigned int nCombi, unsigned int nVoice)
     return true;
 }
 
-bool vzoperation::IsSolo(unsigned int nCombi)
+bool VZOperation::IsSolo(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(29 + nCombi * 100, 0x08) != 0);
 }
 
-bool vzoperation::EnableSolo(unsigned int nCombi, bool bSolo)
+bool VZOperation::EnableSolo(unsigned int nCombi, bool bSolo)
 {
     if(nCombi > 3)
         return false;
@@ -159,14 +168,14 @@ bool vzoperation::EnableSolo(unsigned int nCombi, bool bSolo)
     return true;
 }
 
-bool vzoperation::IsSustainPedal(unsigned int nCombi)
+bool VZOperation::IsSustainPedal(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(29 + nCombi * 100, 0x10) != 0);
 }
 
-bool vzoperation::EnableSustainPedal(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableSustainPedal(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -174,14 +183,14 @@ bool vzoperation::EnableSustainPedal(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsVelocityInvert(unsigned int nCombi)
+bool VZOperation::IsVelocityInvert(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(29 + nCombi * 100, 0x20) != 0);
 }
 
-bool vzoperation::EnableVelocityInvert(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableVelocityInvert(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -189,14 +198,14 @@ bool vzoperation::EnableVelocityInvert(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsVibratoInvert(unsigned int nCombi)
+bool VZOperation::IsVibratoInvert(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(29 + nCombi * 100, 0x40) != 0);
 }
 
-bool vzoperation::EnableVibratoInvert(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableVibratoInvert(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -204,14 +213,14 @@ bool vzoperation::EnableVibratoInvert(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsTremeloInvert(unsigned int nCombi) //!@todo Is this tremelo invert or inverse?
+bool VZOperation::IsTremeloInvert(unsigned int nCombi) //!@todo Is this tremelo invert or inverse?
 {
     if(nCombi > 3)
         return false;
     return (GetValue(29 + nCombi * 100, 0x80) != 0);
 }
 
-bool vzoperation::EnableTremeloInvert(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableTremeloInvert(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -219,14 +228,14 @@ bool vzoperation::EnableTremeloInvert(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-unsigned int vzoperation::GetPortamentoTime(unsigned int nCombi)
+unsigned int VZOperation::GetPortamentoTime(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
     return GetValue(30 + nCombi * 100, 0x3F);
 }
 
-bool vzoperation::SetPortamentoTime(unsigned int nCombi, unsigned int nTime)
+bool VZOperation::SetPortamentoTime(unsigned int nCombi, unsigned int nTime)
 {
     if(nCombi > 3 || nTime > 63)
         return false;
@@ -234,14 +243,14 @@ bool vzoperation::SetPortamentoTime(unsigned int nCombi, unsigned int nTime)
     return true;
 }
 
-bool vzoperation::IsPortomentoRateConstant(unsigned int nCombi)
+bool VZOperation::IsPortomentoRateConstant(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(30 + nCombi * 100, 0x80) != 0);
 }
 
-bool vzoperation::SelectPortomentoRateConstant(unsigned int nCombi, bool bMode)
+bool VZOperation::SelectPortomentoRateConstant(unsigned int nCombi, bool bMode)
 {
     if(nCombi > 3)
         return false;
@@ -249,14 +258,14 @@ bool vzoperation::SelectPortomentoRateConstant(unsigned int nCombi, bool bMode)
     return true;
 }
 
-unsigned int vzoperation::GetPitchBendRange(unsigned int nCombi)
+unsigned int VZOperation::GetPitchBendRange(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
     return GetValue(31 + nCombi * 100, 0x3F);
 }
 
-bool vzoperation::SetPitchBendRange(unsigned int nCombi, unsigned int nRange)
+bool VZOperation::SetPitchBendRange(unsigned int nCombi, unsigned int nRange)
 {
     if(nCombi > 3 || nRange > 63)
         return false;
@@ -264,14 +273,14 @@ bool vzoperation::SetPitchBendRange(unsigned int nCombi, unsigned int nRange)
     return true;
 }
 
-bool vzoperation::IsPitchBendRelease(unsigned int nCombi)
+bool VZOperation::IsPitchBendRelease(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(31 + nCombi * 100, 0x80) != 0);
 }
 
-bool vzoperation::EnablePitchBendRelease(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnablePitchBendRelease(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -279,7 +288,7 @@ bool vzoperation::EnablePitchBendRelease(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-int vzoperation::GetAftertouchSensitivity(unsigned int nCombi)
+int VZOperation::GetAftertouchSensitivity(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
@@ -287,10 +296,10 @@ int vzoperation::GetAftertouchSensitivity(unsigned int nCombi)
     if(bSign)
         return GetValue(32 + nCombi * 100, 0x3F);
     else
-            return -1 * (GetValue(32 + nCombi * 100, 0x3F));
+        return -1 * (GetValue(32 + nCombi * 100, 0x3F));
 }
 
-bool vzoperation::SetAftertouchSensitivity(unsigned int nCombi, int nSensitivity)
+bool VZOperation::SetAftertouchSensitivity(unsigned int nCombi, int nSensitivity)
 {
     if(nCombi > 3 || abs(nSensitivity) > 63)
         return false;
@@ -299,14 +308,14 @@ bool vzoperation::SetAftertouchSensitivity(unsigned int nCombi, int nSensitivity
     return true;
 }
 
-bool vzoperation::IsAftertouchVibratoDepth(unsigned int nCombi)
+bool VZOperation::IsAftertouchVibratoDepth(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(33 + nCombi * 100, 0x01) != 0);
 }
 
-bool vzoperation::EnableAftertouchVibratoDepth(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableAftertouchVibratoDepth(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -314,14 +323,14 @@ bool vzoperation::EnableAftertouchVibratoDepth(unsigned int nCombi, bool bEnable
     return true;
 }
 
-bool vzoperation::IsAftertouchVibratoRate(unsigned int nCombi)
+bool VZOperation::IsAftertouchVibratoRate(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(33 + nCombi * 100, 0x02) != 0);
 }
 
-bool vzoperation::EnableAftertouchVibratoRate(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableAftertouchVibratoRate(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -329,14 +338,14 @@ bool vzoperation::EnableAftertouchVibratoRate(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsAftertouchPitchDown(unsigned int nCombi)
+bool VZOperation::IsAftertouchPitchDown(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(33 + nCombi * 100, 0x04) != 0);
 }
 
-bool vzoperation::EnableAftertouchPitchDown(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableAftertouchPitchDown(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -344,14 +353,14 @@ bool vzoperation::EnableAftertouchPitchDown(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsAftertouchPitchUp(unsigned int nCombi)
+bool VZOperation::IsAftertouchPitchUp(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(33 + nCombi * 100, 0x08) != 0);
 }
 
-bool vzoperation::EnableAftertouchPitchUp(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableAftertouchPitchUp(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -359,14 +368,14 @@ bool vzoperation::EnableAftertouchPitchUp(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsAftertouchPortamentoTime(unsigned int nCombi)
+bool VZOperation::IsAftertouchPortamentoTime(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(33 + nCombi * 100, 0x10) != 0);
 }
 
-bool vzoperation::EnableAftertouchPortamentoTime(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableAftertouchPortamentoTime(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -374,14 +383,14 @@ bool vzoperation::EnableAftertouchPortamentoTime(unsigned int nCombi, bool bEnab
     return true;
 }
 
-bool vzoperation::IsAftertouchTremeloDepth(unsigned int nCombi)
+bool VZOperation::IsAftertouchTremeloDepth(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(33 + nCombi * 100, 0x20) != 0);
 }
 
-bool vzoperation::EnableAftertouchTremeloDepth(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableAftertouchTremeloDepth(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -389,14 +398,14 @@ bool vzoperation::EnableAftertouchTremeloDepth(unsigned int nCombi, bool bEnable
     return true;
 }
 
-bool vzoperation::IsAftertouchTremeloRate(unsigned int nCombi)
+bool VZOperation::IsAftertouchTremeloRate(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(33 + nCombi * 100, 0x40) != 0);
 }
 
-bool vzoperation::EnableAftertouchTremeloRate(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableAftertouchTremeloRate(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -404,14 +413,14 @@ bool vzoperation::EnableAftertouchTremeloRate(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsAftertouchAmplitudeBias(unsigned int nCombi)
+bool VZOperation::IsAftertouchAmplitudeBias(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(33 + nCombi * 100, 0x80) != 0);
 }
 
-bool vzoperation::EnableAftertouchAmplitudeBias(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableAftertouchAmplitudeBias(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -419,7 +428,7 @@ bool vzoperation::EnableAftertouchAmplitudeBias(unsigned int nCombi, bool bEnabl
     return true;
 }
 
-int vzoperation::GetDefWheel1Sensitivity(unsigned int nCombi)
+int VZOperation::GetDefWheel1Sensitivity(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
@@ -427,10 +436,10 @@ int vzoperation::GetDefWheel1Sensitivity(unsigned int nCombi)
     if(bSign)
         return GetValue(34 + nCombi * 100, 0x3F);
     else
-            return -1 * (GetValue(34 + nCombi * 100, 0x3F));
+        return -1 * (GetValue(34 + nCombi * 100, 0x3F));
 }
 
-bool vzoperation::SetDefWheel1Sensitivity(unsigned int nCombi, int nSensitivity)
+bool VZOperation::SetDefWheel1Sensitivity(unsigned int nCombi, int nSensitivity)
 {
     if(nCombi > 3)
         return false;
@@ -441,14 +450,14 @@ bool vzoperation::SetDefWheel1Sensitivity(unsigned int nCombi, int nSensitivity)
     return true;
 }
 
-bool vzoperation::IsDefWheel1VibratoDepth(unsigned int nCombi)
+bool VZOperation::IsDefWheel1VibratoDepth(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(35 + nCombi * 100, 0x01) != 0);
 }
 
-bool vzoperation::EnableDefWheel1VibratoDepth(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel1VibratoDepth(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -456,14 +465,14 @@ bool vzoperation::EnableDefWheel1VibratoDepth(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel1VibratoRate(unsigned int nCombi)
+bool VZOperation::IsDefWheel1VibratoRate(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(35 + nCombi * 100, 0x02) != 0);
 }
 
-bool vzoperation::EnableDefWheel1VibratoRate(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel1VibratoRate(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -471,14 +480,14 @@ bool vzoperation::EnableDefWheel1VibratoRate(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel1PitchDown(unsigned int nCombi)
+bool VZOperation::IsDefWheel1PitchDown(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(35 + nCombi * 100, 0x04) != 0);
 }
 
-bool vzoperation::EnableDefWheel1PitchDown(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel1PitchDown(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -486,14 +495,14 @@ bool vzoperation::EnableDefWheel1PitchDown(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel1PitchUp(unsigned int nCombi)
+bool VZOperation::IsDefWheel1PitchUp(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(35 + nCombi * 100, 0x08) != 0);
 }
 
-bool vzoperation::EnableDefWheel1PitchUp(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel1PitchUp(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -501,14 +510,14 @@ bool vzoperation::EnableDefWheel1PitchUp(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel1PortamentoTime(unsigned int nCombi)
+bool VZOperation::IsDefWheel1PortamentoTime(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(35 + nCombi * 100, 0x10) != 0);
 }
 
-bool vzoperation::EnableDefWheel1PortamentoTime(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel1PortamentoTime(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -516,14 +525,14 @@ bool vzoperation::EnableDefWheel1PortamentoTime(unsigned int nCombi, bool bEnabl
     return true;
 }
 
-bool vzoperation::IsDefWheel1TremeloDepth(unsigned int nCombi)
+bool VZOperation::IsDefWheel1TremeloDepth(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(35 + nCombi * 100, 0x20) != 0);
 }
 
-bool vzoperation::EnableDefWheel1TremeloDepth(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel1TremeloDepth(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -531,14 +540,14 @@ bool vzoperation::EnableDefWheel1TremeloDepth(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel1TremeloRate(unsigned int nCombi)
+bool VZOperation::IsDefWheel1TremeloRate(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(35 + nCombi * 100, 0x40) != 0);
 }
 
-bool vzoperation::EnableDefWheel1TremeloRate(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel1TremeloRate(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -546,14 +555,14 @@ bool vzoperation::EnableDefWheel1TremeloRate(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel1AmplitudeBias(unsigned int nCombi)
+bool VZOperation::IsDefWheel1AmplitudeBias(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(35 + nCombi * 100, 0x80) != 0);
 }
 
-bool vzoperation::EnableDefWheel1AmplitudeBias(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel1AmplitudeBias(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -561,7 +570,7 @@ bool vzoperation::EnableDefWheel1AmplitudeBias(unsigned int nCombi, bool bEnable
     return true;
 }
 
-int vzoperation::GetDefWheel2Sensitivity(unsigned int nCombi)
+int VZOperation::GetDefWheel2Sensitivity(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
@@ -569,10 +578,10 @@ int vzoperation::GetDefWheel2Sensitivity(unsigned int nCombi)
     if(bSign)
         return GetValue(36 + nCombi * 100, 0x3F);
     else
-            return -1 * (GetValue(36 + nCombi * 100, 0x3F));
+        return -1 * (GetValue(36 + nCombi * 100, 0x3F));
 }
 
-bool vzoperation::SetDefWheel2Sensitivity(unsigned int nCombi, int nSensitivity)
+bool VZOperation::SetDefWheel2Sensitivity(unsigned int nCombi, int nSensitivity)
 {
     if(nCombi > 3)
         return false;
@@ -583,14 +592,14 @@ bool vzoperation::SetDefWheel2Sensitivity(unsigned int nCombi, int nSensitivity)
     return true;
 }
 
-bool vzoperation::IsDefWheel2VibratoDepth(unsigned int nCombi)
+bool VZOperation::IsDefWheel2VibratoDepth(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(37 + nCombi * 100, 0x01) != 0);
 }
 
-bool vzoperation::EnableDefWheel2VibratoDepth(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel2VibratoDepth(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -598,14 +607,14 @@ bool vzoperation::EnableDefWheel2VibratoDepth(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel2VibratoRate(unsigned int nCombi)
+bool VZOperation::IsDefWheel2VibratoRate(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(37 + nCombi * 100, 0x02) != 0);
 }
 
-bool vzoperation::EnableDefWheel2VibratoRate(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel2VibratoRate(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -613,14 +622,14 @@ bool vzoperation::EnableDefWheel2VibratoRate(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel2PitchDown(unsigned int nCombi)
+bool VZOperation::IsDefWheel2PitchDown(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(37 + nCombi * 100, 0x04) != 0);
 }
 
-bool vzoperation::EnableDefWheel2PitchDown(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel2PitchDown(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -628,14 +637,14 @@ bool vzoperation::EnableDefWheel2PitchDown(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel2PitchUp(unsigned int nCombi)
+bool VZOperation::IsDefWheel2PitchUp(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(37 + nCombi * 100, 0x08) != 0);
 }
 
-bool vzoperation::EnableDefWheel2PitchUp(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel2PitchUp(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -643,14 +652,14 @@ bool vzoperation::EnableDefWheel2PitchUp(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel2PortamentoTime(unsigned int nCombi)
+bool VZOperation::IsDefWheel2PortamentoTime(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(37 + nCombi * 100, 0x10) != 0);
 }
 
-bool vzoperation::EnableDefWheel2PortamentoTime(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel2PortamentoTime(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -658,14 +667,14 @@ bool vzoperation::EnableDefWheel2PortamentoTime(unsigned int nCombi, bool bEnabl
     return true;
 }
 
-bool vzoperation::IsDefWheel2TremeloDepth(unsigned int nCombi)
+bool VZOperation::IsDefWheel2TremeloDepth(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(37 + nCombi * 100, 0x20) != 0);
 }
 
-bool vzoperation::EnableDefWheel2TremeloDepth(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel2TremeloDepth(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -673,14 +682,14 @@ bool vzoperation::EnableDefWheel2TremeloDepth(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel2TremeloRate(unsigned int nCombi)
+bool VZOperation::IsDefWheel2TremeloRate(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(37 + nCombi * 100, 0x40) != 0);
 }
 
-bool vzoperation::EnableDefWheel2TremeloRate(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel2TremeloRate(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -688,14 +697,14 @@ bool vzoperation::EnableDefWheel2TremeloRate(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefWheel2AmplitudeBias(unsigned int nCombi)
+bool VZOperation::IsDefWheel2AmplitudeBias(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(37 + nCombi * 100, 0x80) != 0);
 }
 
-bool vzoperation::EnableDefWheel2AmplitudeBias(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefWheel2AmplitudeBias(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -703,7 +712,7 @@ bool vzoperation::EnableDefWheel2AmplitudeBias(unsigned int nCombi, bool bEnable
     return true;
 }
 
-int vzoperation::GetDefFootSensitivity(unsigned int nCombi)
+int VZOperation::GetDefFootSensitivity(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
@@ -711,10 +720,10 @@ int vzoperation::GetDefFootSensitivity(unsigned int nCombi)
     if(bSign)
         return GetValue(38 + nCombi * 100, 0x3F);
     else
-            return -1 * (GetValue(38 + nCombi * 100, 0x3F));
+        return -1 * (GetValue(38 + nCombi * 100, 0x3F));
 }
 
-bool vzoperation::SetDefFootSensitivity(unsigned int nCombi, int nSensitivity)
+bool VZOperation::SetDefFootSensitivity(unsigned int nCombi, int nSensitivity)
 {
     if(nCombi > 3)
         return false;
@@ -725,14 +734,14 @@ bool vzoperation::SetDefFootSensitivity(unsigned int nCombi, int nSensitivity)
     return true;
 }
 
-bool vzoperation::IsDefFootVibratoDepth(unsigned int nCombi)
+bool VZOperation::IsDefFootVibratoDepth(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(39 + nCombi * 100, 0x01) != 0);
 }
 
-bool vzoperation::EnableDefFootVibratoDepth(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefFootVibratoDepth(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -740,14 +749,14 @@ bool vzoperation::EnableDefFootVibratoDepth(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefFootVibratoRate(unsigned int nCombi)
+bool VZOperation::IsDefFootVibratoRate(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(39 + nCombi * 100, 0x02) != 0);
 }
 
-bool vzoperation::EnableDefFootVibratoRate(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefFootVibratoRate(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -755,14 +764,14 @@ bool vzoperation::EnableDefFootVibratoRate(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefFootPitchDown(unsigned int nCombi)
+bool VZOperation::IsDefFootPitchDown(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(39 + nCombi * 100, 0x04) != 0);
 }
 
-bool vzoperation::EnableDefFootPitchDown(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefFootPitchDown(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -770,14 +779,14 @@ bool vzoperation::EnableDefFootPitchDown(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefFootPitchUp(unsigned int nCombi)
+bool VZOperation::IsDefFootPitchUp(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(39 + nCombi * 100, 0x08) != 0);
 }
 
-bool vzoperation::EnableDefFootPitchUp(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefFootPitchUp(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -785,14 +794,14 @@ bool vzoperation::EnableDefFootPitchUp(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefFootPortamentoTime(unsigned int nCombi)
+bool VZOperation::IsDefFootPortamentoTime(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(39 + nCombi * 100, 0x10) != 0);
 }
 
-bool vzoperation::EnableDefFootPortamentoTime(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefFootPortamentoTime(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -800,14 +809,14 @@ bool vzoperation::EnableDefFootPortamentoTime(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefFootTremeloDepth(unsigned int nCombi)
+bool VZOperation::IsDefFootTremeloDepth(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(39 + nCombi * 100, 0x20) != 0);
 }
 
-bool vzoperation::EnableDefFootTremeloDepth(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefFootTremeloDepth(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -815,14 +824,14 @@ bool vzoperation::EnableDefFootTremeloDepth(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefFootTremeloRate(unsigned int nCombi)
+bool VZOperation::IsDefFootTremeloRate(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(39 + nCombi * 100, 0x40) != 0);
 }
 
-bool vzoperation::EnableDefFootTremeloRate(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefFootTremeloRate(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -830,14 +839,14 @@ bool vzoperation::EnableDefFootTremeloRate(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-bool vzoperation::IsDefFootAmplitudeBias(unsigned int nCombi)
+bool VZOperation::IsDefFootAmplitudeBias(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return (GetValue(39 + nCombi * 100, 0x80) != 0);
 }
 
-bool vzoperation::EnableDefFootAmplitudeBias(unsigned int nCombi, bool bEnable)
+bool VZOperation::EnableDefFootAmplitudeBias(unsigned int nCombi, bool bEnable)
 {
     if(nCombi > 3)
         return false;
@@ -845,14 +854,14 @@ bool vzoperation::EnableDefFootAmplitudeBias(unsigned int nCombi, bool bEnable)
     return true;
 }
 
-unsigned int vzoperation::GetLevel(unsigned int nCombi)
+unsigned int VZOperation::GetLevel(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
     return (GetValue(40 + nCombi * 100, 0x3F));
 }
 
-bool vzoperation::SetLevel(unsigned int nCombi, unsigned int nLevel)
+bool VZOperation::SetLevel(unsigned int nCombi, unsigned int nLevel)
 {
     if(nCombi > 3 || nLevel > 63)
         return false;
@@ -860,7 +869,7 @@ bool vzoperation::SetLevel(unsigned int nCombi, unsigned int nLevel)
     return true;
 }
 
-int vzoperation::GetPitch(unsigned int nCombi)
+int VZOperation::GetPitch(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
@@ -869,10 +878,10 @@ int vzoperation::GetPitch(unsigned int nCombi)
     if(bSign)
         return GetValue(41 + nCombi * 100, 0xFC) + 100 * GetValue(42 + nCombi * 100, 0x3F);
     else
-            return -1 * (GetValue(41 + nCombi * 100, 0xFC) + 100 * GetValue(42 + nCombi * 100, 0x3F));
+        return -1 * (GetValue(41 + nCombi * 100, 0xFC) + 100 * GetValue(42 + nCombi * 100, 0x3F));
 }
 
-bool vzoperation::SetPitch(unsigned int nCombi, int nPitch)
+bool VZOperation::SetPitch(unsigned int nCombi, int nPitch)
 {
     if(nCombi > 3 || abs(nPitch) > 6300)
         return false;
@@ -883,14 +892,14 @@ bool vzoperation::SetPitch(unsigned int nCombi, int nPitch)
 
 }
 
-unsigned int vzoperation::GetVelSplitMin(unsigned int nCombi)
+unsigned int VZOperation::GetVelSplitMin(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
     return GetValue(43 + nCombi * 100, 0x3F);
 }
 
-bool vzoperation::SetVelSplitMin(unsigned int nCombi, unsigned int nMin)
+bool VZOperation::SetVelSplitMin(unsigned int nCombi, unsigned int nMin)
 {
     if(nCombi > 3 || nMin > 63)
         return false;
@@ -898,14 +907,14 @@ bool vzoperation::SetVelSplitMin(unsigned int nCombi, unsigned int nMin)
     return true;
 }
 
-unsigned int vzoperation::GetVelSplitMax(unsigned int nCombi)
+unsigned int VZOperation::GetVelSplitMax(unsigned int nCombi)
 {
     if(nCombi > 3)
         return 0;
     return GetValue(44 + nCombi * 100, 0x3F);
 }
 
-bool vzoperation::SetVelSplitMax(unsigned int nCombi, unsigned int nMax)
+bool VZOperation::SetVelSplitMax(unsigned int nCombi, unsigned int nMax)
 {
     if(nCombi > 3 || nMax > 63)
         return false;
@@ -913,14 +922,14 @@ bool vzoperation::SetVelSplitMax(unsigned int nCombi, unsigned int nMax)
     return true;
 }
 
-unsigned int vzoperation::GetDelayTrigger(unsigned int nCombi)
+unsigned int VZOperation::GetDelayTrigger(unsigned int nCombi)
 {
     if(nCombi > 3)
         return false;
     return GetValue(45 + nCombi * 100, 0x3F);
 }
 
-bool vzoperation::SetDelayTrigger(unsigned int nCombi, unsigned int nDelay)
+bool VZOperation::SetDelayTrigger(unsigned int nCombi, unsigned int nDelay)
 {
     if(nCombi > 3 || nDelay > 63)
         return false;

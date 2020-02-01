@@ -1,21 +1,19 @@
 /***************************************************************
  * Name:      VZ_EditorApp.h
- * Purpose:   Defines Application Class
+ * Purpose:   Defines top level application VZEditor class
  * Author:    Brian Walton (brian@riban.co.uk)
  * Created:   2018-08-22
  * Copyright: Brian Walton (riban.co.uk)
- * License:
+ * License:   GPL3
  **************************************************************/
 
-#ifndef VZ_EDITORAPP_H
-#define VZ_EDITORAPP_H
+#pragma once
 
 #include <wx/app.h>
 
-class VZ_EditorApp : public wxApp
+class VZEditorApp : public wxApp
 {
-    public:
-        virtual bool OnInit();
+public:
+    virtual bool OnInit();
 };
 
-#endif // VZ_EDITORAPP_H

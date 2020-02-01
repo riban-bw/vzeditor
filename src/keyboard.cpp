@@ -1,3 +1,12 @@
+/***************************************************************
+ * Name:      keyboard.cpp
+ * Purpose:   Implements Keyboard class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2020-01-31
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
 #include "keyboard.h"
 
 IMPLEMENT_DYNAMIC_CLASS(Keyboard, wxControl);

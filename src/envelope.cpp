@@ -1,5 +1,13 @@
-#include "envelope.h"
+/***************************************************************
+ * Name:      envelope.cpp
+ * Purpose:   Implements Envelope class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2018-08-20
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
 
+#include "envelope.h"
 
 Envelope::Envelope(wxByte nSteps) :
     m_nSustainStep(0)

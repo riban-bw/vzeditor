@@ -1,10 +1,10 @@
 /***************************************************************
- * Name:      VZ_EditorApp.cpp
- * Purpose:   Code for Application Class
+ * Name:      vzeditorapp.cpp
+ * Purpose:   Implements top level application VZEditor class
  * Author:    Brian Walton (brian@riban.co.uk)
  * Created:   2018-08-22
  * Copyright: Brian Walton (riban.co.uk)
- * License:
+ * License:   GPL3
  **************************************************************/
 
 #include "vzeditorapp.h"
@@ -14,18 +14,18 @@
 #include <wx/image.h>
 //*)
 
-IMPLEMENT_APP(VZ_EditorApp);
+IMPLEMENT_APP(VZEditorApp);
 
-bool VZ_EditorApp::OnInit()
+bool VZEditorApp::OnInit()
 {
     //(*AppInitialize
     bool wxsOK = true;
     wxInitAllImageHandlers();
     if ( wxsOK )
     {
-    	VZ_EditorFrame* Frame = new VZ_EditorFrame(0);
-    	Frame->Show();
-    	SetTopWindow(Frame);
+        VZEditorFrame* Frame = new VZEditorFrame(0);
+        Frame->Show();
+        SetTopWindow(Frame);
     }
     //*)
 

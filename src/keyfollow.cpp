@@ -1,3 +1,12 @@
+/***************************************************************
+ * Name:      keyfollow.cpp
+ * Purpose:   Implements KeyFollow class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2018-08-20
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
 #include "keyfollow.h"
 
 KeyFollow::KeyFollow(wxByte nSteps, bool bDCO) :

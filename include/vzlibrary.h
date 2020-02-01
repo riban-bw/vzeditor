@@ -1,5 +1,13 @@
-#ifndef VZLIBRARY_H
-#define VZLIBRARY_H
+/***************************************************************
+ * Name:      vzlibrary.h
+ * Purpose:   Defines VZLibrary class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2018-08-24
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
+#pragma once
 
 #include <vector>
 #include <wx/wx.h>
@@ -17,57 +25,64 @@ struct vzLibEntry
 
 class VZLibrary
 {
-    public:
-        /** Construct VZLibrary obect */
-        VZLibrary(const wxString &sFilename = "library/vzlibrary.xml");
-        /** Destruct VZLibrary obect */
-        virtual ~VZLibrary();
+public:
+    /** Construct VZLibrary obect */
+    VZLibrary(const wxString &sFilename = "library/vzlibrary.xml");
+    /** Destruct VZLibrary obect */
+    virtual ~VZLibrary();
 
-        /** @brief  Load library from file
-        *   @param  sFilename Full path and filename of XML library file
-        *   @retval bool True on success
-        *   @note   Creates new library if file does not exist
-        */
-        bool Load(const wxString &sFilename);
+    /** @brief  Load library from file
+    *   @param  sFilename Full path and filename of XML library file
+    *   @retval bool True on success
+    *   @note   Creates new library if file does not exist
+    */
+    bool Load(const wxString &sFilename);
 
-        /** @brief  Save library to file
-        *   @retval bool True on success
-        */
-        bool Save();
+    /** @brief  Save library to file
+    *   @retval bool True on success
+    */
+    bool Save();
 
-        void Close();
+    void Close();
 
-        bool IsDirty() { return m_bDirty; };
+    bool IsDirty()
+    {
+        return m_bDirty;
+    };
 
-        bool IsValid() { return m_bValid; };
+    bool IsValid()
+    {
+        return m_bValid;
+    };
 
-        bool AddEntry(const wxString &sName, const wxString &sFilename, const wxString &sDescription = wxEmptyString, const wxString &sGroup = wxEmptyString, const wxString &sType = "vzvoice");
+    bool AddEntry(const wxString &sName, const wxString &sFilename, const wxString &sDescription = wxEmptyString, const wxString &sGroup = wxEmptyString, const wxString &sType = "vzvoice");
 
-        bool RemoveEntry(wxString sFilename);
+    bool RemoveEntry(wxString sFilename);
 
-        wxString GetDescription(wxString sName);
+    wxString GetDescription(wxString sName);
 
-        bool SetDescription(wxString sName, wxString sDescription);
+    bool SetDescription(wxString sName, wxString sDescription);
 
-        wxString GetGroup(wxString sName);
+    wxString GetGroup(wxString sName);
 
-        bool SetGroup(wxString sName, wxString sGroup);
+    bool SetGroup(wxString sName, wxString sGroup);
 
-        wxString GetFilename(wxString sName);
+    wxString GetFilename(wxString sName);
 
-        bool SetFilename(wxString sName, wxString sFilename);
+    bool SetFilename(wxString sName, wxString sFilename);
 
-        vector<vzLibEntry*>* GetData() { return &m_vEntries; };
+    vector<vzLibEntry*>* GetData()
+    {
+        return &m_vEntries;
+    };
 
-        void ClearData();
+    void ClearData();
 
-    protected:
+protected:
 
-    private:
-        wxString m_sFilename; // XML filename
-        vector<vzLibEntry*> m_vEntries; // Map of library entries indexed by name
-        bool m_bDirty; //True if there are unsaved changes
-        bool m_bValid; //True if a valid XML file is open
+private:
+    wxString m_sFilename; // XML filename
+    vector<vzLibEntry*> m_vEntries; // Map of library entries indexed by name
+    bool m_bDirty; //True if there are unsaved changes
+    bool m_bValid; //True if a valid XML file is open
 };
-
-#endif // VZLIBRARY_H

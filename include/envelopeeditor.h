@@ -1,5 +1,13 @@
-#ifndef ENVELOPEEDITOR_H
-#define ENVELOPEEDITOR_H
+/***************************************************************
+ * Name:      envelopeeditor.h
+ * Purpose:   Defines EnvelopeEditor class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2018-08-22
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
+#pragma once
 
 //(*Headers(EnvelopeEditor)
 #include <wx/panel.h>
@@ -11,25 +19,23 @@ static const long ENV_STYLE_DCO_KF  = 3;
 
 class EnvelopeEditor: public wxPanel
 {
-	public:
+public:
 
-		EnvelopeEditor(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
-		virtual ~EnvelopeEditor();
+    EnvelopeEditor(wxWindow* parent,wxWindowID id=wxID_ANY,const wxPoint& pos=wxDefaultPosition,const wxSize& size=wxDefaultSize);
+    virtual ~EnvelopeEditor();
 
-		//(*Declarations(EnvelopeEditor)
-		//*)
+    //(*Declarations(EnvelopeEditor)
+    //*)
 
-	protected:
+protected:
 
-		//(*Identifiers(EnvelopeEditor)
-		//*)
+    //(*Identifiers(EnvelopeEditor)
+    //*)
 
-	private:
+private:
 
-		//(*Handlers(EnvelopeEditor)
-		//*)
+    //(*Handlers(EnvelopeEditor)
+    //*)
 
-		DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
-
-#endif

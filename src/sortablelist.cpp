@@ -1,3 +1,12 @@
+/***************************************************************
+ * Name:      sortablelist.cpp
+ * Purpose:   Impleents SortableList class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2018-08-23
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
 #include "sortablelist.h"
 #include <algorithm>
 
@@ -91,7 +100,8 @@ void SortableList::SetData(VZLibrary* pData)
 }
 
 //Overload virtual method of wxListCtrl to provide text data for virtual list
-wxString SortableList::OnGetItemText(long item, long column) const{
+wxString SortableList::OnGetItemText(long item, long column) const
+{
     if(!m_pData)
         return wxEmptyString;
     vzLibEntry* pData = (*m_pData->GetData())[item];
@@ -99,16 +109,16 @@ wxString SortableList::OnGetItemText(long item, long column) const{
     {
         switch(column)
         {
-            case -1:
-                return pData->filename;
-            case 0:
-                return pData->name;
-            case 1:
-                return pData->description;
-            case 2:
-                return pData->group;
-            case 3:
-                return pData->type;
+        case -1:
+            return pData->filename;
+        case 0:
+            return pData->name;
+        case 1:
+            return pData->description;
+        case 2:
+            return pData->group;
+        case 3:
+            return pData->type;
         }
     }
     return "";
@@ -150,28 +160,28 @@ void SortableList::Sort(long column)
     GetColumn(column, col);
     switch(column)
     {
-        case 0:
-            sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByNameAsc:SortByNameDesc);
-            col.SetText(wxString::FromUTF8(bAscending?"▲ Name":"▼ Name"));
-            SetColumn(column, col);
-            break;
-        case 1:
-            sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByDescriptionAsc:SortByDescriptionDesc);
-            col.SetText(wxString::FromUTF8(bAscending?"▲ Description":"▼ Description"));
-            SetColumn(column, col);
-            break;
-        case 2:
-            sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByGroupAsc:SortByGroupDesc);
-            col.SetText(wxString::FromUTF8(bAscending?"▲ Group":"▼ Group"));
-            SetColumn(column, col);
-            break;
-        case 3:
-            sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByTypeAsc:SortByTypeDesc);
-            col.SetText(wxString::FromUTF8(bAscending?"▲ Type":"▼ Type"));
-            SetColumn(column, col);
-            break;
-        default:
-            return;
+    case 0:
+        sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByNameAsc:SortByNameDesc);
+        col.SetText(wxString::FromUTF8(bAscending?"▲ Name":"▼ Name"));
+        SetColumn(column, col);
+        break;
+    case 1:
+        sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByDescriptionAsc:SortByDescriptionDesc);
+        col.SetText(wxString::FromUTF8(bAscending?"▲ Description":"▼ Description"));
+        SetColumn(column, col);
+        break;
+    case 2:
+        sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByGroupAsc:SortByGroupDesc);
+        col.SetText(wxString::FromUTF8(bAscending?"▲ Group":"▼ Group"));
+        SetColumn(column, col);
+        break;
+    case 3:
+        sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByTypeAsc:SortByTypeDesc);
+        col.SetText(wxString::FromUTF8(bAscending?"▲ Type":"▼ Type"));
+        SetColumn(column, col);
+        break;
+    default:
+        return;
     }
     Refresh();
 }

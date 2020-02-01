@@ -1,77 +1,86 @@
-#include "vzvoice.h"
+/***************************************************************
+ * Name:      vzvoice.cpp
+ * Purpose:   Implements VZVoice class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2018-08-20
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
+#include "VZVoice.h"
 #include <cstring>
 
-vzvoice::vzvoice() :
-    vzsysex(VZ_VOICE_PAYLOAD_SIZE)
+VZVoice::VZVoice() :
+    VZSysex(VZ_VOICE_PAYLOAD_SIZE)
 {
     Validate(true);
     m_pkfDCO = new KeyFollow(6, true);
 }
 
-vzvoice::vzvoice(wxByte* pData, bool bPayload) :
-    vzsysex(VZ_VOICE_PAYLOAD_SIZE, pData, bPayload)
+VZVoice::VZVoice(wxByte* pData, bool bPayload) :
+    VZSysex(VZ_VOICE_PAYLOAD_SIZE, pData, bPayload)
 {
     Validate(true);
     m_bModified = false;
 }
 
-vzvoice::~vzvoice()
+VZVoice::~VZVoice()
 {
 }
 
-bool vzvoice::Validate(bool bFix)
+bool VZVoice::Validate(bool bFix)
 {
-    vzsysex::Validate(bFix);
+    VZSysex::Validate(bFix);
     m_bModified |= ValidateByte(m_pSysEx + 5, 0x00, bFix);
     m_bModified |= ValidateByte(m_pSysEx + 6, 0x40, bFix); //!@todo Allow different tone locations [0x40 - 0x44]
     m_bModified |= ValidateByte(m_pSysEx + 7 + m_nPayloadSize, Checksum(m_pSysEx + 7, m_nPayloadSize), bFix);
     return m_bModified;
 }
 
-bool vzvoice::IsExtPhase(wxByte nModule)
+bool VZVoice::IsExtPhase(wxByte nModule)
 {
     switch(nModule)
     {
-        case 3:
-            return GetValue(0, 0x01);
-        case 5:
-            return GetValue(0, 0x02);
-        case 7:
-            return GetValue(0, 0x04);
-        default:
-            return false;
+    case 3:
+        return GetValue(0, 0x01);
+    case 5:
+        return GetValue(0, 0x02);
+    case 7:
+        return GetValue(0, 0x04);
+    default:
+        return false;
     }
 }
 
-bool vzvoice::EnableExtPhase(wxByte nModule, bool bEnable)
+bool VZVoice::EnableExtPhase(wxByte nModule, bool bEnable)
 {
     if(nModule > 7)
         return false;
     switch(nModule)
     {
-        case 3:
-            SetValue(0, 0x01, bEnable);
-            break;
-        case 5:
-            SetValue(0, 0x02, bEnable);
-            break;
-        case 7:
-            SetValue(0, 0x04, bEnable);
-            break;
-        default:
-            return false;
+    case 3:
+        SetValue(0, 0x01, bEnable);
+        break;
+    case 5:
+        SetValue(0, 0x02, bEnable);
+        break;
+    case 7:
+        SetValue(0, 0x04, bEnable);
+        break;
+    default:
+        return false;
     }
     return true;
 }
 
-wxByte vzvoice::GetWaveform(wxByte nModule)
+wxByte VZVoice::GetWaveform(wxByte nModule)
 {
     if(nModule > 7)
         return 0;
     return GetValue(1 + nModule / 2, 0x07 << (nModule%2 * 3));
 }
 
-bool vzvoice::SetWaveform(wxByte nModule, VZ_WAVEFORM nWaveform)
+bool VZVoice::SetWaveform(wxByte nModule, VZ_WAVEFORM nWaveform)
 {
     if(nModule > 7 || nWaveform > 7)
         return false;
@@ -79,29 +88,29 @@ bool vzvoice::SetWaveform(wxByte nModule, VZ_WAVEFORM nWaveform)
     return true;
 }
 
-wxByte vzvoice::GetLine(wxByte nLine)
+wxByte VZVoice::GetLine(wxByte nLine)
 {
     if(nLine > 3)
-       return 0;
+        return 0;
     return GetValue(1 + nLine, 0xC0);
 }
 
-bool vzvoice::SetLine(wxByte nLine, VZ_LINE nMode)
+bool VZVoice::SetLine(wxByte nLine, VZ_LINE nMode)
 {
     if(nLine > 3 || nMode > 2)
-       return false;
+        return false;
     SetValue(1 + nLine, 0xC0, nMode);
     return true;
 }
 
-wxByte vzvoice::GetDetuneCourse(wxByte nModule)
+wxByte VZVoice::GetDetuneCourse(wxByte nModule)
 {
     if(nModule > 7)
         return 0;
     return GetValue(6 + nModule * 2, 0x7F);
 }
 
-bool vzvoice::SetDetuneCourse(wxByte nModule, wxByte nDetune)
+bool VZVoice::SetDetuneCourse(wxByte nModule, wxByte nDetune)
 {
     if(nModule > 7 || nDetune > 0x7F)
         return false;
@@ -109,14 +118,14 @@ bool vzvoice::SetDetuneCourse(wxByte nModule, wxByte nDetune)
     return true;
 }
 
-wxByte vzvoice::GetDetuneFine(wxByte nModule)
+wxByte VZVoice::GetDetuneFine(wxByte nModule)
 {
     if(nModule > 7)
         return 0;
     return GetValue(5 + nModule * 2, 0xFC);
 }
 
-bool vzvoice::SetDetuneFine(wxByte nModule, wxByte nDetune)
+bool VZVoice::SetDetuneFine(wxByte nModule, wxByte nDetune)
 {
     if(nModule > 7 || nDetune > 0x3F)
         return false;
@@ -124,14 +133,14 @@ bool vzvoice::SetDetuneFine(wxByte nModule, wxByte nDetune)
     return true;
 }
 
-bool vzvoice::IsDetunePositive(wxByte nModule)
+bool VZVoice::IsDetunePositive(wxByte nModule)
 {
     if(nModule > 7)
         return false;
     return GetValue(6 + nModule * 2, 0x80);
 }
 
-bool vzvoice::SetDetunePositive(wxByte nModule, bool bPolarity)
+bool VZVoice::SetDetunePositive(wxByte nModule, bool bPolarity)
 {
     if(nModule > 7)
         return false;
@@ -139,17 +148,17 @@ bool vzvoice::SetDetunePositive(wxByte nModule, bool bPolarity)
     return true;
 }
 
-int vzvoice::GetDetune(wxByte nModule)
+int VZVoice::GetDetune(wxByte nModule)
 {
     if(nModule > 7)
         return 0;
     int nValue = GetDetuneCourse(nModule) * 64 + GetDetuneFine(nModule);
     if(!IsDetunePositive(nModule))
-       nValue = -nValue;
+        nValue = -nValue;
     return nValue;
 }
 
-bool vzvoice::SetDetune(wxByte nModule, int nDetune)
+bool VZVoice::SetDetune(wxByte nModule, int nDetune)
 {
     if(nModule > 7 || nDetune > 16383 || nDetune < 16383)
         return false;
@@ -169,14 +178,14 @@ bool vzvoice::SetDetune(wxByte nModule, int nDetune)
     return bRetVal;
 }
 
-bool vzvoice::IsPitchFix(wxByte nModule)
+bool VZVoice::IsPitchFix(wxByte nModule)
 {
     if(nModule > 7)
         return false;
     return GetValue(5 + nModule * 2, 0x02);
 }
 
-bool vzvoice::EnablePitchFix(wxByte nModule, bool bEnable)
+bool VZVoice::EnablePitchFix(wxByte nModule, bool bEnable)
 {
     if(nModule > 7)
         return false;
@@ -184,14 +193,14 @@ bool vzvoice::EnablePitchFix(wxByte nModule, bool bEnable)
     return true;
 }
 
-bool vzvoice::IsPitchFixRange(wxByte nModule)
+bool VZVoice::IsPitchFixRange(wxByte nModule)
 {
     if(nModule > 7)
         return false;
     return GetValue(5 + nModule * 2, 0x01);
 }
 
-bool vzvoice::EnablePitchFixRange(wxByte nModule, bool bEnable)
+bool VZVoice::EnablePitchFixRange(wxByte nModule, bool bEnable)
 {
     if(nModule > 7)
         return false;
@@ -199,7 +208,7 @@ bool vzvoice::EnablePitchFixRange(wxByte nModule, bool bEnable)
     return true;
 }
 
-Envelope* vzvoice::GetDCAEnvelope(wxByte nModule)
+Envelope* VZVoice::GetDCAEnvelope(wxByte nModule)
 {
     if(nModule > 7)
         nModule = 0; //Default to first module if invalid module requested (could give null but may be safer this way)
@@ -218,7 +227,7 @@ Envelope* vzvoice::GetDCAEnvelope(wxByte nModule)
     return pEnv;
 }
 
-bool vzvoice::UpdateDCAEnvelope(wxByte nModule)
+bool VZVoice::UpdateDCAEnvelope(wxByte nModule)
 {
     if(nModule > 7)
         return false;
@@ -236,7 +245,7 @@ bool vzvoice::UpdateDCAEnvelope(wxByte nModule)
     return true;
 }
 
-Envelope* vzvoice::GetDCOEnvelope()
+Envelope* VZVoice::GetDCOEnvelope()
 {
     Envelope* pEnv = m_envDCA;
     for(wxByte nStep = 0; nStep < pEnv->GetSteps(); ++ nStep)
@@ -253,7 +262,7 @@ Envelope* vzvoice::GetDCOEnvelope()
     return pEnv;
 }
 
-bool vzvoice::UpdateDCOEnvelope()
+bool VZVoice::UpdateDCOEnvelope()
 {
     Envelope* pEnv = &m_envDCO;
     for(wxByte nStep = 0; nStep < pEnv->GetSteps(); ++ nStep)
@@ -269,7 +278,7 @@ bool vzvoice::UpdateDCOEnvelope()
     return true;
 }
 
-wxByte vzvoice::GetLevel()
+wxByte VZVoice::GetLevel()
 {
     int nLevel = GetValue(174, 0x7F);
     if(nLevel > 99)
@@ -277,7 +286,7 @@ wxByte vzvoice::GetLevel()
     return nLevel;
 }
 
-bool vzvoice::SetLevel(wxByte nLevel)
+bool VZVoice::SetLevel(wxByte nLevel)
 {
     if(nLevel > 99)
         return false;
@@ -287,14 +296,14 @@ bool vzvoice::SetLevel(wxByte nLevel)
     return true;
 }
 
-wxByte vzvoice::GetCCSensitivity(wxByte nModule)
+wxByte VZVoice::GetCCSensitivity(wxByte nModule)
 {
     if(nModule > 7)
         return 0;
     return GetValue(165 + nModule, 0x07);
 }
 
-bool vzvoice::SetCCSensitivity(wxByte nModule, wxByte nSensitivity)
+bool VZVoice::SetCCSensitivity(wxByte nModule, wxByte nSensitivity)
 {
     if(nModule > 7 || nSensitivity > 0x07)
         return false;
@@ -302,14 +311,14 @@ bool vzvoice::SetCCSensitivity(wxByte nModule, wxByte nSensitivity)
     return true;
 }
 
-wxByte vzvoice::GetDCAEnvDepth(wxByte nModule)
+wxByte VZVoice::GetDCAEnvDepth(wxByte nModule)
 {
     if(nModule > 7)
         return 0;
     return GetValue(175 + nModule, 0x7F);
 }
 
-bool vzvoice::SetDCAEnvDepth(wxByte nModule, wxByte nDepth)
+bool VZVoice::SetDCAEnvDepth(wxByte nModule, wxByte nDepth)
 {
     if(nModule > 7 || nDepth > 99)
         return false;
@@ -319,14 +328,14 @@ bool vzvoice::SetDCAEnvDepth(wxByte nModule, wxByte nDepth)
     return true;
 }
 
-bool vzvoice::IsModuleEnabled(wxByte nModule)
+bool VZVoice::IsModuleEnabled(wxByte nModule)
 {
     if(nModule > 7)
         return false;
     return !GetValue(175 + nModule, 0x80);
 }
 
-bool vzvoice::EnableModule(wxByte nModule, bool bEnable)
+bool VZVoice::EnableModule(wxByte nModule, bool bEnable)
 {
     if(nModule > 7)
         return false;
@@ -334,18 +343,18 @@ bool vzvoice::EnableModule(wxByte nModule, bool bEnable)
     return true;
 }
 
-bool vzvoice::IsDCORangeWide()
+bool VZVoice::IsDCORangeWide()
 {
     return GetValue(183, 0x80);
 }
 
-bool vzvoice::SetDCORangeWide(bool bWide)
+bool VZVoice::SetDCORangeWide(bool bWide)
 {
     SetValue(183, 0x80, bWide);
     return true;
 }
 
-KeyFollow* vzvoice::GetDCAKeyFollow(wxByte nModule)
+KeyFollow* VZVoice::GetDCAKeyFollow(wxByte nModule)
 {
     if(nModule > 7)
         nModule = 0; //Default to first module if invalid module requested (could give null but may be safer this way)
@@ -358,7 +367,7 @@ KeyFollow* vzvoice::GetDCAKeyFollow(wxByte nModule)
     return pKF;
 }
 
-bool vzvoice::UpdateDCAKeyFollow(wxByte nModule)
+bool VZVoice::UpdateDCAKeyFollow(wxByte nModule)
 {
     if(nModule > 7)
         return false;
@@ -371,7 +380,7 @@ bool vzvoice::UpdateDCAKeyFollow(wxByte nModule)
     return true;
 }
 
-KeyFollow* vzvoice::GetDCOKeyFolllow()
+KeyFollow* VZVoice::GetDCOKeyFolllow()
 {
     for(wxByte nStep = 0; nStep < m_pkfDCO->GetSteps(); ++ nStep)
     {
@@ -381,7 +390,7 @@ KeyFollow* vzvoice::GetDCOKeyFolllow()
     return m_pkfDCO;
 }
 
-bool vzvoice::UpdateDCOKeyFollow()
+bool VZVoice::UpdateDCOKeyFollow()
 {
     for(wxByte nStep = 0; nStep < m_pkfDCO->GetSteps(); ++ nStep)
     {
@@ -391,14 +400,14 @@ bool vzvoice::UpdateDCOKeyFollow()
     return true;
 }
 
-wxByte vzvoice::GetKFkey(wxByte nStep)
+wxByte VZVoice::GetKFkey(wxByte nStep)
 {
     if(nStep > 5)
         return 0;
     return GetValue(292 + nStep * 2, 0x7F);
 }
 
-bool vzvoice::SetKFkey(wxByte nStep, wxByte nKey)
+bool VZVoice::SetKFkey(wxByte nStep, wxByte nKey)
 {
     if(nStep > 5 || nKey > 0x78)
         return false;
@@ -406,14 +415,14 @@ bool vzvoice::SetKFkey(wxByte nStep, wxByte nKey)
     return true;
 }
 
-wxByte vzvoice::GetKFrate(wxByte nStep)
+wxByte VZVoice::GetKFrate(wxByte nStep)
 {
     if(nStep > 5)
         return 0;
     return (GetValue(293 + nStep * 2, 0x7F));
 }
 
-bool vzvoice::SetKFrate(wxByte nStep, wxByte nRate)
+bool VZVoice::SetKFrate(wxByte nStep, wxByte nRate)
 {
     if(nStep > 5 || nRate > 0x78)
         return false;
@@ -421,14 +430,14 @@ bool vzvoice::SetKFrate(wxByte nStep, wxByte nRate)
     return true;
 }
 
-wxByte vzvoice::GetModuleVelCurve(wxByte nModule)
+wxByte VZVoice::GetModuleVelCurve(wxByte nModule)
 {
     if(nModule > 7)
         return 0;
     return  GetValue(304 + nModule, 0xE0);
 }
 
-bool vzvoice::SetModuleVelCurve(wxByte nModule, wxByte nCurve)
+bool VZVoice::SetModuleVelCurve(wxByte nModule, wxByte nCurve)
 {
     if(nModule > 7 || nCurve > 0x07)
         return false;
@@ -436,14 +445,14 @@ bool vzvoice::SetModuleVelCurve(wxByte nModule, wxByte nCurve)
     return true;
 }
 
-wxByte vzvoice::GetModuleVelSens(wxByte nModule)
+wxByte VZVoice::GetModuleVelSens(wxByte nModule)
 {
     if(nModule > 7)
         return 0;
     return  GetValue(304 + nModule, 0x1F);
 }
 
-bool vzvoice::SetModuleVelSens(wxByte nModule, wxByte nSens)
+bool VZVoice::SetModuleVelSens(wxByte nModule, wxByte nSens)
 {
     if(nModule > 7 || nSens > 0x1F)
         return false;
@@ -451,49 +460,49 @@ bool vzvoice::SetModuleVelSens(wxByte nModule, wxByte nSens)
     return true;
 }
 
-wxByte vzvoice::GetPitchVelCurve()
+wxByte VZVoice::GetPitchVelCurve()
 {
     return GetValue(312, 0xE0);
 }
 
-bool vzvoice::SetPitchVelCurve(wxByte nCurve)
+bool VZVoice::SetPitchVelCurve(wxByte nCurve)
 {
     SetValue(312, 0xE0, nCurve);
     return true;
 }
-wxByte vzvoice::GetPitchVelSens()
+wxByte VZVoice::GetPitchVelSens()
 {
     return GetValue(312, 0x1F);
 }
 
-bool vzvoice::SetPitchVelSens(wxByte nSens)
+bool VZVoice::SetPitchVelSens(wxByte nSens)
 {
     SetValue(312, 0x1F, nSens);
     return true;
 }
 
-wxByte vzvoice::GetRateVelCurve()
+wxByte VZVoice::GetRateVelCurve()
 {
     return GetValue(313, 0xE0);
 }
 
-bool vzvoice::SetRateVelCurve(wxByte nCurve)
+bool VZVoice::SetRateVelCurve(wxByte nCurve)
 {
     SetValue(313, 0xE0, nCurve);
     return true;
 }
-wxByte vzvoice::GetRateVelSens()
+wxByte VZVoice::GetRateVelSens()
 {
     return GetValue(313, 0x1F);
 }
 
-bool vzvoice::SetRateVelSens(wxByte nSens)
+bool VZVoice::SetRateVelSens(wxByte nSens)
 {
     SetValue(313, 0x1F, nSens);
     return true;
 }
 
-int vzvoice::GetOctave()
+int VZVoice::GetOctave()
 {
     int nOctave = GetValue(314, 0x60);
     if(GetValue(314, 0x80))
@@ -501,7 +510,7 @@ int vzvoice::GetOctave()
     return nOctave;
 }
 
-bool vzvoice::SetOctave(int nOctave)
+bool VZVoice::SetOctave(int nOctave)
 {
     if(nOctave < -2 || nOctave > 2)
         return false;
@@ -517,23 +526,23 @@ bool vzvoice::SetOctave(int nOctave)
     return true;
 }
 
-bool vzvoice::IsVibratoMulti()
+bool VZVoice::IsVibratoMulti()
 {
     return GetValue(314, 0x08);
 }
 
-bool vzvoice::EnableVibratoMulti(bool bEnable)
+bool VZVoice::EnableVibratoMulti(bool bEnable)
 {
     SetValue(314, 0x08, bEnable);
     return true;
 }
 
-wxByte vzvoice::GetVibratoWaveform()
+wxByte VZVoice::GetVibratoWaveform()
 {
     return GetValue(314, 0x03);
 }
 
-bool vzvoice::SetVibratoWaveform(wxByte nWaveform)
+bool VZVoice::SetVibratoWaveform(wxByte nWaveform)
 {
     if(nWaveform > 3)
         return false;
@@ -541,12 +550,12 @@ bool vzvoice::SetVibratoWaveform(wxByte nWaveform)
     return true;
 }
 
-wxByte vzvoice::GetVibratoDepth()
+wxByte VZVoice::GetVibratoDepth()
 {
     return GetValue(315, 0x7F);
 }
 
-bool vzvoice::SetVibratoDepth(wxByte nDepth)
+bool VZVoice::SetVibratoDepth(wxByte nDepth)
 {
     if(nDepth > 99)
         return false;
@@ -554,12 +563,12 @@ bool vzvoice::SetVibratoDepth(wxByte nDepth)
     return true;
 }
 
-wxByte vzvoice::GetVibratoRate()
+wxByte VZVoice::GetVibratoRate()
 {
     return GetValue(316, 0x7F);
 }
 
-bool vzvoice::SetVibratoRate(wxByte nRate)
+bool VZVoice::SetVibratoRate(wxByte nRate)
 {
     if(nRate > 99)
         return false;
@@ -567,12 +576,12 @@ bool vzvoice::SetVibratoRate(wxByte nRate)
     return true;
 }
 
-wxByte vzvoice::GetVibratoDelay()
+wxByte VZVoice::GetVibratoDelay()
 {
     return GetValue(317, 0x7F);
 }
 
-bool vzvoice::SetVibratoDelay(wxByte nDelay)
+bool VZVoice::SetVibratoDelay(wxByte nDelay)
 {
     if(nDelay > 99)
         return false;
@@ -580,35 +589,35 @@ bool vzvoice::SetVibratoDelay(wxByte nDelay)
     return true;
 }
 
-bool vzvoice::IsTremeloMulti()
+bool VZVoice::IsTremeloMulti()
 {
     return GetValue(318, 0x08);
 }
 
-bool vzvoice::EnableTremeloMulti(bool bEnable)
+bool VZVoice::EnableTremeloMulti(bool bEnable)
 {
     SetValue(318, 0x08, bEnable);
     return true;
 }
 
-wxByte vzvoice::GetTremeloWaveform()
+wxByte VZVoice::GetTremeloWaveform()
 {
     return GetValue(318, 0x03);
 }
 
-bool vzvoice::SetTremeloWaveform(wxByte nWaveform)
+bool VZVoice::SetTremeloWaveform(wxByte nWaveform)
 {
     if(nWaveform > 3)
         return false;
     SetValue(318, 0x03, nWaveform);
     return true;
 }
-wxByte vzvoice::GetTremeloDepth()
+wxByte VZVoice::GetTremeloDepth()
 {
     return GetValue(319, 0x7F);
 }
 
-bool vzvoice::SetTremeloDepth(wxByte nDepth)
+bool VZVoice::SetTremeloDepth(wxByte nDepth)
 {
     if(nDepth > 99)
         return false;
@@ -616,12 +625,12 @@ bool vzvoice::SetTremeloDepth(wxByte nDepth)
     return true;
 }
 
-wxByte vzvoice::GetTremeloRate()
+wxByte VZVoice::GetTremeloRate()
 {
     return GetValue(320, 0x7F);
 }
 
-bool vzvoice::SetTremeloRate(wxByte nRate)
+bool VZVoice::SetTremeloRate(wxByte nRate)
 {
     if(nRate > 99)
         return false;
@@ -629,12 +638,12 @@ bool vzvoice::SetTremeloRate(wxByte nRate)
     return true;
 }
 
-wxByte vzvoice::GetTremeloDelay()
+wxByte VZVoice::GetTremeloDelay()
 {
     return GetValue(321, 0x7F);
 }
 
-bool vzvoice::SetTremeloDelay(wxByte nDelay)
+bool VZVoice::SetTremeloDelay(wxByte nDelay)
 {
     if(nDelay > 99)
         return false;
@@ -642,7 +651,7 @@ bool vzvoice::SetTremeloDelay(wxByte nDelay)
     return true;
 }
 
-wxString vzvoice::GetName()
+wxString VZVoice::GetName()
 {
     wxString sName;
     for(unsigned int nIndex = 0; nIndex < 12; ++nIndex)
@@ -652,7 +661,7 @@ wxString vzvoice::GetName()
     return sName.Trim();
 }
 
-void vzvoice::SetName(wxString sName)
+void VZVoice::SetName(wxString sName)
 {
     sName.Truncate(12);
     sName.Pad(12 - sName.Length());

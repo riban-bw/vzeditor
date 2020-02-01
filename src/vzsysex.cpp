@@ -1,9 +1,18 @@
+/***************************************************************
+ * Name:      vzsysex.h
+ * Purpose:   Implements VZSysex class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2019-01-10
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
 #include "vzsysex.h"
 #include <cstring>
 
 static const unsigned int VZ_PAYLOAD_START = 7;
 
-vzsysex::vzsysex(unsigned int nPayloadSize, wxByte* pData, bool bPayload) :
+VZSysex::VZSysex(unsigned int nPayloadSize, wxByte* pData, bool bPayload) :
     m_nPayloadSize(nPayloadSize)
 {
     m_pSysEx = new wxByte[GetSize()];
@@ -13,14 +22,14 @@ vzsysex::vzsysex(unsigned int nPayloadSize, wxByte* pData, bool bPayload) :
     m_bModified = false;
 }
 
-vzsysex::~vzsysex()
+VZSysex::~VZSysex()
 {
     if(m_pSysEx)
         delete [] m_pSysEx;
     m_pSysEx = 0;
 }
 
-wxByte vzsysex::GetValue(unsigned int nOffset, wxByte nMask)
+wxByte VZSysex::GetValue(unsigned int nOffset, wxByte nMask)
 {
     wxByte nValue = GetByteFromSysex(nOffset);
     nValue &= nMask;
@@ -31,7 +40,7 @@ wxByte vzsysex::GetValue(unsigned int nOffset, wxByte nMask)
     return nValue >> nShift;
 }
 
-void vzsysex::SetValue(unsigned int nOffset, wxByte nMask, wxByte nValue)
+void VZSysex::SetValue(unsigned int nOffset, wxByte nMask, wxByte nValue)
 {
     wxByte nShift = 0;
     for(nShift = 0; nShift < 8; ++nShift)
@@ -40,22 +49,22 @@ void vzsysex::SetValue(unsigned int nOffset, wxByte nMask, wxByte nValue)
     PutByteToSysex(nOffset, ((nValue << nShift) & nMask) | (GetByteFromSysex(nOffset) & ~nMask));
 }
 
-bool vzsysex::IsModified()
+bool VZSysex::IsModified()
 {
     return m_bModified;
 }
 
-void vzsysex::GetSysEx(wxByte* pData)
+void VZSysex::GetSysEx(wxByte* pData)
 {
     memcpy(pData, m_pSysEx, m_nPayloadSize);
 }
 
-wxByte* vzsysex::GetSysEx()
+wxByte* VZSysex::GetSysEx()
 {
     return m_pSysEx;
 }
 
-bool vzsysex::SetSysEx(wxByte* pData, bool bPayload)
+bool VZSysex::SetSysEx(wxByte* pData, bool bPayload)
 {
     if(bPayload)
         memcpy(m_pSysEx + VZ_HEADER_SIZE, pData, m_nPayloadSize);
@@ -65,7 +74,7 @@ bool vzsysex::SetSysEx(wxByte* pData, bool bPayload)
     return m_bModified;
 }
 
-bool vzsysex::ValidateByte(wxByte* pByte, wxByte nByte, bool bFix)
+bool VZSysex::ValidateByte(wxByte* pByte, wxByte nByte, bool bFix)
 {
     bool bInvalid = (nByte != *pByte);
     if(bFix)
@@ -73,7 +82,7 @@ bool vzsysex::ValidateByte(wxByte* pByte, wxByte nByte, bool bFix)
     return bInvalid;
 }
 
-bool vzsysex::Validate(bool bFix, unsigned int nSubheaderSize, bool bChecksum)
+bool VZSysex::Validate(bool bFix, unsigned int nSubheaderSize, bool bChecksum)
 {
     m_bModified = false;
     unsigned int nPos = 0;
@@ -88,7 +97,7 @@ bool vzsysex::Validate(bool bFix, unsigned int nSubheaderSize, bool bChecksum)
     return m_bModified;
 }
 
-wxByte vzsysex::Checksum(wxByte* pData, unsigned int nSize, wxByte nChecksum)
+wxByte VZSysex::Checksum(wxByte* pData, unsigned int nSize, wxByte nChecksum)
 {
     wxByte nSum = nChecksum;
     for(unsigned int nIndex = 0; nIndex < nSize; nIndex+=2)
@@ -97,26 +106,26 @@ wxByte vzsysex::Checksum(wxByte* pData, unsigned int nSize, wxByte nChecksum)
 }
 
 
-wxByte vzsysex::DecodeByte(wxByte* pCursor)
+wxByte VZSysex::DecodeByte(wxByte* pCursor)
 {
     return (*(pCursor) << 4) | (*(pCursor + 1));
 }
 
-void vzsysex::EncodeByte(wxByte* pCursor, wxByte nValue)
+void VZSysex::EncodeByte(wxByte* pCursor, wxByte nValue)
 {
     *pCursor = (nValue & 0xF0) >> 4;
     *(pCursor + 1) = nValue & 0x0F;
 }
 
-wxByte vzsysex::GetByteFromSysex(unsigned int nOffset)
+wxByte VZSysex::GetByteFromSysex(unsigned int nOffset)
 {
     if(nOffset >= m_nPayloadSize / 2)
-            return 0;
+        return 0;
 
     return DecodeByte(m_pSysEx + VZ_PAYLOAD_START + nOffset * 2);
 }
 
-bool vzsysex::PutByteToSysex(unsigned int nOffset, wxByte nValue)
+bool VZSysex::PutByteToSysex(unsigned int nOffset, wxByte nValue)
 {
     if(nOffset >= m_nPayloadSize / 2)
         return false;
@@ -124,7 +133,7 @@ bool vzsysex::PutByteToSysex(unsigned int nOffset, wxByte nValue)
     return true;
 }
 
-unsigned int vzsysex::GetSize(bool bPayload)
+unsigned int VZSysex::GetSize(bool bPayload)
 {
     if(bPayload)
         return m_nPayloadSize;

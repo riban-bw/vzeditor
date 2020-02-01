@@ -1,3 +1,12 @@
+/***************************************************************
+ * Name:      vzlibrary.cpp
+ * Purpose:   Implements VZLibrary class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2018-08-24
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
 #include "vzlibrary.h"
 #include <wx/file.h>
 #include <wx/xml/xml.h>
@@ -75,7 +84,7 @@ bool VZLibrary::Save()
 
 void VZLibrary::Close()
 {
-   if(m_bDirty)
+    if(m_bDirty)
     {
         if(wxMessageBox("Save changes to library?", "Unsaved changes", wxYES_NO|wxCENTRE) == wxYES)
             Save();

@@ -1,5 +1,14 @@
-#ifndef VZLINE_H
-#define VZLINE_H
+/***************************************************************
+ * Name:      vzlne.h
+ * Purpose:   Defines VZLine class
+ * Author:    Brian Walton (brian@riban.co.uk)
+ * Created:   2018-08-22
+ * Copyright: Brian Walton (riban.co.uk)
+ * License:   GPL3
+ **************************************************************/
+
+#pragma once
+
 
 //(*Headers(VZLine)
 #include "vzmodule.h"
@@ -7,56 +16,54 @@
 #include <wx/panel.h>
 #include <wx/sizer.h>
 //*)
-#include "vzvoice.h"
+#include "VZVoice.h"
 
 class VZLine: public wxPanel
 {
-	public:
+public:
 
-        /** @brief  Construct a VZ Internal Line GUI object
-        *   @param  parent Pointer to the parent window
-        *   @param  line Index of this line [0..3]
-        */
-		VZLine(wxWindow* parent, wxByte line);
+    /** @brief  Construct a VZ Internal Line GUI object
+    *   @param  parent Pointer to the parent window
+    *   @param  line Index of this line [0..3]
+    */
+    VZLine(wxWindow* parent, wxByte line);
 
-		/** @brief  Destruct a VZ Internal Line GUI object
-        */
-		virtual ~VZLine();
+    /** @brief  Destruct a VZ Internal Line GUI object
+    */
+    virtual ~VZLine();
 
-		/** @brief  Set the vzvoice data
-        *   @param  pVoice Pointer to the voice data
-        */
-        void SetVoice(vzvoice* pVoice);
+    /** @brief  Set the vzvoice data
+    *   @param  pVoice Pointer to the voice data
+    */
+    void SetVoice(VZVoice* pVoice);
 
-		/** @brief  Update the GUI from voice data
-        */
-        void UpdateGui();
+    /** @brief  Update the GUI from voice data
+    */
+    void UpdateGui();
 
-		//(*Declarations(VZLine)
-		VZModule* m_pVzModule1;
-		VZModule* m_pVzModule2;
-		wxChoice* m_pCmbLine;
-		wxStaticBoxSizer* m_pSizerLine;
-		//*)
+    //(*Declarations(VZLine)
+    VZModule* m_pVzModule1;
+    VZModule* m_pVzModule2;
+    wxChoice* m_pCmbLine;
+    wxStaticBoxSizer* m_pSizerLine;
+    //*)
 
-	protected:
+protected:
 
-		//(*Identifiers(VZLine)
-		static const long ID_CHOICE1;
-		static const long ID_VZMODULE1;
-		static const long ID_VZMODULE2;
-		//*)
+    //(*Identifiers(VZLine)
+    static const long ID_CHOICE1;
+    static const long ID_VZMODULE1;
+    static const long ID_VZMODULE2;
+    //*)
 
-	private:
+private:
 
-	    wxByte m_nLine;
-	    vzvoice* m_pvzVoice;
+    wxByte m_nLine;
+    VZVoice* m_pvzVoice;
 
-		//(*Handlers(VZLine)
-		void OnLine(wxCommandEvent& event);
-		//*)
+    //(*Handlers(VZLine)
+    void OnLine(wxCommandEvent& event);
+    //*)
 
-		DECLARE_EVENT_TABLE()
+    DECLARE_EVENT_TABLE()
 };
-
-#endif
