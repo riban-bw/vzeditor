@@ -112,6 +112,13 @@ unsigned int Keyboard::GetFirstNote()
     return m_nFirstNote;
 }
 
+unsigned int Keyboard::GetVelocity(wxPoint pt)
+{
+    if(pt.x < 0 || pt.x > GetVirtualSize().x || pt.y < 0 || pt.y > GetVirtualSize().y)
+        return 0;
+    return 127 * pt.y / m_nKeyLength;
+}
+
 unsigned int Keyboard::GetNote(wxPoint pt)
 {
     if(pt.x < 0 || pt.x > GetVirtualSize().x || pt.y < 0 || pt.y > GetVirtualSize().y)
@@ -200,56 +207,69 @@ unsigned int Keyboard::GetNote(wxPoint pt)
     return 255;
 }
 
-void Keyboard::SendNoteOn(int nNote)
+void Keyboard::SendNoteOn(unsigned int nChannel, unsigned int nNote, unsigned int nVelocity)
 {
-    if(nNote < 0 || nNote > 127)
+    if(nNote > 127 || nChannel > 15 || nVelocity > 127)
         return;
     if(m_nCurrentNote < 128)
-        SendNoteOff(m_nCurrentNote);
+        SendNoteOff(m_nTxChannel, m_nCurrentNote);
     m_nCurrentNote = nNote;
     wxCommandEvent event(KEYBOARD_NOTE_ON_EVENT, GetId());
     event.SetEventObject(this);
     event.SetInt(nNote);
+    event.SetClientData(&m_clientData);
+    m_clientData.channel = nChannel;
+    m_clientData.note = nNote;
+    m_clientData.velocity = nVelocity;
     ProcessWindowEvent(event);
     Refresh();
 }
 
-void Keyboard::SendNoteOff(int nNote)
+void Keyboard::SendNoteOff(unsigned int nChannel, unsigned int nNote, unsigned int nVelocity)
 {
     if(nNote < 0 || nNote > 127)
+        return;
+    if(nChannel > 15)
+        return;
+    if (nVelocity > 128)
         return;
     m_nCurrentNote = 255;
     wxCommandEvent event(KEYBOARD_NOTE_OFF_EVENT, GetId());
     event.SetEventObject(this);
     event.SetInt(nNote);
+    event.SetClientData(&m_clientData);
+    m_clientData.channel = nChannel;
+    m_clientData.note = nNote;
+    m_clientData.velocity = nVelocity;
     ProcessWindowEvent(event);
     Refresh();
 }
 
 void Keyboard::OnMouseLeftDown(wxMouseEvent &event)
 {
-    SendNoteOn(GetNote(event.GetPosition()));
+    SendNoteOn(m_nTxChannel, GetNote(event.GetPosition()), GetVelocity(event.GetPosition()));
 }
 
 void Keyboard::OnMouseLeftUp(wxMouseEvent &event)
 {
     if(m_nCurrentNote == 255)
         return;
-    SendNoteOff(GetNote(event.GetPosition()));
+    SendNoteOff(m_nTxChannel, GetNote(event.GetPosition()));
 }
 
 void Keyboard::OnMotion(wxMouseEvent &event)
 {
+    // Handle glissando
     if(m_nCurrentNote == 255)
         return;
     unsigned int nNote = GetNote(event.GetPosition());
     if(nNote != m_nCurrentNote)
-        SendNoteOn(nNote);
+        SendNoteOn(m_nTxChannel, nNote, GetVelocity(event.GetPosition()));
 }
 
 void Keyboard::OnExitWindow(wxMouseEvent &event)
 {
-    SendNoteOff(m_nCurrentNote);
+    SendNoteOff(m_nTxChannel, m_nCurrentNote);
 }
 
 void Keyboard::SetMinSize(const wxSize& size)
@@ -311,4 +331,17 @@ void Keyboard::SetOffset()
         m_nOffset = 24;
         break;
     }
+}
+
+void Keyboard::SetSendChannel(unsigned int nChannel)
+{
+    if(m_nCurrentNote < 128)
+        SendNoteOff(m_nTxChannel, m_nCurrentNote);
+    if(nChannel < 16)
+        m_nTxChannel = nChannel;
+}
+
+unsigned int Keyboard::GetSendChannel()
+{
+    return m_nTxChannel;
 }

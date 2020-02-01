@@ -77,6 +77,10 @@ const long VZ_EditorFrame::ID_SCROLLEDWINDOW4 = wxNewId();
 const long VZ_EditorFrame::ID_SPLITTERWINDOW2 = wxNewId();
 const long VZ_EditorFrame::ID_PNLOPERATION = wxNewId();
 const long VZ_EditorFrame::ID_NOTEBOOK = wxNewId();
+const long VZ_EditorFrame::ID_STATICTEXT14 = wxNewId();
+const long VZ_EditorFrame::ID_SPIN_KEYCHAN = wxNewId();
+const long VZ_EditorFrame::ID_STATICTEXT15 = wxNewId();
+const long VZ_EditorFrame::ID_SPINCTRL1 = wxNewId();
 const long VZ_EditorFrame::ID_KBD = wxNewId();
 const long VZ_EditorFrame::idMenuOpen = wxNewId();
 const long VZ_EditorFrame::idMenuSave = wxNewId();
@@ -119,6 +123,8 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer18;
     wxBoxSizer* BoxSizer19;
     wxBoxSizer* BoxSizer1;
+    wxBoxSizer* BoxSizer20;
+    wxBoxSizer* BoxSizer21;
     wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer3;
     wxBoxSizer* BoxSizer4;
@@ -380,8 +386,22 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     m_pNotebook->AddPage(m_pPnlVoice, _("Voice Editor"), false);
     m_pNotebook->AddPage(m_pPnlOperation, _("Operation Editor"), false);
     m_pSizerMain->Add(m_pNotebook, 1, wxALL|wxEXPAND, 5);
+    BoxSizer20 = new wxBoxSizer(wxHORIZONTAL);
+    BoxSizer21 = new wxBoxSizer(wxVERTICAL);
+    StaticText13 = new wxStaticText(this, ID_STATICTEXT14, _("MIDI Channel"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT14"));
+    BoxSizer21->Add(StaticText13, 0, wxALL|wxEXPAND, 5);
+    m_pSpnKeyChannel = new wxSpinCtrl(this, ID_SPIN_KEYCHAN, _T("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 16, 1, _T("ID_SPIN_KEYCHAN"));
+    m_pSpnKeyChannel->SetValue(_T("1"));
+    BoxSizer21->Add(m_pSpnKeyChannel, 0, wxALL, 5);
+    StaticText14 = new wxStaticText(this, ID_STATICTEXT15, _("Program"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT15"));
+    BoxSizer21->Add(StaticText14, 0, wxALL|wxEXPAND, 5);
+    m_pSpnProgram = new wxSpinCtrl(this, ID_SPINCTRL1, _T("1"), wxDefaultPosition, wxDefaultSize, 0, 1, 128, 1, _T("ID_SPINCTRL1"));
+    m_pSpnProgram->SetValue(_T("1"));
+    BoxSizer21->Add(m_pSpnProgram, 0, wxALL, 5);
+    BoxSizer20->Add(BoxSizer21, 0, wxALL|wxEXPAND, 5);
     m_pKeyboard = new Keyboard(this,ID_KBD);
-    m_pSizerMain->Add(m_pKeyboard, 0, wxALL|wxEXPAND, 5);
+    BoxSizer20->Add(m_pKeyboard, 1, wxALL|wxEXPAND, 5);
+    m_pSizerMain->Add(BoxSizer20, 0, wxALL|wxEXPAND, 5);
     SetSizer(m_pSizerMain);
     MenuBar1 = new wxMenuBar();
     Menu1 = new wxMenu();
@@ -430,6 +450,8 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_SLIDER4,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZ_EditorFrame::OnVibratoRateChanged);
     Connect(ID_SLIDER6,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZ_EditorFrame::OnVibratoDelayChanged);
     Connect(ID_TXTOPERATIONNAME,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZ_EditorFrame::OnTxtVoiceNameText);
+    Connect(ID_SPIN_KEYCHAN,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&VZ_EditorFrame::OnKeyChan);
+    Connect(ID_SPINCTRL1,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&VZ_EditorFrame::OnKeyProgram);
     Connect(idMenuOpen,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnOpenFile);
     Connect(idMenuSave,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnSaveFile);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnQuit);
@@ -1057,13 +1079,26 @@ void VZ_EditorFrame::OnChkKeyboard(wxCommandEvent& event)
 void VZ_EditorFrame::OnKeyboardNoteOn(wxCommandEvent& event)
 {
     m_pStatusbar->SetStatusText(wxString::Format("Note on: %d", event.GetInt()));
-    if(m_pMidiOut)
-        m_pMidiOut->NoteOn(0, event.GetInt(), 100);
+    KeyboardEventData* pData = (KeyboardEventData*)event.GetClientData();
+    if(m_pMidiOut && pData)
+        m_pMidiOut->NoteOn(pData->channel, pData->note, pData->velocity);
 }
 
 void VZ_EditorFrame::OnKeyboardNoteOff(wxCommandEvent& event)
 {
     m_pStatusbar->SetStatusText(wxString::Format("Note off: %d", event.GetInt()));
+    KeyboardEventData* pData = (KeyboardEventData*)event.GetClientData();
+    if(m_pMidiOut && pData)
+        m_pMidiOut->NoteOff(pData->channel, pData->note, pData->velocity);
+}
+
+void VZ_EditorFrame::OnKeyChan(wxSpinEvent& event)
+{
+    m_pKeyboard->SetSendChannel(event.GetValue() - 1);
+}
+
+void VZ_EditorFrame::OnKeyProgram(wxSpinEvent& event)
+{
     if(m_pMidiOut)
-        m_pMidiOut->NoteOff(0, event.GetInt(), 100);
+        m_pMidiOut->ProgramChange(m_pKeyboard->GetSendChannel(), event.GetValue() - 1);
 }

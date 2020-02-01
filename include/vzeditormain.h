@@ -25,6 +25,7 @@
 #include <wx/scrolwin.h>
 #include <wx/sizer.h>
 #include <wx/slider.h>
+#include <wx/spinctrl.h>
 #include <wx/splitter.h>
 #include <wx/stattext.h>
 #include <wx/statusbr.h>
@@ -86,6 +87,8 @@ class VZ_EditorFrame: public wxFrame
         void OnBtnGetOperation(wxCommandEvent& event);
         void OnBtnSaveDump(wxCommandEvent& event);
         void OnChkKeyboard(wxCommandEvent& event);
+        void OnKeyChan(wxSpinEvent& event);
+        void OnKeyProgram(wxSpinEvent& event);
         //*)
         void OnGridSort(wxCommandEvent& event);
         void OnLibSort(wxListEvent& event);
@@ -145,6 +148,10 @@ class VZ_EditorFrame: public wxFrame
         static const long ID_SPLITTERWINDOW2;
         static const long ID_PNLOPERATION;
         static const long ID_NOTEBOOK;
+        static const long ID_STATICTEXT14;
+        static const long ID_SPIN_KEYCHAN;
+        static const long ID_STATICTEXT15;
+        static const long ID_SPINCTRL1;
         static const long ID_KBD;
         static const long idMenuOpen;
         static const long idMenuSave;
@@ -194,11 +201,15 @@ class VZ_EditorFrame: public wxFrame
         wxSlider* m_pSliderVibratoDelay;
         wxSlider* m_pSliderVibratoDepth;
         wxSlider* m_pSliderVibratoRate;
+        wxSpinCtrl* m_pSpnKeyChannel;
+        wxSpinCtrl* m_pSpnProgram;
         wxSplitterWindow* SplitterWindow1;
         wxSplitterWindow* SplitterWindow2;
         wxStaticText* StaticText10;
         wxStaticText* StaticText11;
         wxStaticText* StaticText12;
+        wxStaticText* StaticText13;
+        wxStaticText* StaticText14;
         wxStaticText* StaticText1;
         wxStaticText* StaticText2;
         wxStaticText* StaticText30;
