@@ -26,3 +26,13 @@
 *.exe
 *.out
 *.app
+
+# Code::Blocks
+*.depend
+*.layout
+*.html
+
+# VZEditor library
+*.vzt
+*.vzo
+*.xml
