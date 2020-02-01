@@ -6,7 +6,7 @@
 		<icon code="wxBitmap(icon_xpm)" />
 		<size>-1,-1</size>
 		<id_arg>0</id_arg>
-		<object class="wxBoxSizer" variable="m_pSizerMain" member="no">
+		<object class="wxBoxSizer" variable="m_pSizerMain" member="yes">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
 				<object class="wxBoxSizer" variable="BoxSizer8" member="no">
@@ -19,11 +19,10 @@
 					</object>
 					<object class="sizeritem">
 						<object class="wxChoice" name="ID_CMBINPORT" variable="m_pCmbInPort" member="yes">
-							<size>181,27</size>
 							<tooltip>Select MIDI input port</tooltip>
 							<handler function="OnInPortSelect" entry="EVT_CHOICE" />
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+						<flag>wxALL</flag>
 						<border>5</border>
 					</object>
 					<object class="sizeritem">
@@ -35,7 +34,6 @@
 					</object>
 					<object class="sizeritem">
 						<object class="wxChoice" name="ID_CMBOUTPORT" variable="m_pCmbOutPort" member="yes">
-							<size>181,27</size>
 							<tooltip>Select MIDI output port</tooltip>
 							<handler function="OnOutPortSelect" entry="EVT_CHOICE" />
 						</object>
@@ -45,10 +43,10 @@
 					<object class="sizeritem">
 						<object class="wxCheckBox" name="ID_CHECKBOX_Keyboard" variable="m_pChkKeyboard" member="yes">
 							<label>Keyboard</label>
+							<handler function="OnChkKeyboard" entry="EVT_CHECKBOX" />
 						</object>
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 						<border>5</border>
-						<option>1</option>
 					</object>
 					<object class="spacer">
 						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>

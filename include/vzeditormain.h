@@ -161,6 +161,7 @@ class VZ_EditorFrame: public wxFrame
         VZLine* m_pLine3;
         VZLine* m_pLine4;
         wxBoxSizer* m_pFlexgridGlobalParameters;
+        wxBoxSizer* m_pSizerMain;
         wxButton* m_pBtnGetOperation;
         wxButton* m_pBtnGetVoice;
         wxButton* m_pBtnSaveDump;

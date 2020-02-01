@@ -8,8 +8,8 @@ BEGIN_EVENT_TABLE(Keyboard, wxWindow)
     EVT_LEFT_DOWN       (Keyboard::OnMouseLeftDown)
     EVT_LEFT_UP         (Keyboard::OnMouseLeftUp)
     EVT_MOTION          (Keyboard::OnMotion)
-    EVT_ENTER_WINDOW    (Keyboard::OnEnterWindow)
     EVT_LEAVE_WINDOW    (Keyboard::OnExitWindow)
+    EVT_SIZE            (Keyboard::OnSize)
 END_EVENT_TABLE()
 
 wxDEFINE_EVENT(KEYBOARD_NOTE_ON_EVENT, wxCommandEvent);
@@ -22,6 +22,7 @@ Keyboard::Keyboard()
 Keyboard::Keyboard(wxWindow* parent, wxWindowID id) :
     wxControl(parent, id)
 {
+    SetFirstNote(m_nFirstNote);
 }
 
 Keyboard::~Keyboard()
@@ -30,7 +31,7 @@ Keyboard::~Keyboard()
 
 wxSize Keyboard::DoGetBestSize() const
 {
-	return wxSize(7 * m_nNotes * m_nKeyWidth / 12, m_nKeyLength);
+    return wxSize(7 * m_nNotes * m_nKeyWidth / 12, m_nKeyLength); //!@todo DoGetBestSize is only an approximation
 }
 
 void Keyboard::OnPaint(wxPaintEvent &WXUNUSED(event) )
@@ -53,8 +54,12 @@ void Keyboard::OnPaint(wxPaintEvent &WXUNUSED(event) )
         case 7:
         case 9:
         case 11:
+            if(nKey == m_nCurrentNote)
+                dc.SetBrush(*wxGREY_BRUSH);
             dc.DrawRectangle(pt, sz);
             pt += wxPoint(m_nKeyWidth, 0);
+            if(nKey == m_nCurrentNote)
+                dc.SetBrush(*wxWHITE);
         }
     }
     dc.SetBrush(*wxBLACK);
@@ -69,18 +74,22 @@ void Keyboard::OnPaint(wxPaintEvent &WXUNUSED(event) )
         case 6:
         case 8:
         case 10:
+            if(nKey == m_nCurrentNote)
+                dc.SetBrush(*wxGREY_BRUSH);
             dc.DrawRectangle(pt, sz);
+            if(nKey == m_nCurrentNote)
+                dc.SetBrush(*wxBLACK);
             break;
         default:
             pt += wxPoint(m_nKeyWidth, 0);
         }
     }
-//    SetVirtualSize(wxPoint.x, m_nKeyLength);
 }
 
 void Keyboard::SetNotes(unsigned int nNotes)
 {
     m_nNotes = nNotes;
+    m_nKeyWidth = GetSize().x / m_nNotes;
 }
 
 unsigned int Keyboard::GetNotes()
@@ -94,6 +103,7 @@ void Keyboard::SetFirstNote(unsigned int nNote)
         m_nFirstNote = m_nNotes;
     else
         m_nFirstNote = nNote;
+    SetOffset();
     Refresh();
 }
 
@@ -102,59 +112,17 @@ unsigned int Keyboard::GetFirstNote()
     return m_nFirstNote;
 }
 
-int Keyboard::GetNote(wxPoint pt)
+unsigned int Keyboard::GetNote(wxPoint pt)
 {
     if(pt.x < 0 || pt.x > GetVirtualSize().x || pt.y < 0 || pt.y > GetVirtualSize().y)
-        return -1;
+        return 255;
     unsigned int nWhiteKeyOffset = pt.x / m_nKeyWidth;
     unsigned int nOctave = nWhiteKeyOffset / 7;
     unsigned int nNote = m_nFirstNote + nOctave * 12;
 
-    //!@todo Move calculation of first note offset to SetFirstNote()
-    unsigned int nOffset;
-    switch(m_nFirstNote % 12)
-    {
-    case 0:
-        nOffset = 0;
-        break;
-    case 1:
-        nOffset = 3;
-        break;
-    case 2:
-        nOffset = 4;
-        break;
-    case 3:
-        nOffset = 7;
-        break;
-    case 4:
-        nOffset = 8;
-        break;
-    case 5:
-        nOffset = 12;
-        break;
-    case 6:
-        nOffset = 15;
-        break;
-    case 7:
-        nOffset = 16;
-        break;
-    case 8:
-        nOffset = 19;
-        break;
-    case 9:
-        nOffset = 20;
-        break;
-    case 10:
-        nOffset = 23;
-        break;
-    case 11:
-        nOffset = 24;
-        break;
-    }
-
     bool bBlackNoteRegion = (pt.y < GetVirtualSize().y * 0.6);
     {
-        switch((4 * pt.x / m_nKeyWidth + nOffset) % 28)
+        switch((4 * pt.x / m_nKeyWidth + m_nOffset) % 28)
         {
         case 3:
             if(bBlackNoteRegion)
@@ -229,63 +197,118 @@ int Keyboard::GetNote(wxPoint pt)
             return nNote + 11 - m_nFirstNote % 12;
         }
     }
-    return -1; //!@todo check for black notes and convert scale
+    return 255;
 }
 
 void Keyboard::SendNoteOn(int nNote)
 {
     if(nNote < 0 || nNote > 127)
         return;
-    if(m_nCurrentNote > -1)
+    if(m_nCurrentNote < 128)
         SendNoteOff(m_nCurrentNote);
     m_nCurrentNote = nNote;
     wxCommandEvent event(KEYBOARD_NOTE_ON_EVENT, GetId());
     event.SetEventObject(this);
     event.SetInt(nNote);
     ProcessWindowEvent(event);
+    Refresh();
 }
 
 void Keyboard::SendNoteOff(int nNote)
 {
     if(nNote < 0 || nNote > 127)
         return;
-    m_nCurrentNote = -1;
+    m_nCurrentNote = 255;
     wxCommandEvent event(KEYBOARD_NOTE_OFF_EVENT, GetId());
     event.SetEventObject(this);
     event.SetInt(nNote);
     ProcessWindowEvent(event);
+    Refresh();
 }
 
 void Keyboard::OnMouseLeftDown(wxMouseEvent &event)
 {
-    int nNote = GetNote(event.GetPosition());
-    SendNoteOn(nNote);
+    SendNoteOn(GetNote(event.GetPosition()));
 }
 
 void Keyboard::OnMouseLeftUp(wxMouseEvent &event)
 {
-    if(m_nCurrentNote == -1)
+    if(m_nCurrentNote == 255)
         return;
-    int nNote = GetNote(event.GetPosition());
-    char asNoteMap[12][3] = {"C","C#","D","D#","E","F","F#","G","G#","A","A#","B"};
-    wxLogDebug(wxString::Format("Key %d: %s(%d)", nNote, asNoteMap[nNote % 12], nNote / 12));
-    SendNoteOff(nNote);
+    SendNoteOff(GetNote(event.GetPosition()));
 }
 
 void Keyboard::OnMotion(wxMouseEvent &event)
 {
-    if(m_nCurrentNote == -1)
+    if(m_nCurrentNote == 255)
         return;
-    int nNote = GetNote(event.GetPosition());
+    unsigned int nNote = GetNote(event.GetPosition());
     if(nNote != m_nCurrentNote)
         SendNoteOn(nNote);
-}
-
-void Keyboard::OnEnterWindow(wxMouseEvent &event)
-{
 }
 
 void Keyboard::OnExitWindow(wxMouseEvent &event)
 {
     SendNoteOff(m_nCurrentNote);
+}
+
+void Keyboard::SetMinSize(const wxSize& size)
+{
+    m_nMinKeyWidth = 12 * size.x / (m_nNotes * 7);
+    m_nMinKeyLength = size.y;
+    wxControl::SetMinSize(size);
+}
+
+void Keyboard::OnSize(wxSizeEvent &event)
+{
+    m_nKeyWidth = 12 * event.GetSize().x / (m_nNotes * 7);
+    if(m_nKeyWidth < m_nMinKeyWidth)
+        m_nKeyWidth = m_nMinKeyWidth;
+    m_nKeyLength = event.GetSize().y;
+    if(m_nKeyLength < m_nMinKeyLength)
+        m_nKeyLength = m_nMinKeyLength;
+    Refresh();
+}
+
+void Keyboard::SetOffset()
+{
+    switch(m_nFirstNote % 12)
+    {
+    case 0:
+        m_nOffset = 0;
+        break;
+    case 1:
+        m_nOffset = 3;
+        break;
+    case 2:
+        m_nOffset = 4;
+        break;
+    case 3:
+        m_nOffset = 7;
+        break;
+    case 4:
+        m_nOffset = 8;
+        break;
+    case 5:
+        m_nOffset = 12;
+        break;
+    case 6:
+        m_nOffset = 15;
+        break;
+    case 7:
+        m_nOffset = 16;
+        break;
+    case 8:
+        m_nOffset = 19;
+        break;
+    case 9:
+        m_nOffset = 20;
+        break;
+    case 10:
+        m_nOffset = 23;
+        break;
+    case 11:
+        m_nOffset = 24;
+        break;
+    }
 }

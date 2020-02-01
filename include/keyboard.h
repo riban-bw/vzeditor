@@ -20,6 +20,7 @@ class Keyboard : public wxControl
         //Overrides
         wxSize DoGetBestSize() const;
         void OnPaint(wxPaintEvent& event);
+        void SetMinSize(const wxSize& size);
 
         /** @brief  Set quantity of notes to show
         *   @param  nNotes Quantity of notes
@@ -47,17 +48,21 @@ class Keyboard : public wxControl
         void OnMouseLeftDown(wxMouseEvent &event); //Handle left mouse button press
         void OnMouseLeftUp(wxMouseEvent &event); //Handle left mouse button release
         void OnMotion(wxMouseEvent &event); //Handle mouse movement
-        void OnEnterWindow(wxMouseEvent &event); //Handle mouse entering window
         void OnExitWindow(wxMouseEvent &event); //Handle mouse exiting window
-        int GetNote(wxPoint pt); // Get the MIDI note for the screen position identified by pt, -1 for no key
+        unsigned int GetNote(wxPoint pt); // Get the MIDI note for the screen position identified by pt, 255 for no key
         void SendNoteOn(int nNote); // Send a Note On event
         void SendNoteOff(int nNote); // Send a Note Off event
+        void OnSize(wxSizeEvent &event); //Handle window resizing
+        void SetOffset(); // Update the offset
 
         unsigned int m_nNotes = 88; //Quantity of notes on keyboard
         unsigned int m_nFirstNote = 21; //Index of first note on keyboard
         unsigned int m_nKeyLength = 100;
-        unsigned int m_nKeyWidth = 10;
-        int m_nCurrentNote = -1; // Current MIDI note being played (monphonic). -1 for none
+        unsigned int m_nKeyWidth = 20;
+        unsigned int m_nMinKeyWidth = 10;
+        unsigned int m_nMinKeyLength = 30;
+        unsigned int m_nOffset = 0;
+        unsigned int m_nCurrentNote = 255; // Current MIDI note being played (monphonic). 255 for none
 
         DECLARE_EVENT_TABLE();
 

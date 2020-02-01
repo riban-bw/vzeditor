@@ -127,7 +127,6 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer7;
     wxBoxSizer* BoxSizer8;
     wxBoxSizer* BoxSizer9;
-    wxBoxSizer* m_pSizerMain;
     wxFlexGridSizer* FlexGridSizer6;
     wxMenu* Menu1;
     wxMenu* Menu2;
@@ -149,17 +148,17 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
     StaticText2 = new wxStaticText(this, ID_STATICTEXT2, _("MIDI Input Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
     BoxSizer8->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pCmbInPort = new wxChoice(this, ID_CMBINPORT, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CMBINPORT"));
+    m_pCmbInPort = new wxChoice(this, ID_CMBINPORT, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBINPORT"));
     m_pCmbInPort->SetToolTip(_("Select MIDI input port"));
-    BoxSizer8->Add(m_pCmbInPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(m_pCmbInPort, 0, wxALL, 5);
     StaticText1 = new wxStaticText(this, ID_STATICTEXT1, _("MIDI Output Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
     BoxSizer8->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pCmbOutPort = new wxChoice(this, ID_CMBOUTPORT, wxDefaultPosition, wxSize(181,27), 0, 0, 0, wxDefaultValidator, _T("ID_CMBOUTPORT"));
+    m_pCmbOutPort = new wxChoice(this, ID_CMBOUTPORT, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBOUTPORT"));
     m_pCmbOutPort->SetToolTip(_("Select MIDI output port"));
     BoxSizer8->Add(m_pCmbOutPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pChkKeyboard = new wxCheckBox(this, ID_CHECKBOX_Keyboard, _("Keyboard"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX_Keyboard"));
     m_pChkKeyboard->SetValue(false);
-    BoxSizer8->Add(m_pChkKeyboard, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer8->Add(m_pChkKeyboard, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer8->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pChkAutoUpdate = new wxCheckBox(this, ID_CHKAUTOUPDATE, _("Auto Update"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHKAUTOUPDATE"));
     m_pChkAutoUpdate->SetValue(false);
@@ -410,6 +409,7 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
 
     Connect(ID_CMBINPORT,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnInPortSelect);
     Connect(ID_CMBOUTPORT,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZ_EditorFrame::OnOutPortSelect);
+    Connect(ID_CHECKBOX_Keyboard,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnChkKeyboard);
     Connect(ID_BTNSEND,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnSendClick);
     Connect(ID_BTNGETVOICE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnGetVoice);
     Connect(IID_BTNGETOPERATION,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZ_EditorFrame::OnBtnGetOperation);
@@ -446,7 +446,8 @@ VZ_EditorFrame::VZ_EditorFrame(wxWindow* parent,wxWindowID id)
     int nX, nY, nWidth, nHeight;
     bool bX;
     configPersist.Read("persist/keyboard", &bX, false);
-    //m_pKeyboard->Show(bX);
+    m_pKeyboard->Show(bX);
+    m_pChkKeyboard->SetValue(bX);
     //Position window
     configPersist.Read("persist/left", &nX, 0);
     configPersist.Read("persist/top", &nY, 0);
@@ -520,6 +521,7 @@ void VZ_EditorFrame::OnClose(wxCloseEvent& event)
     configPersist.Write("persist/auto_update", m_pChkAutoUpdate->IsChecked());
     configPersist.Write("persist/midi_in", m_pCmbInPort->GetSelection());
     configPersist.Write("persist/maximised", IsMaximized());
+    configPersist.Write("persist/keyboard", m_pChkKeyboard->IsChecked());
 	if(!IsMaximized() && !IsIconized())
 	{
         configPersist.Write("persist/width", GetSize().GetWidth());
@@ -1048,6 +1050,7 @@ void VZ_EditorFrame::OnBtnSaveDump(wxCommandEvent& event)
 void VZ_EditorFrame::OnChkKeyboard(wxCommandEvent& event)
 {
     m_pKeyboard->Show(event.IsChecked());
+    m_pSizerMain->Layout();
     Refresh();
 }
 
