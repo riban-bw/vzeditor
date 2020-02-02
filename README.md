@@ -39,7 +39,7 @@ VZEditor starts and shows its graphical user interface:
 
 The MIDI input and output port may be selected from the drop-down lists in the header.
 
-When VZ sysex data is received and correctly parsed, the "Get Voice" or "Get Operation" buttons enable. Pressing one of these will take the received voice / operational data and populate the appropriate editor page. The "Save Dump" button creates a new library and saves the currently loaded voice and operational data.
+When VZ sysex data is received and correctly parsed, the "Get Voice" or "Get Operation" buttons enable. Pressing one of these will take the received voice / operational data and populate the appropriate editor page. The "New Library" button creates a new library and saves the currently loaded voice and operational data.
 
 The "Send" button sends the voice or operational data currently being edited. If the "Auto Update" box is ticked then this is sent after each parameter change.
 
@@ -77,6 +77,10 @@ Sending a voice from the VZ synth will populate a receive buffer in the VZEditor
 
 Operation editor is not yet implemented but should work similar to voice editor, acting on operational data instead of voice data.
 
+# On-screen Keyboard
+
+There is a checkbox that allows an MIDI keyboard to be displayed. The keyboard acts as a monophonic MIDI controller. Left clicking on a key will send a note on MIDI event. Releasing the left mouse button will send a note off MIDI event. Click and hold whilst moving between keys will trigger a glissando. The further up the key the click, the quieter the note on (lower velocity.) MIDI channel may be selected and program change may be sent.
+
 # Notes
 
 Each voice and operation data is saved as an individual file.
@@ -84,3 +88,8 @@ Each voice and operation data is saved as an individual file.
 Library points to these files so deleting or moving files may break library.
 
 MIDI ports are not dynamically updated. Adding a port will not show in the list whilst VZEditor is running and removing a port may crash VZEditor (issue #2).
+
+# Testing
+
+Unit tests are currently under development. It is an aspiration to have automated testing and continuous integration of test results.
+Manual test cases are [here](https://riban.app.testcollab.com/index.php/#/new/project/4).

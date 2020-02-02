@@ -10,7 +10,6 @@
 #pragma once
 
 #define VZ_VOICE_PAYLOAD_SIZE 672 //Size of sysex voice payload in bytes
-#define VZ_TYPE_VOICE 0x00
 #define VZ_TYPE_TONE 0x00
 
 #include "vzsysex.h"
@@ -530,7 +529,7 @@ protected:
 private:
     Envelope m_envDCA[8]; //!< DCA envelope for each module
     Envelope m_envDCO; //!< DCO envelope
-    wxByte m_nLevel; //!< Totoal Level [0..62,127]
+    wxByte m_nLevel; //!< Total Level [0..62,127]
     bool m_bModuleEnabled[8]; //!< True to enable module
     bool m_bDCORange; //!< DCO Range True = wide, false = narrow
     KeyFollow m_kfDCA[8]; //!< DCA keyboard follow curve

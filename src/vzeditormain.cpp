@@ -16,7 +16,7 @@
 #include <wx/config.h>
 #include <wx/display.h>
 
-//(*InternalHeaders(VZ_EditorFrame)
+//(*InternalHeaders(VZEditorFrame)
 #include <wx/bitmap.h>
 #include <wx/icon.h>
 #include <wx/image.h>
@@ -24,17 +24,18 @@
 #include <wx/string.h>
 //*)
 
-//(*IdInit(VZ_EditorFrame)
-const long VZEditorFrame::ID_STATICTEXT2 = wxNewId();
+//(*IdInit(VZEditorFrame)
+const long VZEditorFrame::ID_STATICTEXTMIDIINPUT = wxNewId();
 const long VZEditorFrame::ID_CMBINPORT = wxNewId();
-const long VZEditorFrame::ID_STATICTEXT1 = wxNewId();
+const long VZEditorFrame::ID_STATICTEXTMIDIOUTPUT = wxNewId();
 const long VZEditorFrame::ID_CMBOUTPORT = wxNewId();
-const long VZEditorFrame::ID_CHECKBOX_Keyboard = wxNewId();
+const long VZEditorFrame::ID_CHECKBOXKEYBOARD = wxNewId();
 const long VZEditorFrame::ID_CHKAUTOUPDATE = wxNewId();
 const long VZEditorFrame::ID_BTNSEND = wxNewId();
 const long VZEditorFrame::ID_BTNGETVOICE = wxNewId();
-const long VZEditorFrame::IID_BTNGETOPERATION = wxNewId();
+const long VZEditorFrame::ID_BTNGETOPERATION = wxNewId();
 const long VZEditorFrame::ID_BTNSAVEDUMP = wxNewId();
+const long VZEditorFrame::ID_BUTTONADDTOLIB = wxNewId();
 const long VZEditorFrame::ID_LSTLIB = wxNewId();
 const long VZEditorFrame::ID_PNLLIBRARY = wxNewId();
 const long VZEditorFrame::ID_LINE1 = wxNewId();
@@ -88,10 +89,11 @@ const long VZEditorFrame::idMenuSave = wxNewId();
 const long VZEditorFrame::idMenuQuit = wxNewId();
 const long VZEditorFrame::idMenuAbout = wxNewId();
 const long VZEditorFrame::ID_STATUSBAR1 = wxNewId();
+const long VZEditorFrame::ID_TIMER1S = wxNewId();
 //*)
 
 BEGIN_EVENT_TABLE(VZEditorFrame,wxFrame)
-    //(*EventTable(VZ_EditorFrame)
+    //(*EventTable(VZEditorFrame)
     //*)
     EVT_COMMAND(ID_KBD, KEYBOARD_NOTE_ON_EVENT, VZEditorFrame::OnKeyboardNoteOn)
     EVT_COMMAND(ID_KBD, KEYBOARD_NOTE_OFF_EVENT, VZEditorFrame::OnKeyboardNoteOff)
@@ -112,7 +114,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     asValidate.Add(".");
     m_validateVoiceName.SetIncludes(wxArrayString(asValidate));
 
-    //(*Initialize(VZ_EditorFrame)
+    //(*Initialize(VZEditorFrame)
     wxBoxSizer* BoxSizer10;
     wxBoxSizer* BoxSizer11;
     wxBoxSizer* BoxSizer12;
@@ -145,23 +147,23 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     Create(parent, wxID_ANY, _("riban Casio VZ-x Voice Editor and Library"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE, _T("wxID_ANY"));
     SetClientSize(wxSize(-1,-1));
     {
-        wxIcon FrameIcon;
-        FrameIcon.CopyFromBitmap(wxBitmap(icon_xpm));
-        SetIcon(FrameIcon);
+    	wxIcon FrameIcon;
+    	FrameIcon.CopyFromBitmap(wxBitmap(icon_xpm));
+    	SetIcon(FrameIcon);
     }
     m_pSizerMain = new wxBoxSizer(wxVERTICAL);
     BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
-    m_pLblMidiInputPort = new wxStaticText(this, ID_STATICTEXT2, _("MIDI Input Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+    m_pLblMidiInputPort = new wxStaticText(this, ID_STATICTEXTMIDIINPUT, _("MIDI Input"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXTMIDIINPUT"));
     BoxSizer8->Add(m_pLblMidiInputPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pCmbInPort = new wxChoice(this, ID_CMBINPORT, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBINPORT"));
     m_pCmbInPort->SetToolTip(_("Select MIDI input port"));
     BoxSizer8->Add(m_pCmbInPort, 0, wxALL, 5);
-    m_pLblMidiOutputPort = new wxStaticText(this, ID_STATICTEXT1, _("MIDI Output Port"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+    m_pLblMidiOutputPort = new wxStaticText(this, ID_STATICTEXTMIDIOUTPUT, _("MIDI Output"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXTMIDIOUTPUT"));
     BoxSizer8->Add(m_pLblMidiOutputPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pCmbOutPort = new wxChoice(this, ID_CMBOUTPORT, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBOUTPORT"));
     m_pCmbOutPort->SetToolTip(_("Select MIDI output port"));
     BoxSizer8->Add(m_pCmbOutPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pChkKeyboard = new wxCheckBox(this, ID_CHECKBOX_Keyboard, _("Keyboard"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOX_Keyboard"));
+    m_pChkKeyboard = new wxCheckBox(this, ID_CHECKBOXKEYBOARD, _("Keyboard"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOXKEYBOARD"));
     m_pChkKeyboard->SetValue(false);
     BoxSizer8->Add(m_pChkKeyboard, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer8->Add(-1,-1,1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -176,12 +178,14 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pBtnGetVoice->Disable();
     m_pBtnGetVoice->SetToolTip(_("Load voice data recieved from MIDI input"));
     BoxSizer8->Add(m_pBtnGetVoice, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pBtnGetOperation = new wxButton(this, IID_BTNGETOPERATION, _("Get Operation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("IID_BTNGETOPERATION"));
+    m_pBtnGetOperation = new wxButton(this, ID_BTNGETOPERATION, _("Get Operation"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNGETOPERATION"));
     m_pBtnGetOperation->Disable();
     m_pBtnGetOperation->SetToolTip(_("Load operational data recieved from MIDI input"));
     BoxSizer8->Add(m_pBtnGetOperation, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pBtnSaveDump = new wxButton(this, ID_BTNSAVEDUMP, _("Save Dump"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNSAVEDUMP"));
+    m_pBtnSaveDump = new wxButton(this, ID_BTNSAVEDUMP, _("New Library"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BTNSAVEDUMP"));
     BoxSizer8->Add(m_pBtnSaveDump, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_bBtnAddToLib = new wxButton(this, ID_BUTTONADDTOLIB, _("Add to library"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_BUTTONADDTOLIB"));
+    BoxSizer8->Add(m_bBtnAddToLib, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pSizerMain->Add(BoxSizer8, 0, wxALL|wxEXPAND, 5);
     m_pNotebook = new wxNotebook(this, ID_NOTEBOOK, wxDefaultPosition, wxDefaultSize, wxNB_NOPAGETHEME, _T("ID_NOTEBOOK"));
     m_pNotebook->SetToolTip(_("Select voice library tab"));
@@ -260,18 +264,18 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     BoxSizer11 = new wxBoxSizer(wxVERTICAL);
     wxString __wxRadioBoxChoices_1[2] =
     {
-        _("Off"),
-        _("On")
+    	_("Off"),
+    	_("On")
     };
     m_pRadioTremeloMulti = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOTREMELOMULTI, _("Multi"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_1, 1, 0, wxDefaultValidator, _T("ID_RADIOTREMELOMULTI"));
     m_pRadioTremeloMulti->SetToolTip(_("Select tremelo multi"));
     BoxSizer11->Add(m_pRadioTremeloMulti, 0, wxALL|wxEXPAND, 5);
     wxString __wxRadioBoxChoices_2[4] =
     {
-        _("Triangle"),
-        _("Saw Up"),
-        _("Saw Down"),
-        _("Square")
+    	_("Triangle"),
+    	_("Saw Up"),
+    	_("Saw Down"),
+    	_("Square")
     };
     m_pRadioTremeloWaveform = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOTREMELOWAVEFORM, _("Waveform"), wxDefaultPosition, wxDefaultSize, 4, __wxRadioBoxChoices_2, 1, wxRA_HORIZONTAL, wxDefaultValidator, _T("ID_RADIOTREMELOWAVEFORM"));
     m_pRadioTremeloWaveform->SetToolTip(_("Select tremelo waveform"));
@@ -304,18 +308,18 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     BoxSizer16 = new wxBoxSizer(wxVERTICAL);
     wxString __wxRadioBoxChoices_3[2] =
     {
-        _("Off"),
-        _("On")
+    	_("Off"),
+    	_("On")
     };
     m_pRadioVibratoMulti = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOBOX3, _("Multi"), wxDefaultPosition, wxDefaultSize, 2, __wxRadioBoxChoices_3, 1, 0, wxDefaultValidator, _T("ID_RADIOBOX3"));
     m_pRadioVibratoMulti->SetToolTip(_("Select vibrato multi"));
     BoxSizer16->Add(m_pRadioVibratoMulti, 1, wxALL|wxEXPAND, 5);
     wxString __wxRadioBoxChoices_4[4] =
     {
-        _("Triangle"),
-        _("Saw Up"),
-        _("Saw Down"),
-        _("Square")
+    	_("Triangle"),
+    	_("Saw Up"),
+    	_("Saw Down"),
+    	_("Square")
     };
     m_pRadioVibratoWaveform = new wxRadioBox(m_pScrollwindowGlobalParameters, ID_RADIOBOX4, _("Waveform"), wxDefaultPosition, wxDefaultSize, 4, __wxRadioBoxChoices_4, 1, wxRA_HORIZONTAL, wxDefaultValidator, _T("ID_RADIOBOX4"));
     m_pRadioVibratoWaveform->SetToolTip(_("Select vibrato waveform"));
@@ -422,17 +426,21 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pStatusbar->SetFieldsCount(1,__wxStatusBarWidths_1);
     m_pStatusbar->SetStatusStyles(1,__wxStatusBarStyles_1);
     SetStatusBar(m_pStatusbar);
+    m_timer1s.SetOwner(this, ID_TIMER1S);
+    m_timer1s.Start(300, true);
     SetSizer(m_pSizerMain);
     Layout();
     Center();
 
     Connect(ID_CMBINPORT,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnInPortSelect);
     Connect(ID_CMBOUTPORT,wxEVT_COMMAND_CHOICE_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnOutPortSelect);
-    Connect(ID_CHECKBOX_Keyboard,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnChkKeyboard);
+    Connect(ID_CHECKBOXKEYBOARD,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnChkKeyboard);
+    Connect(ID_CHKAUTOUPDATE,wxEVT_COMMAND_CHECKBOX_CLICKED,(wxObjectEventFunction)&VZEditorFrame::Onm_pChkKeyboardClick);
     Connect(ID_BTNSEND,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnBtnSendClick);
     Connect(ID_BTNGETVOICE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnBtnGetVoice);
-    Connect(IID_BTNGETOPERATION,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnBtnGetOperation);
+    Connect(ID_BTNGETOPERATION,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnBtnGetOperation);
     Connect(ID_BTNSAVEDUMP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnBtnSaveDump);
+    Connect(ID_BUTTONADDTOLIB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnAddToLib);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZEditorFrame::OnTxtVoiceNameText);
     Connect(ID_SLIDERLEVEL,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZEditorFrame::OnLevelChanged);
     Connect(ID_SLIDEROCTAVE,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZEditorFrame::OnOctaveChanged);
@@ -455,6 +463,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     Connect(idMenuSave,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnSaveFile);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnQuit);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnAbout);
+    Connect(ID_TIMER1S,wxEVT_TIMER,(wxObjectEventFunction)&VZEditorFrame::OnTimer1s);
     //*)
     m_pScrollWinVoiceEditor->SetScrollRate(10,10);
     m_pScrollwindowGlobalParameters->SetScrollRate(0, 10);
@@ -567,7 +576,7 @@ void VZEditorFrame::OnQuit(wxCommandEvent& event)
 
 void VZEditorFrame::OnAbout(wxCommandEvent& event)
 {
-    wxString sMessage = wxString::Format("VZEditor %d.%d.%d\n", AutoVersion::MAJOR, AutoVersion::MINOR, AutoVersion::BUILD);
+    wxString sMessage = wxString::Format("VZEditor %d.%d.%d\n\n", AutoVersion::MAJOR, AutoVersion::MINOR, AutoVersion::BUILD);
     sMessage += "Copyright riban <brian@riban.co.uk> 2014-2020\nLicense: GPL3 <https://www.gnu.org/licenses/gpl-3.0.html>\n";
     sMessage += "wxMidi(c) 2005-2015 Cecilio Salmeron - wxWidgets license, version 3.1\n";
     sMessage += "portmidi (c) 1999-2000 Ross Bencina and Phil Burk, 2001-2006 Roger B. Dannenberg";
@@ -725,16 +734,16 @@ void VZEditorFrame::Save(unsigned int nType)
     wxFileDialog dlg(this, wxEmptyString, wxEmptyString, wxEmptyString, wxEmptyString, wxFD_SAVE);
     switch(nType)
     {
-    case 0:
+    case VZ_TYPE_LIBRARY:
         //Library
         dlg.SetWildcard("Library files (*.xml)|*.xml|All files (*.*)|*.*");
         break;
-    case 1:
+    case VZ_TYPE_TONE:
         //Voice
         dlg.SetFilename(wxString::Format("%s.vzt", m_pVoice->GetName().c_str()));
         dlg.SetWildcard("VZ tone files (*.vzt)|*.vzt|All files (*.*)|*.*");
         break;
-    case 2:
+    case VZ_TYPE_OPERATION:
         //Operation data
         dlg.SetFilename(wxString::Format("%s.vzo", m_pOperation->GetName().c_str()));
         dlg.SetWildcard("VZ operation files (*.vzo)|*.vzo|All files (*.*)|*.*");
@@ -755,14 +764,17 @@ void VZEditorFrame::Save(unsigned int nType)
     VZSysex* pSysex = NULL;
     switch(nType)
     {
-    case 0:
+    case VZ_TYPE_LIBRARY:
         //Library
+        //!@todo Write library
+        file.Close();
+        return;
         break;
-    case 1:
+    case VZ_TYPE_TONE:
         //Voice
         pSysex = (VZVoice*)m_pVoice;
         break;
-    case 2:
+    case VZ_TYPE_OPERATION:
         //Operation data
         pSysex = (VZOperation*)m_pOperation;
         break;
@@ -850,12 +862,10 @@ void VZEditorFrame::Send()
     }
     pSysex->Validate(true);
     wxMidiSysExMessage sysExMsg(pSysex->GetSysEx());
-    wxColour bgColour = m_pLblMidiOutputPort->GetBackgroundColour();
-    m_pLblMidiOutputPort->SetBackgroundColour(wxColour(0,100,0));
+    m_pLblMidiOutputPort->SetBackgroundColour(*wxGREEN);
     m_pLblMidiOutputPort->Refresh();
     m_pMidiOut->Write(&sysExMsg);
-    m_pLblMidiOutputPort->SetBackgroundColour(bgColour);
-    m_pLblMidiOutputPort->Refresh();
+    m_timer1s.Start(300, true);
 }
 
 void VZEditorFrame::GetVoice()
@@ -984,7 +994,18 @@ void VZEditorFrame::OnBtnGetOperation(wxCommandEvent& event)
 
 void VZEditorFrame::OnSaveFile(wxCommandEvent& event)
 {
-    Save(m_pNotebook->GetSelection());
+    switch(m_pNotebook->GetSelection())
+    {
+    case 0:
+        Save(VZ_TYPE_LIBRARY);
+        break;
+    case 1:
+        Save(VZ_TYPE_TONE);
+        break;
+    case 2:
+        Save(VZ_TYPE_OPERATION);
+        break;
+    }
 }
 
 void VZEditorFrame::UpdateMidiPorts()
@@ -1086,10 +1107,12 @@ void VZEditorFrame::OnChkKeyboard(wxCommandEvent& event)
 
 void VZEditorFrame::OnKeyboardNoteOn(wxCommandEvent& event)
 {
-    m_pStatusbar->SetStatusText(wxString::Format("Note on: %d", event.GetInt()));
     KeyboardEventData* pData = (KeyboardEventData*)event.GetClientData();
     if(m_pMidiOut && pData)
+    {
         m_pMidiOut->NoteOn(pData->channel, pData->note, pData->velocity);
+        m_pStatusbar->SetStatusText(wxString::Format("Note on: channel %d, note %d, velocity %d", pData->channel, pData->note, pData->velocity));
+    }
 }
 
 void VZEditorFrame::OnKeyboardNoteOff(wxCommandEvent& event)
@@ -1109,4 +1132,56 @@ void VZEditorFrame::OnKeyProgram(wxSpinEvent& event)
 {
     if(m_pMidiOut)
         m_pMidiOut->ProgramChange(m_pKeyboard->GetSendChannel(), event.GetValue() - 1);
+}
+
+void VZEditorFrame::Onm_pChkKeyboardClick(wxCommandEvent& event)
+{
+}
+
+void VZEditorFrame::Onm_pCmbOutPortSelect(wxCommandEvent& event)
+{
+}
+
+void VZEditorFrame::OnAddToLib(wxCommandEvent& event)
+{
+    switch(m_pNotebook->GetSelection())
+    {
+    case 0:
+        //Library
+    {
+        wxString sType;
+        wxFileDialog dlg(this, "Select file to add to library", wxEmptyString, wxEmptyString, wxEmptyString, wxFD_OPEN);
+        dlg.SetWildcard("VZ tone files (*.vzt)|*.vzt|All files (*.*)|*.*");
+        if(dlg.ShowModal() == wxID_CANCEL)
+            return;
+        //!@todo Add file to library
+        /*  Open file
+            Load into temporary sysex object
+            Close file
+            Validate sysex
+            Extract name
+            Add name and filename to library
+            Offer description editor
+            Add description to library
+            Delete temporary sysex
+        */
+    }
+    break;
+    case 1:
+        //Voice
+        Save(VZ_TYPE_TONE);
+        break;
+    case 2:
+        Save(VZ_TYPE_OPERATION);
+        break;
+        //Operation data
+    }
+}
+
+void VZEditorFrame::OnTimer1s(wxTimerEvent& event)
+{
+    m_pLblMidiInputPort->SetBackgroundColour(wxNullColour);
+    m_pLblMidiInputPort->Refresh();
+    m_pLblMidiOutputPort->SetBackgroundColour(wxNullColour);
+    m_pLblMidiOutputPort->Refresh();
 }

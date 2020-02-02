@@ -133,14 +133,14 @@
 			<wxsmith version="1">
 				<gui name="wxWidgets" src="src/vzeditorapp.cpp" main="-- None --" init_handlers="necessary" language="CPP" />
 				<resources>
-					<wxFrame wxs="wxsmith/vzeditorframe.wxs" src="src/vzeditormain.cpp" hdr="include/vzeditormain.h" fwddecl="0" i18n="1" name="VZ_EditorFrame" language="CPP" />
+					<wxFrame wxs="wxsmith/vzeditorframe.wxs" src="src/vzeditormain.cpp" hdr="include/vzeditormain.h" fwddecl="0" i18n="1" name="VZEditorFrame" language="CPP" />
 					<wxPanel wxs="wxsmith/vzline.wxs" src="src/vzline.cpp" hdr="include/vzline.h" fwddecl="0" i18n="1" name="VZLine" language="CPP" />
 					<wxPanel wxs="wxsmith/vzmodule.wxs" src="src/vzmodule.cpp" hdr="include/vzmodule.h" fwddecl="0" i18n="1" name="VZModule" language="CPP" />
 				</resources>
 			</wxsmith>
 			<AutoVersioning>
 				<Scheme minor_max="1" build_max="0" rev_max="0" rev_rand_max="1" build_times_to_increment_minor="1" />
-				<Settings autoincrement="1" date_declarations="1" use_define="0" update_manifest="0" do_auto_increment="1" ask_to_increment="0" language="C++" svn="0" svn_directory="" header_path="version.h" />
+				<Settings autoincrement="0" date_declarations="1" use_define="0" update_manifest="0" do_auto_increment="1" ask_to_increment="0" language="C++" svn="0" svn_directory="" header_path="version.h" />
 				<Changes_Log show_changes_editor="0" app_title="released version %M.%m.%b of %p" changeslog_path="ChangesLog.txt" />
 				<Code header_guard="VERSION_H" namespace="AutoVersion" prefix="" />
 			</AutoVersioning>

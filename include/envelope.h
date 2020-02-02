@@ -26,7 +26,7 @@ class Envelope
 {
 public:
     /** @brief  Construct envelope object
-    *   @param nSteps Quantity of steps in envelope [Default: 8]
+    *   @param  nSteps Quantity of steps in envelope [Default: 8]
     */
     Envelope(wxByte nSteps = 8);
 

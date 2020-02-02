@@ -26,7 +26,8 @@ bool Envelope::SetLevel(wxByte nStep, unsigned int nLevel)
 {
     if(nStep >= GetSteps())
         return false;
-    //!@todo Validate value
+    if(nLevel > 99)
+        nLevel = 0x7F;
     m_vEnvelopeSteps[nStep]->level = nLevel;
     return true;
 }
@@ -35,14 +36,18 @@ unsigned int Envelope::GetLevel(wxByte nStep)
 {
     if(nStep >= GetSteps())
         return 0;
-    return m_vEnvelopeSteps[nStep]->level;
+    wxByte nLevel = m_vEnvelopeSteps[nStep]->level;
+    if(nLevel > 99)
+        nLevel = 99;
+    return nLevel;
 }
 
 bool Envelope::SetRate(wxByte nStep, unsigned int nRate)
 {
     if(nStep >= GetSteps())
         return false;
-    //!@todo Validate value
+    if(nRate > 99)
+        nRate = 0x7F;
     m_vEnvelopeSteps[nStep]->rate = nRate;
     return true;
 }
@@ -51,7 +56,10 @@ unsigned int Envelope::GetRate(wxByte nStep)
 {
     if(nStep >= GetSteps())
         return 0;
-    return m_vEnvelopeSteps[nStep]->rate;
+    wxByte nRate = m_vEnvelopeSteps[nStep]->rate;
+    if(nRate > 99)
+        nRate = 99;
+    return nRate;
 }
 
 bool Envelope::SetSustainStep(wxByte nStep)
@@ -108,7 +116,7 @@ wxByte Envelope::GetAmpSens()
 bool Envelope::SetAmpSens(wxByte nSensitivity)
 {
     if(nSensitivity > 7)
-        return false;
+        nSensitivity = 7;
     m_nAmpSens = nSensitivity;
     return true;
 }
@@ -120,11 +128,8 @@ wxByte Envelope::GetDepth()
 
 bool Envelope::SetDepth(wxByte nDepth)
 {
-    if(nDepth > 99)
-        return false;
-    if(nDepth == 99)
-        m_nDepth = 0x7F;
-    else
-        m_nDepth = nDepth;
+    if(nDepth > 98)
+        nDepth = 0x7F;
+    m_nDepth = nDepth;
     return true;
 }

@@ -28,10 +28,10 @@ const long VZModule::ID_STATICTEXT6 = wxNewId();
 const long VZModule::ID_SLIDERDETUNEFINE = wxNewId();
 const long VZModule::ID_CHKFIXEDFREQ = wxNewId();
 const long VZModule::ID_CHKX16 = wxNewId();
-const long VZModule::ID_CUSTOM1 = wxNewId();
+const long VZModule::ID_ENVELOPEAMP = wxNewId();
 const long VZModule::ID_SLIDERENVDEPTH = wxNewId();
 const long VZModule::ID_BMPKEYBOARD = wxNewId();
-const long VZModule::ID_CUSTOM2 = wxNewId();
+const long VZModule::ID_ENVELOPEKEY = wxNewId();
 const long VZModule::ID_CMBKEYVELCURVE = wxNewId();
 const long VZModule::ID_SLIDERVELSENSITIVITY = wxNewId();
 const long VZModule::ID_SLIDERAMPSENS = wxNewId();
@@ -40,6 +40,8 @@ const long VZModule::ID_SLIDERAMPSENS = wxNewId();
 BEGIN_EVENT_TABLE(VZModule,wxPanel)
     //(*EventTable(VZModule)
     //*)
+    EVT_COMMAND(ID_ENVELOPEAMP, ENVELOPEGRAPH_EVENT, VZModule::OnAmpEnvChange)
+    EVT_COMMAND(ID_ENVELOPEKEY, ENVELOPEGRAPH_EVENT, VZModule::OnKeyEnvChange)
 END_EVENT_TABLE()
 
 VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSize& size) :
@@ -108,7 +110,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
     StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("DCA"));
     BoxSizer4 = new wxBoxSizer(wxHORIZONTAL);
     StaticBoxSizer4 = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Amplitude Envelope"));
-    m_pGraphDCA = new EnvelopeGraph(this);
+    m_pGraphDCA = new EnvelopeGraph(this,ID_ENVELOPEAMP);
     StaticBoxSizer4->Add(m_pGraphDCA, 1, wxALL|wxEXPAND, 5);
     m_pSliderEnvDepth = new wxSlider(this, ID_SLIDERENVDEPTH, 99, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERENVDEPTH"));
     m_pSliderEnvDepth->SetToolTip(_("Set DCA amplitued envelope depth"));
@@ -117,7 +119,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
     StaticBoxSizer5 = new wxStaticBoxSizer(wxVERTICAL, this, _("Key Follow"));
     m_pBmpKeyboard = new wxStaticBitmap(this, ID_BMPKEYBOARD, wxBitmap(keyboard_xpm), wxDefaultPosition, wxDefaultSize, 0, _T("ID_BMPKEYBOARD"));
     StaticBoxSizer5->Add(m_pBmpKeyboard, 0, wxALL|wxEXPAND, 5);
-    m_pGraphKeyfollow = new EnvelopeGraph(this);
+    m_pGraphKeyfollow = new EnvelopeGraph(this,ID_ENVELOPEKEY);
     StaticBoxSizer5->Add(m_pGraphKeyfollow, 1, wxALL|wxEXPAND, 5);
     BoxSizer4->Add(StaticBoxSizer5, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer6 = new wxStaticBoxSizer(wxVERTICAL, this, _("Key Velocity"));
@@ -161,7 +163,11 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
     Connect(ID_SLIDERAMPSENS,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZModule::OnSensitivity);
     //*)
     m_pGraphDCA->SetMaxNodes(8);
+    m_pGraphDCA->SetMaxHeight(99);
+    m_pGraphDCA->SetOrigin(99);
     m_pGraphKeyfollow->SetMaxNodes(6);
+    m_pGraphKeyfollow->SetMaxHeight(99);
+    m_pGraphKeyfollow->SetOrigin(99);
 }
 
 VZModule::~VZModule()
@@ -203,9 +209,19 @@ void VZModule::UpdateGui()
     m_pSliderEnvDepth->SetValue(m_pVoice->GetDCAEnvDepth(m_nModule));
     Envelope* pEnvelope = m_pVoice->GetDCAEnvelope(m_nModule);
     m_pGraphDCA->Clear(false);
-    for(unsigned int nNode = 0; nNode < pEnvelope->GetSteps(); ++nNode)
+    unsigned int nX = 0;
+    for(unsigned int nNode = 1; nNode < pEnvelope->GetSteps(); ++nNode)
     {
-        //!@todo Set steps - tricky due to use of slope rather than x,y
+        nX += pEnvelope->GetRate(nNode);
+        unsigned int nY = m_pGraphDCA->GetMaxHeight() - pEnvelope->GetLevel(nNode);
+        m_pGraphDCA->AddNode(wxPoint(nX, nY));
+    }
+    KeyFollow* pKeyFollow = m_pVoice->GetDCAKeyFollow(m_nModule);
+    for(unsigned int nNode = 1; nNode < pKeyFollow->GetSteps(); ++nNode)
+    {
+        nX = pKeyFollow->GetKey(nNode);
+        unsigned int nY = m_pGraphDCA->GetMaxHeight() - pKeyFollow->GetLevel(nNode);
+        m_pGraphKeyfollow->AddNode(wxPoint(nX, nY));
     }
     Enable(m_pVoice->IsModuleEnabled(m_nModule));
 }
@@ -298,4 +314,35 @@ void VZModule::OnSensitivity(wxScrollEvent& event)
     if(!m_pVoice)
         return;
     m_pVoice->SetCCSensitivity(m_nModule, event.GetInt());
+}
+
+void VZModule::OnAmpEnvChange(wxCommandEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    unsigned int nNode;
+    unsigned int nLastX = 0;
+    Envelope* pEnvelope = m_pVoice->GetDCAEnvelope(m_nModule);
+    for(nNode = 1; nNode < m_pGraphDCA->GetNodeCount(); ++nNode)
+    {
+        //Start from 1 because node 0 is at 0,0
+        pEnvelope->SetLevel(nNode, m_pGraphKeyfollow->GetMaxHeight() - m_pGraphDCA->GetNode(nNode).y);
+        pEnvelope->SetRate(nNode, m_pGraphDCA->GetNode(nNode).x - nLastX);
+        nLastX = m_pGraphDCA->GetNode(nNode).x;
+        //!@todo Identify Sustain step
+    }
+    pEnvelope->SetLastStep(nNode);
+}
+
+void VZModule::OnKeyEnvChange(wxCommandEvent& event)
+{
+    if(!m_pVoice)
+        return;
+    KeyFollow* pKeyFollow = m_pVoice->GetDCAKeyFollow(m_nModule);
+    for(unsigned int nNode = 1; nNode < m_pGraphDCA->GetNodeCount(); ++nNode)
+    {
+        //Start from 1 because node 0 is at 0,0
+        pKeyFollow->SetLevel(nNode, m_pGraphKeyfollow->GetMaxHeight() - m_pGraphKeyfollow->GetNode(nNode).y);
+        pKeyFollow->SetKey(nNode, m_pGraphKeyfollow->GetNode(nNode).x); //!@todo Scale key follow
+    }
 }

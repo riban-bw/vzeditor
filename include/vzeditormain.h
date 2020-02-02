@@ -7,10 +7,9 @@
  * License:   GPL3
  **************************************************************/
 
-#ifndef VZ_EDITORMAIN_H
-#define VZ_EDITORMAIN_H
+#pragma once
 
-//(*Headers(VZ_EditorFrame)
+//(*Headers(VZEditorFrame)
 #include "keyboard.h"
 #include "sortablelist.h"
 #include "vzline.h"
@@ -30,6 +29,7 @@
 #include <wx/stattext.h>
 #include <wx/statusbr.h>
 #include <wx/textctrl.h>
+#include <wx/timer.h>
 //*)
 #include "wxMidi.h"
 #include "vzvoice.h"
@@ -59,7 +59,7 @@ public:
 
 private:
 
-    //(*Handlers(VZ_EditorFrame)
+    //(*Handlers(VZEditorFrame)
     void OnQuit(wxCommandEvent& event);
     void OnAbout(wxCommandEvent& event);
     void OnInPortSelect(wxCommandEvent& event);
@@ -89,22 +89,27 @@ private:
     void OnChkKeyboard(wxCommandEvent& event);
     void OnKeyChan(wxSpinEvent& event);
     void OnKeyProgram(wxSpinEvent& event);
+    void Onm_pChkKeyboardClick(wxCommandEvent& event);
+    void Onm_pCmbOutPortSelect(wxCommandEvent& event);
+    void OnAddToLib(wxCommandEvent& event);
+    void OnTimer1s(wxTimerEvent& event);
     //*)
     void OnGridSort(wxCommandEvent& event);
     void OnLibSort(wxListEvent& event);
     void OnLibActivate(wxListEvent& event);
 
-    //(*Identifiers(VZ_EditorFrame)
-    static const long ID_STATICTEXT2;
+    //(*Identifiers(VZEditorFrame)
+    static const long ID_STATICTEXTMIDIINPUT;
     static const long ID_CMBINPORT;
-    static const long ID_STATICTEXT1;
+    static const long ID_STATICTEXTMIDIOUTPUT;
     static const long ID_CMBOUTPORT;
-    static const long ID_CHECKBOX_Keyboard;
+    static const long ID_CHECKBOXKEYBOARD;
     static const long ID_CHKAUTOUPDATE;
     static const long ID_BTNSEND;
     static const long ID_BTNGETVOICE;
-    static const long IID_BTNGETOPERATION;
+    static const long ID_BTNGETOPERATION;
     static const long ID_BTNSAVEDUMP;
+    static const long ID_BUTTONADDTOLIB;
     static const long ID_LSTLIB;
     static const long ID_PNLLIBRARY;
     static const long ID_LINE1;
@@ -158,9 +163,10 @@ private:
     static const long idMenuQuit;
     static const long idMenuAbout;
     static const long ID_STATUSBAR1;
+    static const long ID_TIMER1S;
     //*)
 
-    //(*Declarations(VZ_EditorFrame)
+    //(*Declarations(VZEditorFrame)
     Keyboard* m_pKeyboard;
     SortableList* m_pLstLib;
     VZLine* m_pLine1;
@@ -171,6 +177,7 @@ private:
     wxBoxSizer* m_pSizerKeyboard;
     wxBoxSizer* m_pSizerLines;
     wxBoxSizer* m_pSizerMain;
+    wxButton* m_bBtnAddToLib;
     wxButton* m_pBtnGetOperation;
     wxButton* m_pBtnGetVoice;
     wxButton* m_pBtnSaveDump;
@@ -226,6 +233,7 @@ private:
     wxStatusBar* m_pStatusbar;
     wxTextCtrl* m_pTxtOperationName;
     wxTextCtrl* m_pTxtVoiceName;
+    wxTimer m_timer1s;
     //*)
 
     void CloseInput(); //!< Open MIDI input port
@@ -264,5 +272,3 @@ private:
 
     DECLARE_EVENT_TABLE()
 };
-
-#endif // VZ_EDITORMAIN_H

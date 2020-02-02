@@ -9,6 +9,8 @@
 
 #pragma once
 
+#define VZ_TYPE_LIBRARY 0x03
+
 #include <vector>
 #include <wx/wx.h>
 

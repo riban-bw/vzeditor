@@ -77,10 +77,10 @@ protected:
     static const long ID_SLIDERDETUNEFINE;
     static const long ID_CHKFIXEDFREQ;
     static const long ID_CHKX16;
-    static const long ID_CUSTOM1;
+    static const long ID_ENVELOPEAMP;
     static const long ID_SLIDERENVDEPTH;
     static const long ID_BMPKEYBOARD;
-    static const long ID_CUSTOM2;
+    static const long ID_ENVELOPEKEY;
     static const long ID_CMBKEYVELCURVE;
     static const long ID_SLIDERVELSENSITIVITY;
     static const long ID_SLIDERAMPSENS;
@@ -105,6 +105,8 @@ private:
     void OnSensitivity(wxScrollEvent& event);
     //*)
     void EnableControls(bool bEnable);
+    void OnAmpEnvChange(wxCommandEvent& event);
+    void OnKeyEnvChange(wxCommandEvent& event);
 
     DECLARE_EVENT_TABLE()
 };
