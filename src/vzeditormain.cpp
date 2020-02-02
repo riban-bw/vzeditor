@@ -15,8 +15,10 @@
 #include <wx/filename.h>
 #include <wx/config.h>
 #include <wx/display.h>
+#include <list>
 
 //(*InternalHeaders(VZEditorFrame)
+#include <wx/artprov.h>
 #include <wx/bitmap.h>
 #include <wx/icon.h>
 #include <wx/image.h>
@@ -36,7 +38,20 @@ const long VZEditorFrame::ID_BTNGETVOICE = wxNewId();
 const long VZEditorFrame::ID_BTNGETOPERATION = wxNewId();
 const long VZEditorFrame::ID_BTNSAVEDUMP = wxNewId();
 const long VZEditorFrame::ID_BUTTONADDTOLIB = wxNewId();
+const long VZEditorFrame::ID_BITMAPBUTTONLIBTOOLADD = wxNewId();
+const long VZEditorFrame::ID_BITMAPBUTTONLIBTOOLDELETE = wxNewId();
+const long VZEditorFrame::ID_BITMAPBUTTON1 = wxNewId();
+const long VZEditorFrame::ID_BITMAPBUTTONLIBTOOLSAVEAS = wxNewId();
+const long VZEditorFrame::ID_BITMAPBUTTONLIBTOOLOPRN = wxNewId();
 const long VZEditorFrame::ID_LSTLIB = wxNewId();
+const long VZEditorFrame::ID_STATICTEXT1 = wxNewId();
+const long VZEditorFrame::ID_STATICTEXTLIBENTRYNAME = wxNewId();
+const long VZEditorFrame::ID_STATICTEXT2 = wxNewId();
+const long VZEditorFrame::ID_TEXTCTRL2 = wxNewId();
+const long VZEditorFrame::ID_STATICTEXT16 = wxNewId();
+const long VZEditorFrame::ID_COMBOBOX1 = wxNewId();
+const long VZEditorFrame::ID_STATICTEXT17 = wxNewId();
+const long VZEditorFrame::ID_STATICTEXT18 = wxNewId();
 const long VZEditorFrame::ID_PNLLIBRARY = wxNewId();
 const long VZEditorFrame::ID_LINE1 = wxNewId();
 const long VZEditorFrame::ID_LINE2 = wxNewId();
@@ -126,14 +141,17 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer18;
     wxBoxSizer* BoxSizer19;
     wxBoxSizer* BoxSizer1;
+    wxBoxSizer* BoxSizer20;
     wxBoxSizer* BoxSizer21;
     wxBoxSizer* BoxSizer2;
+    wxBoxSizer* BoxSizer3;
     wxBoxSizer* BoxSizer4;
     wxBoxSizer* BoxSizer5;
     wxBoxSizer* BoxSizer6;
     wxBoxSizer* BoxSizer7;
     wxBoxSizer* BoxSizer8;
     wxBoxSizer* BoxSizer9;
+    wxFlexGridSizer* FlexGridSizer1;
     wxFlexGridSizer* FlexGridSizer6;
     wxMenu* Menu1;
     wxMenu* Menu2;
@@ -191,8 +209,47 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pNotebook->SetToolTip(_("Select voice library tab"));
     m_pPnlLibrary = new wxPanel(m_pNotebook, ID_PNLLIBRARY, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PNLLIBRARY"));
     BoxSizer2 = new wxBoxSizer(wxVERTICAL);
+    BoxSizer3 = new wxBoxSizer(wxHORIZONTAL);
+    m_pBtnLibToolAdd = new wxBitmapButton(m_pPnlLibrary, ID_BITMAPBUTTONLIBTOOLADD, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_NEW")),wxART_TOOLBAR), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTONLIBTOOLADD"));
+    m_pBtnLibToolAdd->SetToolTip(_("Add entry to library"));
+    BoxSizer3->Add(m_pBtnLibToolAdd, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pBtnLibToolDelete = new wxBitmapButton(m_pPnlLibrary, ID_BITMAPBUTTONLIBTOOLDELETE, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_DELETE")),wxART_TOOLBAR), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTONLIBTOOLDELETE"));
+    m_pBtnLibToolDelete->SetToolTip(_("Delete selected entries from library"));
+    BoxSizer3->Add(m_pBtnLibToolDelete, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pBtnLibToolSave = new wxBitmapButton(m_pPnlLibrary, ID_BITMAPBUTTON1, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_FILE_SAVE")),wxART_TOOLBAR), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTON1"));
+    m_pBtnLibToolSave->Disable();
+    m_pBtnLibToolSave->SetToolTip(_("Save library"));
+    BoxSizer3->Add(m_pBtnLibToolSave, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pBtnLibToolSaveAs = new wxBitmapButton(m_pPnlLibrary, ID_BITMAPBUTTONLIBTOOLSAVEAS, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_FILE_SAVE_AS")),wxART_TOOLBAR), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTONLIBTOOLSAVEAS"));
+    m_pBtnLibToolSaveAs->SetToolTip(_("Save library with different name"));
+    BoxSizer3->Add(m_pBtnLibToolSaveAs, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pBtnLibToolOpen = new wxBitmapButton(m_pPnlLibrary, ID_BITMAPBUTTONLIBTOOLOPRN, wxArtProvider::GetBitmap(wxART_MAKE_ART_ID_FROM_STR(_T("wxART_FILE_OPEN")),wxART_TOOLBAR), wxDefaultPosition, wxDefaultSize, wxBU_AUTODRAW, wxDefaultValidator, _T("ID_BITMAPBUTTONLIBTOOLOPRN"));
+    m_pBtnLibToolOpen->SetToolTip(_("Open"));
+    m_pBtnLibToolOpen->SetHelpText(_("Open another library"));
+    BoxSizer3->Add(m_pBtnLibToolOpen, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    BoxSizer2->Add(BoxSizer3, 0, wxALL|wxEXPAND, 5);
+    BoxSizer20 = new wxBoxSizer(wxHORIZONTAL);
     m_pLstLib = new SortableList(m_pPnlLibrary,ID_LSTLIB);
-    BoxSizer2->Add(m_pLstLib, 1, wxALL|wxEXPAND, 5);
+    BoxSizer20->Add(m_pLstLib, 1, wxALL|wxEXPAND, 5);
+    FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
+    StaticText1 = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT1, _("Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
+    FlexGridSizer1->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pLblLibEntryName = new wxStaticText(m_pPnlLibrary, ID_STATICTEXTLIBENTRYNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXTLIBENTRYNAME"));
+    FlexGridSizer1->Add(m_pLblLibEntryName, 1, wxALL|wxEXPAND, 5);
+    StaticText2 = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT2, _("Description"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
+    FlexGridSizer1->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pTxtLibEntryDescription = new wxTextCtrl(m_pPnlLibrary, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_WORDWRAP, wxDefaultValidator, _T("ID_TEXTCTRL2"));
+    FlexGridSizer1->Add(m_pTxtLibEntryDescription, 1, wxALL|wxEXPAND, 5);
+    StaticText15 = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT16, _("Group"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT16"));
+    FlexGridSizer1->Add(StaticText15, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pCmbLibEntryGroup = new wxComboBox(m_pPnlLibrary, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_COMBOBOX1"));
+    FlexGridSizer1->Add(m_pCmbLibEntryGroup, 1, wxALL|wxEXPAND, 5);
+    StaticText16 = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT17, _("Type"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT17"));
+    FlexGridSizer1->Add(StaticText16, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pLblLibEntryType = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT18, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT18"));
+    FlexGridSizer1->Add(m_pLblLibEntryType, 1, wxALL|wxEXPAND, 5);
+    BoxSizer20->Add(FlexGridSizer1, 0, wxALL|wxEXPAND, 5);
+    BoxSizer2->Add(BoxSizer20, 1, wxALL|wxEXPAND, 5);
     m_pPnlLibrary->SetSizer(BoxSizer2);
     BoxSizer2->Fit(m_pPnlLibrary);
     BoxSizer2->SetSizeHints(m_pPnlLibrary);
@@ -441,6 +498,13 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BTNGETOPERATION,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnBtnGetOperation);
     Connect(ID_BTNSAVEDUMP,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnBtnSaveDump);
     Connect(ID_BUTTONADDTOLIB,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnAddToLib);
+    Connect(ID_BITMAPBUTTONLIBTOOLADD,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnLibToolAdd);
+    Connect(ID_BITMAPBUTTONLIBTOOLDELETE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnLibToolDelete);
+    Connect(ID_BITMAPBUTTONLIBTOOLSAVEAS,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnSaveFile);
+    Connect(ID_BITMAPBUTTONLIBTOOLOPRN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnOpenFile);
+    Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZEditorFrame::OnTxtLibEntryDescription);
+    Connect(ID_COMBOBOX1,wxEVT_COMMAND_COMBOBOX_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnCmbLibEntryGroup);
+    Connect(ID_COMBOBOX1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZEditorFrame::OnCmbLibEntryGroup);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZEditorFrame::OnTxtVoiceNameText);
     Connect(ID_SLIDERLEVEL,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZEditorFrame::OnLevelChanged);
     Connect(ID_SLIDEROCTAVE,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZEditorFrame::OnOctaveChanged);
@@ -468,6 +532,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pScrollWinVoiceEditor->SetScrollRate(10,10);
     m_pScrollwindowGlobalParameters->SetScrollRate(0, 10);
     Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&VZEditorFrame::OnLibSort);
+    Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnLibEntrySelected);
     Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&VZEditorFrame::OnLibActivate);
     Connect(wxID_ANY, wxEVT_MIDI_INPUT,(wxObjectEventFunction)&VZEditorFrame::OnMidiReceive);
     Connect(wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&VZEditorFrame::OnClose);
@@ -528,6 +593,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pChkAutoUpdate->SetValue(bAuto);
     m_pvzLib = new VZLibrary();
     m_pLstLib->SetData(m_pvzLib);
+    PopulateLibraryGroups();
 
     m_pVoice = new VZVoice();
     m_pVoiceMidi = new VZVoice();
@@ -962,6 +1028,7 @@ void VZEditorFrame::OnOpenFile(wxCommandEvent& event)
             ; //!@todo Handle dirty library
         m_pvzLib->Load(dlg.GetPath());
         m_pLstLib->SetData(m_pvzLib);
+        PopulateLibraryGroups();
         return;
     }
     LoadFile(dlg.GetPath());
@@ -1184,4 +1251,97 @@ void VZEditorFrame::OnTimer1s(wxTimerEvent& event)
     m_pLblMidiInputPort->Refresh();
     m_pLblMidiOutputPort->SetBackgroundColour(wxNullColour);
     m_pLblMidiOutputPort->Refresh();
+}
+
+void VZEditorFrame::OnLibToolAdd(wxCommandEvent& event)
+{
+    wxFileDialog dlg(this, "Select voice or operation file to add to library",
+                     wxEmptyString, wxEmptyString, wxEmptyString, wxFD_OPEN);
+    dlg.SetWildcard("VZ tone files (*.vzt)|*.vzt|VZ operation files (*.vzo)|*.vzo|All files (*.*)|*.*");
+    if(dlg.ShowModal() == wxID_CANCEL)
+        return;
+    wxFile file(dlg.GetPath(), wxFile::read);
+    if(!file.IsOpened())
+    {
+        wxMessageBox("Failed to open file", "Error", wxICON_ERROR);
+        return;
+    }
+    wxByte acSysex[file.Length()];
+    if(file.Length() < VZ_HEADER_SIZE || file.Length() != file.Read(acSysex, file.Length()))
+    {
+        wxMessageBox("Failed to read file", "Error", wxICON_ERROR);
+        file.Close();
+        return;
+    }
+    file.Close();
+    wxString sFilename = wxEmptyString;
+    wxString sName;
+    wxString sType;
+    switch(acSysex[VZ_HEADER_TYPE])
+    {
+    case VZ_TYPE_TONE:
+    {
+        VZVoice voiceTemp;
+        if(!voiceTemp.SetSysEx(acSysex))
+        {
+            sName = voiceTemp.GetName();
+            sType = "vzvoice";
+        }
+        break;
+    }
+    case VZ_TYPE_OPERATION:
+    {
+        VZOperation opTemp;
+        if(!opTemp.SetSysEx(acSysex))
+        {
+            sName = opTemp.GetName();
+            sType = "vzoperation";
+        }
+        break;
+    }
+    }
+    if(sName.IsEmpty())
+        return;
+    m_pvzLib->AddEntry(sName, dlg.GetPath(), sName, "Default", sType); //!@todo Should we add items to the list rather than the underlying data obect?
+    m_pLstLib->SetData(m_pvzLib);
+}
+
+void VZEditorFrame::OnLibEntrySelected(wxListEvent& event)
+{
+    m_bAllowUpdate = false;
+    m_pLblLibEntryName->SetLabel(m_pLstLib->GetItemName(event.GetIndex()));
+    m_pTxtLibEntryDescription->SetValue(m_pLstLib->GetItemDescription(event.GetIndex()));
+    m_pCmbLibEntryGroup->SetValue(m_pLstLib->GetItemGroup(event.GetIndex()));
+    m_pLblLibEntryType->SetLabel(m_pLstLib->GetItemType(event.GetIndex()));
+    m_bAllowUpdate = true;
+}
+
+void VZEditorFrame::PopulateLibraryGroups()
+{
+    list<wxString> listGroups;
+    for(int nIndex = 0; nIndex < m_pLstLib->GetItemCount(); ++nIndex)
+        listGroups.push_back(m_pLstLib->GetItemGroup(nIndex));
+    listGroups.unique();
+    for(auto it = listGroups.begin(); it != listGroups.end(); ++it)
+        m_pCmbLibEntryGroup->Append(*it);
+}
+
+void VZEditorFrame::OnTxtLibEntryDescription(wxCommandEvent& event)
+{
+    if(m_bAllowUpdate)
+        m_pLstLib->SetItemDescription(event.GetString());
+}
+
+void VZEditorFrame::OnCmbLibEntryGroup(wxCommandEvent& event)
+{
+    if(m_bAllowUpdate)
+        m_pLstLib->SetItemGroup(event.GetString());
+    m_pBtnLibToolSave->Enable(m_pvzLib->IsDirty());
+}
+
+
+void VZEditorFrame::OnLibToolDelete(wxCommandEvent& event)
+{
+    m_pLstLib->RemoveItems();
+    m_pBtnLibToolSave->Enable(m_pvzLib->IsDirty());
 }

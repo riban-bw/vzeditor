@@ -57,26 +57,105 @@ public:
         return m_bValid;
     };
 
+    /** @brief  Add an entry to library
+    *   @param  sName Entry name
+    *   @param  sFilename Filename of sysex file
+    *   @param  sDescription Entry description
+    *   @param  sGroup Entry group
+    *   @param  sType Entry type ["vzvoice" | "vzoperation"]
+    *   @retval bool True on success
+    */
     bool AddEntry(const wxString &sName, const wxString &sFilename, const wxString &sDescription = wxEmptyString, const wxString &sGroup = wxEmptyString, const wxString &sType = "vzvoice");
 
-    bool RemoveEntry(wxString sFilename);
+    /** @brief  Remove an entry from library
+    *   @param  lIndex Index of entry to remove
+    *   @retval bool True on success
+    */
+    bool RemoveEntry(unsigned long lIndex);
 
-    wxString GetDescription(wxString sName);
+    /** @brief  Get pointer to library entry by index
+    *   @param  lIndex Index of entry
+    *   @retval vzLibEntry* Pointer to entry or NULL if not found
+    */
+    vzLibEntry* GetEntry(unsigned long lIndex);
 
-    bool SetDescription(wxString sName, wxString sDescription);
+    /** @brief  Get pointer to library entry by filename
+    *   @param  sFilename Filename of entry to find
+    *   @retval vzLibEntry* Pointer to entry or NULL if not found
+    */
+    vzLibEntry* GetEntry(wxString sFilename);
 
-    wxString GetGroup(wxString sName);
+    /** @brief  Get iterator pointing to library entry by filename
+    *   @param  sFilename Filename of entry to find
+    *   @retval vector<vzLibEntry*>::iterator Iterator pointing to entry or end() if not found
+    */
+    vector<vzLibEntry*>::iterator GetEntryIt(wxString sFilename);
 
-    bool SetGroup(wxString sName, wxString sGroup);
+    /** @brief  Get name of a library entry
+    *   @param  lIndex Filename of entry
+    *   @retval wxString Name
+    */
+    wxString GetEntryName(unsigned long lIndex);
 
-    wxString GetFilename(wxString sName);
+    /** @brief  Set the name for a library entry
+    *   @param  lIndex Filename of entry
+    *   @param  sName Text of name
+    *   @retval bool True on success
+    */
+    bool SetEntryName(unsigned long lIndex, wxString sName);
 
-    bool SetFilename(wxString sName, wxString sFilename);
+    /** @brief  Get description of a library entry
+    *   @param  lIndex Index of the entry
+    *   @retval wxString Description
+    */
+    wxString GetEntryDescription(unsigned long lIndex);
 
-    vector<vzLibEntry*>* GetData()
-    {
-        return &m_vEntries;
-    };
+    /** @brief  Set the description for a library entry
+    *   @param  lIndex Index of entry
+    *   @param  sDescription Text of description
+    *   @retval bool True on success
+    */
+    bool SetEntryDescription(unsigned long lIndex, wxString sDescription);
+
+    /** @brief  Get group of a library entry
+    *   @param  lIndex Index of entry
+    *   @retval wxString Group
+    */
+    wxString GetEntryGroup(unsigned long lIndex);
+
+    /** @brief  Set the group for a library entry
+    *   @param  lIndex Index of entry
+    *   @param  sGroup Text of group
+    *   @retval bool True on success
+    */
+    bool SetEntryGroup(unsigned long lIndex, wxString sGroup);
+
+    /** @brief  Get type of a library entry
+    *   @param  lIndex Index of entry
+    *   @retval wxString Type
+    */
+    wxString GetEntryType(unsigned long sFilename);
+
+    /** @brief  Set the tpe for a library entry
+    *   @param  lIndex Index of entry
+    *   @param  sType Text of group
+    *   @retval bool True on success
+    */
+    bool SetEntryType(unsigned long, wxString sType);
+
+//    map<wxString,vzLibEntry*>* GetData();
+
+    /** @brief  Get quantity of entries in library
+    *   @retval long Qunatity of library entries
+    */
+    long GetCount();
+
+    /** @brief  Sort the library
+    *   @param  wxString sColumn Name of column to index
+    *   @param  bool bAscending True to assort ascending
+    */
+    void Sort(wxString sColumn, bool bAscending);
+
 
     void ClearData();
 
@@ -84,7 +163,7 @@ protected:
 
 private:
     wxString m_sFilename; // XML filename
-    vector<vzLibEntry*> m_vEntries; // Map of library entries indexed by name
+    vector<vzLibEntry*> m_vEntries; // Vector of library entries
     bool m_bDirty; //True if there are unsaved changes
     bool m_bValid; //True if a valid XML file is open
 };

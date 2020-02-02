@@ -8,62 +8,6 @@
  **************************************************************/
 
 #include "sortablelist.h"
-#include <algorithm>
-
-bool SortByNameAsc(const vzLibEntry* lhs, const vzLibEntry* rhs)
-{
-    string sLhs(lhs->name.mb_str());
-    string sRhs(rhs->name.mb_str());
-    return  sLhs < sRhs;
-}
-
-bool SortByNameDesc(const vzLibEntry* lhs, const vzLibEntry* rhs)
-{
-    string sLhs(lhs->name.mb_str());
-    string sRhs(rhs->name.mb_str());
-    return  sLhs > sRhs;
-}
-
-bool SortByDescriptionAsc(const vzLibEntry* lhs, const vzLibEntry* rhs)
-{
-    string sLhs(lhs->description.mb_str());
-    string sRhs(rhs->description.mb_str());
-    return  sLhs < sRhs;
-}
-bool SortByDescriptionDesc(const vzLibEntry* lhs, const vzLibEntry* rhs)
-{
-    string sLhs(lhs->description.mb_str());
-    string sRhs(rhs->description.mb_str());
-    return  sLhs > sRhs;
-}
-
-bool SortByGroupAsc(const vzLibEntry* lhs, const vzLibEntry* rhs)
-{
-    string sLhs(lhs->group.mb_str());
-    string sRhs(rhs->group.mb_str());
-    return  sLhs < sRhs;
-}
-
-bool SortByGroupDesc(const vzLibEntry* lhs, const vzLibEntry* rhs)
-{
-    string sLhs(lhs->group.mb_str());
-    string sRhs(rhs->group.mb_str());
-    return  sLhs > sRhs;
-}
-
-bool SortByTypeAsc(const vzLibEntry* lhs, const vzLibEntry* rhs)
-{
-    string sLhs(lhs->type.mb_str());
-    string sRhs(rhs->type.mb_str());
-    return  sLhs < sRhs;
-}
-
-bool SortByTypeDesc(const vzLibEntry* lhs, const vzLibEntry* rhs)
-{
-    string sLhs(lhs->type.mb_str());
-    string sRhs(rhs->type.mb_str());
-    return  sLhs > sRhs;
-}
 
 SortableList::SortableList(wxWindow* parent, wxWindowID id):
     wxListCtrl(parent, id, wxDefaultPosition, wxDefaultSize, wxLC_REPORT|wxLC_VIRTUAL),
@@ -95,17 +39,19 @@ SortableList::SortableList(wxWindow* parent, wxWindowID id):
 void SortableList::SetData(VZLibrary* pData)
 {
     m_pData = pData;
-    SetItemCount(pData->GetData()->size());
+    SetItemCount(pData->GetCount());
     Refresh();
 }
 
 //Overload virtual method of wxListCtrl to provide text data for virtual list
-wxString SortableList::OnGetItemText(long item, long column) const
+wxString SortableList::OnGetItemText(long row, long column) const
 {
     if(!m_pData)
         return wxEmptyString;
-    vzLibEntry* pData = (*m_pData->GetData())[item];
-    if(item < (long)m_pData->GetData()->size() && item >= 0)
+    vzLibEntry* pData = m_pData->GetEntry(row);
+    if(!pData)
+        return wxEmptyString;
+    if(row < m_pData->GetCount() && row >= 0)
     {
         switch(column)
         {
@@ -121,17 +67,71 @@ wxString SortableList::OnGetItemText(long item, long column) const
             return pData->type;
         }
     }
-    return "";
+    return wxEmptyString;
 }
 
-wxString SortableList::GetItemFilename(long item)
+wxString SortableList::GetItemName(long row)
 {
-    return OnGetItemText(item, -1);
+    return OnGetItemText(row, 0);
 }
 
-wxString SortableList::GetItemType(long item)
+wxString SortableList::GetItemDescription(long row)
 {
-    return OnGetItemText(item, 3);
+    return OnGetItemText(row, 1);
+}
+
+wxString SortableList::GetItemGroup(long row)
+{
+    return OnGetItemText(row, 2);
+}
+
+wxString SortableList::GetItemType(long row)
+{
+    return OnGetItemText(row, 3);
+}
+
+wxString SortableList::GetItemFilename(long row)
+{
+    return OnGetItemText(row, -1);
+}
+
+unsigned long SortableList::SetItemDescription(wxString sDescription)
+{
+    long lIndex = -1;
+    long lCount = 0;
+    while ((lIndex = GetNextItem(lIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND)
+    {
+        m_pData->SetEntryDescription(lIndex, sDescription);
+        ++lCount;
+    }
+    Refresh();
+    return lCount;
+}
+
+unsigned long SortableList::SetItemGroup(wxString sGroup)
+{
+    long lIndex = -1;
+    long lCount = 0;
+    while ((lIndex = GetNextItem(lIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND)
+    {
+        m_pData->SetEntryGroup(lIndex, sGroup);
+        ++lCount;
+    }
+    Refresh();
+    return lCount;
+}
+
+unsigned long SortableList::RemoveItems()
+{
+    long lIndex = -1;
+    vector<unsigned long> vSelected;
+    while ((lIndex = GetNextItem(lIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND)
+        vSelected.push_back(lIndex);
+    for(vector<unsigned long>::reverse_iterator it = vSelected.rbegin(); it != vSelected.rend(); ++it)
+        m_pData->RemoveEntry(*it);
+    SetItemCount(m_pData->GetCount());
+    Refresh();
+    return vSelected.size();
 }
 
 void SortableList::Sort(long column)
@@ -161,22 +161,22 @@ void SortableList::Sort(long column)
     switch(column)
     {
     case 0:
-        sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByNameAsc:SortByNameDesc);
+        m_pData->Sort("name", bAscending);
         col.SetText(wxString::FromUTF8(bAscending?"▲ Name":"▼ Name"));
         SetColumn(column, col);
         break;
     case 1:
-        sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByDescriptionAsc:SortByDescriptionDesc);
+        m_pData->Sort("description", bAscending);
         col.SetText(wxString::FromUTF8(bAscending?"▲ Description":"▼ Description"));
         SetColumn(column, col);
         break;
     case 2:
-        sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByGroupAsc:SortByGroupDesc);
+        m_pData->Sort("group", bAscending);
         col.SetText(wxString::FromUTF8(bAscending?"▲ Group":"▼ Group"));
         SetColumn(column, col);
         break;
     case 3:
-        sort(m_pData->GetData()->begin(), m_pData->GetData()->end(), bAscending?SortByTypeAsc:SortByTypeDesc);
+        m_pData->Sort("type", bAscending);
         col.SetText(wxString::FromUTF8(bAscending?"▲ Type":"▼ Type"));
         SetColumn(column, col);
         break;
@@ -186,26 +186,21 @@ void SortableList::Sort(long column)
     Refresh();
 }
 
-bool SortableList::DeleteItem(long item)
-{
-    if(m_pData && m_pData->RemoveEntry(OnGetItemText(item, -1))) //!@todo Can we use index directly?
-    {
-        return wxListCtrl::DeleteItem(item);
-    }
-    return false;
-}
-
 void SortableList::OnKeyUp(wxKeyEvent& event)
 {
     if(event.GetKeyCode() == WXK_DELETE)
+        RemoveItems();
+}
+
+long SortableList::GetSelected()
+{
+    long lIndex = -1;
+    long lCount = 0;
+    while ((lIndex = GetNextItem(lIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND)
     {
-        //!@todo Fails for multiple selected items
-        long lIndex = -1;
-        while((lIndex = GetNextItem(lIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND)
-        {
-            if(wxMessageBox("Delete " + OnGetItemText(lIndex, 0), "Delete item", wxYES_NO | wxCENTRE) != wxYES)
-                continue;
-            DeleteItem(lIndex);
-        }
+        ++lCount;
     }
+    if(lCount > 1)
+        lIndex = -1;
+    return lIndex;
 }

@@ -13,9 +13,11 @@
 #include "keyboard.h"
 #include "sortablelist.h"
 #include "vzline.h"
+#include <wx/bmpbuttn.h>
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
+#include <wx/combobox.h>
 #include <wx/frame.h>
 #include <wx/menu.h>
 #include <wx/notebook.h>
@@ -93,6 +95,10 @@ private:
     void Onm_pCmbOutPortSelect(wxCommandEvent& event);
     void OnAddToLib(wxCommandEvent& event);
     void OnTimer1s(wxTimerEvent& event);
+    void OnLibToolAdd(wxCommandEvent& event);
+    void OnTxtLibEntryDescription(wxCommandEvent& event);
+    void OnCmbLibEntryGroup(wxCommandEvent& event);
+    void OnLibToolDelete(wxCommandEvent& event);
     //*)
     void OnGridSort(wxCommandEvent& event);
     void OnLibSort(wxListEvent& event);
@@ -110,7 +116,20 @@ private:
     static const long ID_BTNGETOPERATION;
     static const long ID_BTNSAVEDUMP;
     static const long ID_BUTTONADDTOLIB;
+    static const long ID_BITMAPBUTTONLIBTOOLADD;
+    static const long ID_BITMAPBUTTONLIBTOOLDELETE;
+    static const long ID_BITMAPBUTTON1;
+    static const long ID_BITMAPBUTTONLIBTOOLSAVEAS;
+    static const long ID_BITMAPBUTTONLIBTOOLOPRN;
     static const long ID_LSTLIB;
+    static const long ID_STATICTEXT1;
+    static const long ID_STATICTEXTLIBENTRYNAME;
+    static const long ID_STATICTEXT2;
+    static const long ID_TEXTCTRL2;
+    static const long ID_STATICTEXT16;
+    static const long ID_COMBOBOX1;
+    static const long ID_STATICTEXT17;
+    static const long ID_STATICTEXT18;
     static const long ID_PNLLIBRARY;
     static const long ID_LINE1;
     static const long ID_LINE2;
@@ -173,6 +192,11 @@ private:
     VZLine* m_pLine2;
     VZLine* m_pLine3;
     VZLine* m_pLine4;
+    wxBitmapButton* m_pBtnLibToolAdd;
+    wxBitmapButton* m_pBtnLibToolDelete;
+    wxBitmapButton* m_pBtnLibToolOpen;
+    wxBitmapButton* m_pBtnLibToolSave;
+    wxBitmapButton* m_pBtnLibToolSaveAs;
     wxBoxSizer* m_pFlexgridGlobalParameters;
     wxBoxSizer* m_pSizerKeyboard;
     wxBoxSizer* m_pSizerLines;
@@ -187,6 +211,7 @@ private:
     wxChoice* m_pCmbInPort;
     wxChoice* m_pCmbOutPort;
     wxChoice* m_pCmbVelCurve;
+    wxComboBox* m_pCmbLibEntryGroup;
     wxMenuItem* MenuItem3;
     wxMenuItem* MenuItem4;
     wxNotebook* m_pNotebook;
@@ -219,6 +244,10 @@ private:
     wxStaticText* StaticText12;
     wxStaticText* StaticText13;
     wxStaticText* StaticText14;
+    wxStaticText* StaticText15;
+    wxStaticText* StaticText16;
+    wxStaticText* StaticText1;
+    wxStaticText* StaticText2;
     wxStaticText* StaticText30;
     wxStaticText* StaticText3;
     wxStaticText* StaticText4;
@@ -227,10 +256,13 @@ private:
     wxStaticText* StaticText7;
     wxStaticText* StaticText8;
     wxStaticText* StaticText9;
+    wxStaticText* m_pLblLibEntryName;
+    wxStaticText* m_pLblLibEntryType;
     wxStaticText* m_pLblMidiInputPort;
     wxStaticText* m_pLblMidiOutputPort;
     wxStaticText* m_pLblVelCurve;
     wxStatusBar* m_pStatusbar;
+    wxTextCtrl* m_pTxtLibEntryDescription;
     wxTextCtrl* m_pTxtOperationName;
     wxTextCtrl* m_pTxtVoiceName;
     wxTimer m_timer1s;
@@ -255,12 +287,15 @@ private:
     void OnVzSave();
     void OnKeyboardNoteOn(wxCommandEvent& event); // Handle on-screen MIDI keyboard note-on events
     void OnKeyboardNoteOff(wxCommandEvent& event); // Handle on-screen MIDI keyboard note-off events
+    void OnLibEntrySelected(wxListEvent& event);
+    void PopulateLibraryGroups();
 
     void OnMidiReceive(wxCommandEvent& event); //!< Handle MIDI receive events
     wxMidiSystem* m_pMidi;
     wxMidiInDevice* m_pMidiIn;
     wxMidiOutDevice* m_pMidiOut;
     bool m_bNoteOn;
+    bool m_bAllowUpdate = true; // True to avoid updating controls, e.g. whilst updating interface with saved values
     VZVoice* m_pVoice; //Currently edited voice
     VZVoice* m_pVoiceMidi; //Last voice received via MIDI
     VZOperation* m_pOperation; //Currently edited operational memory
