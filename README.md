@@ -50,7 +50,11 @@ There are three tabs within the editor:
 
 # Voice Library
 
-The Voice Library lists each voice within the currently loaded library. A library may be loaded by using the File->Open menu option. Each voice has a name, description, group and type. Currently these parameters may not be edited but will be in a future release.
+The Voice Library lists each voice within the currently loaded library.
+
+![image](https://user-images.githubusercontent.com/3158323/73608145-05fcb280-45b7-11ea-8f62-e53b91017aa7.png)
+
+A library may be loaded by using the File->Open menu option. Each voice has a name, description, group and type. Currently these parameters may not be edited but will be in a future release.
 
 Double clicking on voice will open the Voice Editor and load the voice data.
 
