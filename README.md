@@ -79,7 +79,11 @@ Operation editor is not yet implemented but should work similar to voice editor,
 
 # On-screen Keyboard
 
-There is a checkbox that allows an MIDI keyboard to be displayed. The keyboard acts as a monophonic MIDI controller. Left clicking on a key will send a note on MIDI event. Releasing the left mouse button will send a note off MIDI event. Click and hold whilst moving between keys will trigger a glissando. The further up the key the click, the quieter the note on (lower velocity.) MIDI channel may be selected and program change may be sent.
+There is a checkbox that allows an MIDI keyboard to be displayed.
+
+![image](https://user-images.githubusercontent.com/3158323/73608111-9ab2e080-45b6-11ea-9ff2-b9349c51bf1a.png)
+
+The keyboard acts as a monophonic MIDI controller. Left clicking on a key will send a note on MIDI event. Releasing the left mouse button will send a note off MIDI event. Click and hold whilst moving between keys will trigger a glissando. The further up the key the click, the quieter the note on (lower velocity.) MIDI channel may be selected and program change may be sent.
 
 # Notes
 
@@ -92,4 +96,5 @@ MIDI ports are not dynamically updated. Adding a port will not show in the list 
 # Testing
 
 Unit tests are currently under development. It is an aspiration to have automated testing and continuous integration of test results.
+
 Manual test cases are [here](https://riban.app.testcollab.com/index.php/#/new/project/4).
