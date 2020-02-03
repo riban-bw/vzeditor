@@ -93,12 +93,12 @@ private:
     void OnKeyProgram(wxSpinEvent& event);
     void Onm_pChkKeyboardClick(wxCommandEvent& event);
     void Onm_pCmbOutPortSelect(wxCommandEvent& event);
-    void OnAddToLib(wxCommandEvent& event);
     void OnTimer1s(wxTimerEvent& event);
     void OnLibToolAdd(wxCommandEvent& event);
     void OnTxtLibEntryDescription(wxCommandEvent& event);
     void OnCmbLibEntryGroup(wxCommandEvent& event);
     void OnLibToolDelete(wxCommandEvent& event);
+    void OnCmbLibEntryGroupDropdown(wxCommandEvent& event);
     //*)
     void OnGridSort(wxCommandEvent& event);
     void OnLibSort(wxListEvent& event);
@@ -115,10 +115,9 @@ private:
     static const long ID_BTNGETVOICE;
     static const long ID_BTNGETOPERATION;
     static const long ID_BTNSAVEDUMP;
-    static const long ID_BUTTONADDTOLIB;
     static const long ID_BITMAPBUTTONLIBTOOLADD;
     static const long ID_BITMAPBUTTONLIBTOOLDELETE;
-    static const long ID_BITMAPBUTTON1;
+    static const long ID_BITMAPBUTTONLIBTOOLSAVE;
     static const long ID_BITMAPBUTTONLIBTOOLSAVEAS;
     static const long ID_BITMAPBUTTONLIBTOOLOPRN;
     static const long ID_LSTLIB;
@@ -201,7 +200,6 @@ private:
     wxBoxSizer* m_pSizerKeyboard;
     wxBoxSizer* m_pSizerLines;
     wxBoxSizer* m_pSizerMain;
-    wxButton* m_bBtnAddToLib;
     wxButton* m_pBtnGetOperation;
     wxButton* m_pBtnGetVoice;
     wxButton* m_pBtnSaveDump;
@@ -295,7 +293,7 @@ private:
     wxMidiInDevice* m_pMidiIn;
     wxMidiOutDevice* m_pMidiOut;
     bool m_bNoteOn;
-    bool m_bAllowUpdate = true; // True to avoid updating controls, e.g. whilst updating interface with saved values
+    bool m_bInhibitUpdate = true; // True to avoid updating controls, e.g. whilst updating interface with saved values
     VZVoice* m_pVoice; //Currently edited voice
     VZVoice* m_pVoiceMidi; //Last voice received via MIDI
     VZOperation* m_pOperation; //Currently edited operational memory

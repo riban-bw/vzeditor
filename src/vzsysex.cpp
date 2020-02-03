@@ -29,6 +29,11 @@ VZSysex::~VZSysex()
     m_pSysEx = 0;
 }
 
+void VZSysex::Update()
+{
+    Validate(true);
+}
+
 wxByte VZSysex::GetValue(unsigned int nOffset, wxByte nMask)
 {
     wxByte nValue = GetByteFromSysex(nOffset);

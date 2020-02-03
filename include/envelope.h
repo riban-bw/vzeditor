@@ -14,6 +14,7 @@
 
 using namespace std;
 
+/** Structure represents a step within an envelope */
 struct EnvelopeStep
 {
     wxByte level;
@@ -22,15 +23,19 @@ struct EnvelopeStep
     bool velocityRate;
 };
 
+/** Envelope class provides an interface to a VZVoice envelope.
+*   Data is abstracted from the raw data to provide fast, simple access.
+*   Abstraction layer is implemented within VZModule class which.
+*/
 class Envelope
 {
 public:
-    /** @brief  Construct envelope object
+    /** @brief  Construct Envelope object
     *   @param  nSteps Quantity of steps in envelope [Default: 8]
     */
     Envelope(wxByte nSteps = 8);
 
-    /** @brief  Destruct envelope object*/
+    /** @brief  Destruct Envelope object*/
     virtual ~Envelope();
 
     /** @brief  Get the quantity of steps in the envelope

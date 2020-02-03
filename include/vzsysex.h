@@ -23,7 +23,7 @@
 class VZSysex
 {
 public:
-    /** @brief  Construct vzsysex object from existing SysEx data
+    /** @brief  Construct VZSysex object from existing SysEx data
     *   @param  nPayloadSize Quantity of bytes in payload
     *   @param  pData Pointer to a buffer containing raw SysEx operation data [default=null]
     *   @param  bPayload True if pData contains payload only (create default header and footer) [Default: false]
@@ -31,11 +31,16 @@ public:
     */
     VZSysex(unsigned int nPayload, wxByte* pData = NULL, bool bPayload = false);
 
-    /** @brief  Default destruct vzsysex object
+    /** @brief  Default destruct VZSysex object
     */
     virtual ~VZSysex();
 
     //!@todo implement copy operator
+
+    /** @brief  Update sysex data with content of all abstract layers and fixes header
+    *   @note   Virtual function must be implemented in derived classes
+    */
+    virtual void Update();
 
     /** @brief  Check if data has been changed since last validate / save (***which)
     *   @retval bool True if data has been modified

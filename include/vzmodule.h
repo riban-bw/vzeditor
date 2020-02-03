@@ -21,6 +21,8 @@
 //*)
 #include "VZVoice.h"
 
+/** VZModule class is a graphical control that presents an interface to a module within a VZ tone
+*/
 class VZModule: public wxPanel
 {
 public:

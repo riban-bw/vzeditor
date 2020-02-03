@@ -189,6 +189,7 @@ void VZModule::SetModule(wxByte nModule)
 
 void VZModule::UpdateGui()
 {
+    m_pGraphDCA->InhibitUpdates();    m_pGraphKeyfollow->InhibitUpdates();
     m_pSizerModule->GetStaticBox()->SetLabel(wxString::Format("M%d", m_nModule + 1));
     if(m_nModule < 3 || !(m_nModule %2))
     {
@@ -214,7 +215,9 @@ void VZModule::UpdateGui()
     {
         nX += pEnvelope->GetRate(nNode);
         unsigned int nY = m_pGraphDCA->GetMaxHeight() - pEnvelope->GetLevel(nNode);
-        m_pGraphDCA->AddNode(wxPoint(nX, nY));
+        int nIndex = m_pGraphDCA->AddNode(wxPoint(nX, nY));
+        if((int)pEnvelope->GetSustainStep() == nIndex)
+            m_pGraphDCA->SetSustain(nIndex);
     }
     KeyFollow* pKeyFollow = m_pVoice->GetDCAKeyFollow(m_nModule);
     for(unsigned int nNode = 1; nNode < pKeyFollow->GetSteps(); ++nNode)
@@ -224,6 +227,8 @@ void VZModule::UpdateGui()
         m_pGraphKeyfollow->AddNode(wxPoint(nX, nY));
     }
     Enable(m_pVoice->IsModuleEnabled(m_nModule));
+    m_pGraphDCA->InhibitUpdates(false);
+    m_pGraphKeyfollow->InhibitUpdates(false);
 }
 
 void VZModule::OnEnable(wxCommandEvent& event)
@@ -325,13 +330,14 @@ void VZModule::OnAmpEnvChange(wxCommandEvent& event)
     Envelope* pEnvelope = m_pVoice->GetDCAEnvelope(m_nModule);
     for(nNode = 1; nNode < m_pGraphDCA->GetNodeCount(); ++nNode)
     {
+        //!@todo We should allow adjustment of node zero
         //Start from 1 because node 0 is at 0,0
         pEnvelope->SetLevel(nNode, m_pGraphKeyfollow->GetMaxHeight() - m_pGraphDCA->GetNode(nNode).y);
         pEnvelope->SetRate(nNode, m_pGraphDCA->GetNode(nNode).x - nLastX);
         nLastX = m_pGraphDCA->GetNode(nNode).x;
-        //!@todo Identify Sustain step
     }
     pEnvelope->SetLastStep(nNode);
+    pEnvelope->SetSustainStep(m_pGraphDCA->GetSustain());
 }
 
 void VZModule::OnKeyEnvChange(wxCommandEvent& event)

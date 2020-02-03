@@ -35,25 +35,26 @@ enum VZ_LINE
     RING    = 2
 };
 
-/** Provides interface to VZ SysEx voice data
-*   @note   Data is stored as raw SysEx data
+/** VZVoice class provides an interface to VZ SysEx voice data
+*   @note   The class implements a layer over raw SysEx data held within a data blob within the object
+*   VZVoice provides abstraction layer between raw SysEx data and interface layers.
 */
 class VZVoice : public VZSysex
 {
 public:
-    /** @brief  Construct vzvoice object
+    /** @brief  Construct VZVoice object
     *   @note   Initialises voice data to defaults
     */
     VZVoice();
 
-    /** @brief  Construct vzvoice object from existing SysEx data
+    /** @brief  Construct VZVoice object from existing SysEx data
     *   @param  pData Pointer to a buffer containing raw SysEx voice data
     *   @param  bPayload True if pData contains payload only (create default header and footer) [Default: false]
     *   @note   Initialises any invalid values to defaults and sets modified field
     */
     VZVoice(wxByte* pData, bool bPayload = false);
 
-    /** @brief  Default destruct vzvoice object
+    /** @brief  Default destruct VZVoice object
     */
     virtual ~VZVoice();
 
@@ -62,6 +63,10 @@ public:
     *   @retval bool True if data is valid
     */
     bool Validate(bool bFix = false);
+
+    /** @brief  Update SysEx data with content of all abstract layers and fixes header
+    */
+    void Update();
 
     /** @brief  Is the external phase enabled for a module
     *   @param  nModule Index of module (zero base) [0..7]

@@ -37,6 +37,19 @@ bool VZVoice::Validate(bool bFix)
     return m_bModified;
 }
 
+void VZVoice::Update()
+{
+    for(unsigned int nModule = 0; nModule < 8; ++nModule)
+    {
+        UpdateDCAEnvelope(nModule);
+        UpdateDCAKeyFollow(nModule);
+    }
+    UpdateDCOKeyFollow();
+    UpdateDCOEnvelope();
+    UpdateDCOKeyFollow();
+    Validate(true);
+}
+
 bool VZVoice::IsExtPhase(wxByte nModule)
 {
     switch(nModule)
@@ -232,7 +245,7 @@ bool VZVoice::UpdateDCAEnvelope(wxByte nModule)
     if(nModule > 7)
         return false;
     Envelope* pEnv = &m_envDCA[nModule];
-    for(wxByte nStep = 0; nStep < pEnv->GetSteps(); ++ nStep)
+    for(wxByte nStep = 0; nStep < pEnv->GetSteps(); ++nStep)
     {
         SetValue(21 + nModule + nStep * 18, 0x7F, pEnv->GetRate(nStep));
         SetValue(21 + nModule + nStep * 18, 0x80, pEnv->IsVelocityRateEnabled(nStep));

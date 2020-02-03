@@ -118,7 +118,7 @@ bool VZLibrary::Load(const wxString &sFilename)
     return true;
 }
 
-bool VZLibrary::Save()
+bool VZLibrary::Save(wxString sFilename)
 {
     //!@todo Use filename as parameter
     wxXmlDocument xmlDoc;
@@ -134,6 +134,8 @@ bool VZLibrary::Save()
         pNode->AddAttribute("description", pEntry->description);
         pNode->AddAttribute("filename", pEntry->filename);
     }
+    if(!sFilename.IsEmpty())
+        m_sFilename = sFilename;
     m_bDirty = xmlDoc.Save(m_sFilename);
     return m_bDirty;
 }
@@ -150,11 +152,18 @@ void VZLibrary::Close()
 
 bool VZLibrary::AddEntry(const wxString &sName, const wxString &sFilename, const wxString &sDescription, const wxString &sGroup, const wxString &sType)
 {
+    for(auto it = m_vEntries.begin(); it != m_vEntries.end(); ++it)
+    {
+        vzLibEntry* pEntry = *it;
+        if(sFilename.IsSameAs(pEntry->filename))
+            return false;
+    }
     vzLibEntry* pEntry = new vzLibEntry;
     pEntry->name = sName;
     pEntry->type = sType;
     pEntry->description = sDescription;
     pEntry->group = sGroup;
+    pEntry->filename = sFilename;
     m_vEntries.push_back(pEntry);
     m_bDirty = true;
     return true;
@@ -182,6 +191,7 @@ bool VZLibrary::SetEntryName(unsigned long lIndex, wxString sName)
     if(lIndex > m_vEntries.size())
         return false;
     m_vEntries[lIndex]->name = sName;
+    m_bDirty = true;
     return true;
 }
 
@@ -197,6 +207,7 @@ bool VZLibrary::SetEntryDescription(unsigned long lIndex, wxString sDescription)
     if(lIndex > m_vEntries.size())
         return false;
     m_vEntries[lIndex]->description = sDescription;
+    m_bDirty = true;
     return true;
 }
 
@@ -228,6 +239,7 @@ bool VZLibrary::SetEntryType(unsigned long lIndex, wxString sType)
     if(lIndex > m_vEntries.size())
         return false;
     m_vEntries[lIndex]->type = sType;
+    m_bDirty = true;
     return true;
 }
 
@@ -259,7 +271,6 @@ vector<vzLibEntry*>::iterator VZLibrary::GetEntryIt(wxString sFilename)
     }
     return m_vEntries.end();
 }
-
 
 long VZLibrary::GetCount()
 {

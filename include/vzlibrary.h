@@ -41,9 +41,10 @@ public:
     bool Load(const wxString &sFilename);
 
     /** @brief  Save library to file
+    *   @param  sFilename Full path and filename of XML library file [Default: Current file]
     *   @retval bool True on success
     */
-    bool Save();
+    bool Save(wxString sFilename = wxEmptyString);
 
     void Close();
 
