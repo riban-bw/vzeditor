@@ -39,6 +39,8 @@ VZEditor starts and shows its graphical user interface:
 
 The MIDI input and output port may be selected from the drop-down lists in the header.
 
+The Casio VZ synthesizer must be configured to send and receive System Exclusive MIDI messages, e.g enable menu 3-04 on VZ-1.
+
 When VZ sysex data is received and correctly parsed, the "Get Voice" or "Get Operation" buttons enable. Pressing one of these will take the received voice / operational data and populate the appropriate editor page. The "New Library" button creates a new library and saves the currently loaded voice and operational data.
 
 The "Send" button sends the voice or operational data currently being edited. If the "Auto Update" box is ticked then this is sent after each parameter change.
@@ -89,11 +91,32 @@ There is a checkbox that allows an MIDI keyboard to be displayed.
 
 The keyboard acts as a monophonic MIDI controller. Left clicking on a key will send a note on MIDI event. Releasing the left mouse button will send a note off MIDI event. Click and hold whilst moving between keys will trigger a glissando. The further up the key the click, the quieter the note on (lower velocity.) MIDI channel may be selected and program change may be sent.
 
+# Accessibility and keyboard short-cuts
+
+VZEditor is designed to be accessible for a wide range of users with varying abilities. All elements should be controllable via keyboard short-cuts and pointer, e.g. mouse motion and click. Some mouse operations may require a right mouse button which may be emulated with Ctrl+left click on single button mouse. Each selectable control has a tool-tip which describes its use. Screen readers may be configured to read these tool-tips.
+
+Keyboard short-cuts:
+
+Key | Modifier | Action
+--- | -------- | ------
+ 0 | ALT | Focus MIDI input selector in header
+ 1 | ALT | Show library editor and focus list
+ 2 | ALT | Show voice editor
+ 3 | ALT | Show operation editor
+ K | ALT | Show keyboard and focus midi channel selector
+ F | ALT | Show file menu
+ V | ALT | Show view menu
+ H | ALT | Show help menu
+F4 | ALT | Close application
+ O | CTRL | Open file
+ S | CTRL | Save file
+F1 | None | Show about dialog 
+
 # Notes
 
-Each voice and operation data is saved as an individual file.
+Each voice and operation data is saved as an individual file. Library points to these files so deleting or moving files may break library. It may be advantageous to archive the library and sysex files in a single file (issue #29).
 
-Library points to these files so deleting or moving files may break library.
+Library does not yet assign tones to MIDI programs (issue #28).
 
 MIDI ports are not dynamically updated. Adding a port will not show in the list whilst VZEditor is running and removing a port may crash VZEditor (issue #2).
 

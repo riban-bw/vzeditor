@@ -226,7 +226,7 @@ void VZModule::UpdateGui()
         unsigned int nY = m_pGraphDCA->GetMaxHeight() - pKeyFollow->GetLevel(nNode);
         m_pGraphKeyfollow->AddNode(wxPoint(nX, nY));
     }
-    Enable(m_pVoice->IsModuleEnabled(m_nModule));
+    EnableControls(m_pVoice->IsModuleEnabled(m_nModule));
     m_pGraphDCA->InhibitUpdates(false);
     m_pGraphKeyfollow->InhibitUpdates(false);
 }

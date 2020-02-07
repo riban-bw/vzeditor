@@ -5,99 +5,103 @@
 		<centered>1</centered>
 		<icon code="wxBitmap(icon_xpm)" />
 		<size>-1,-1</size>
+		<tooltip>Set keyboard transpose</tooltip>
 		<id_arg>0</id_arg>
+		<style>wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL</style>
 		<object class="wxBoxSizer" variable="m_pSizerMain" member="yes">
 			<orient>wxVERTICAL</orient>
 			<object class="sizeritem">
-				<object class="wxBoxSizer" variable="BoxSizer8" member="no">
-					<object class="sizeritem">
-						<object class="wxStaticText" name="ID_STATICTEXTMIDIINPUT" variable="m_pLblMidiInputPort" member="yes">
-							<label>MIDI Input</label>
+				<object class="wxPanel" name="ID_PANEL1" variable="Panel1" member="yes">
+					<object class="wxBoxSizer" variable="BoxSizer22" member="no">
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXTMIDIINPUT" variable="m_pLblMidiInputPort" member="yes">
+								<label>MIDI Input</label>
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxChoice" name="ID_CMBINPORT" variable="m_pCmbInPort" member="yes">
-							<tooltip>Select MIDI input port</tooltip>
-							<handler function="OnInPortSelect" entry="EVT_CHOICE" />
+						<object class="sizeritem">
+							<object class="wxChoice" name="ID_CMBINPORT" variable="m_pCmbInPort" member="yes">
+								<tooltip>Select MIDI input port</tooltip>
+								<handler function="OnInPortSelect" entry="EVT_CHOICE" />
+							</object>
+							<flag>wxALL</flag>
+							<border>5</border>
 						</object>
-						<flag>wxALL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxStaticText" name="ID_STATICTEXTMIDIOUTPUT" variable="m_pLblMidiOutputPort" member="yes">
-							<label>MIDI Output</label>
+						<object class="sizeritem">
+							<object class="wxStaticText" name="ID_STATICTEXTMIDIOUTPUT" variable="m_pLblMidiOutputPort" member="yes">
+								<label>MIDI Output</label>
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxChoice" name="ID_CMBOUTPORT" variable="m_pCmbOutPort" member="yes">
-							<tooltip>Select MIDI output port</tooltip>
-							<handler function="OnOutPortSelect" entry="EVT_CHOICE" />
+						<object class="sizeritem">
+							<object class="wxChoice" name="ID_CMBOUTPORT" variable="m_pCmbOutPort" member="yes">
+								<tooltip>Select MIDI output port</tooltip>
+								<handler function="OnOutPortSelect" entry="EVT_CHOICE" />
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxCheckBox" name="ID_CHECKBOXKEYBOARD" variable="m_pChkKeyboard" member="yes">
-							<label>Keyboard</label>
-							<handler function="OnChkKeyboard" entry="EVT_CHECKBOX" />
+						<object class="sizeritem">
+							<object class="wxCheckBox" name="ID_CHECKBOXKEYBOARD" variable="m_pChkKeyboard" member="yes">
+								<label>Keyboard</label>
+								<handler function="OnChkKeyboard" entry="EVT_CHECKBOX" />
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="spacer">
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-						<option>1</option>
-					</object>
-					<object class="sizeritem">
-						<object class="wxCheckBox" name="ID_CHKAUTOUPDATE" variable="m_pChkAutoUpdate" member="yes">
-							<label>Auto Update</label>
-							<tooltip>Enable automatic, immediate send of changes</tooltip>
-							<handler function="Onm_pChkKeyboardClick" entry="EVT_CHECKBOX" />
+						<object class="spacer">
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+							<option>1</option>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxButton" name="ID_BTNSEND" variable="m_pBtnSend" member="yes">
-							<label>Send</label>
-							<tooltip>Send data to MIDI output</tooltip>
-							<handler function="OnBtnSendClick" entry="EVT_BUTTON" />
+						<object class="sizeritem">
+							<object class="wxCheckBox" name="ID_CHKAUTOUPDATE" variable="m_pChkAutoUpdate" member="yes">
+								<label>Auto Update</label>
+								<tooltip>Enable automatic, immediate send of changes</tooltip>
+								<handler function="Onm_pChkKeyboardClick" entry="EVT_CHECKBOX" />
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxButton" name="ID_BTNGETVOICE" variable="m_pBtnGetVoice" member="yes">
-							<label>Get Voice</label>
-							<enabled>0</enabled>
-							<tooltip>Load voice data recieved from MIDI input</tooltip>
-							<handler function="OnBtnGetVoice" entry="EVT_BUTTON" />
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BTNSEND" variable="m_pBtnSend" member="yes">
+								<label>Send</label>
+								<tooltip>Send data to MIDI output</tooltip>
+								<handler function="OnBtnSendClick" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxButton" name="ID_BTNGETOPERATION" variable="m_pBtnGetOperation" member="yes">
-							<label>Get Operation</label>
-							<enabled>0</enabled>
-							<tooltip>Load operational data recieved from MIDI input</tooltip>
-							<handler function="OnBtnGetOperation" entry="EVT_BUTTON" />
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BTNGETVOICE" variable="m_pBtnGetVoice" member="yes">
+								<label>Get Voice</label>
+								<enabled>0</enabled>
+								<tooltip>Load voice data recieved from MIDI input</tooltip>
+								<handler function="OnBtnGetVoice" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
-					</object>
-					<object class="sizeritem">
-						<object class="wxButton" name="ID_BTNSAVEDUMP" variable="m_pBtnSaveDump" member="yes">
-							<label>New Library</label>
-							<handler function="OnBtnSaveDump" entry="EVT_BUTTON" />
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BTNGETOPERATION" variable="m_pBtnGetOperation" member="yes">
+								<label>Get Operation</label>
+								<enabled>0</enabled>
+								<tooltip>Load operational data recieved from MIDI input</tooltip>
+								<handler function="OnBtnGetOperation" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
 						</object>
-						<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-						<border>5</border>
+						<object class="sizeritem">
+							<object class="wxButton" name="ID_BTNSAVEDUMP" variable="m_pBtnSaveDump" member="yes">
+								<label>New Library</label>
+								<handler function="OnBtnSaveDump" entry="EVT_BUTTON" />
+							</object>
+							<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+							<border>5</border>
+						</object>
 					</object>
 				</object>
 				<flag>wxALL|wxEXPAND</flag>
@@ -769,49 +773,182 @@
 						</object>
 						<label>Operation Editor</label>
 					</object>
+					<object class="notebookpage">
+						<object class="wxPanel" name="ID_PANELMISC" variable="m_pPnlMisc" member="yes">
+							<object class="wxBoxSizer" variable="BoxSizer8" member="no">
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizer8" member="no">
+										<label>Master Volume</label>
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxSlider" name="ID_SLIDERVOLUME" variable="m_pSliderVolume" member="yes">
+												<value>100</value>
+												<max>127</max>
+												<tooltip>Set master tune</tooltip>
+												<style>wxSL_VERTICAL|wxSL_LABELS|wxSL_RIGHT|wxSL_INVERSE</style>
+												<handler function="OnMasterVolume" entry="EVT_COMMAND_SCROLL_CHANGED" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizer4" member="no">
+										<label>Master Tune</label>
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxSlider" name="ID_SLIDERMASTERTUNE" variable="m_pSliderMasterTune" member="yes">
+												<min>-64</min>
+												<max>64</max>
+												<tooltip>Set master tune</tooltip>
+												<style>wxSL_VERTICAL|wxSL_LABELS|wxSL_RIGHT|wxSL_INVERSE</style>
+												<handler function="OnMasterTune" entry="EVT_COMMAND_SCROLL_CHANGED" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizer5" member="no">
+										<label>Transpose</label>
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxSlider" name="ID_SLIDERTRANSPOSE" variable="m_pSliderTranspose" member="yes">
+												<min>-5</min>
+												<max>6</max>
+												<style>wxSL_VERTICAL|wxSL_LABELS|wxSL_INVERSE</style>
+												<handler function="OnTranspose" entry="EVT_COMMAND_SCROLL_CHANGED" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizer7" member="no">
+										<label>CZ Bend Range</label>
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxSlider" name="ID_SLIDERCZBENDRANGE" variable="m_pSliderCZBendRange" member="yes">
+												<max>48</max>
+												<tooltip>Set CZ bend range</tooltip>
+												<style>wxSL_VERTICAL|wxSL_LABELS|wxSL_INVERSE</style>
+												<handler function="OnCzBendRange" entry="EVT_COMMAND_SCROLL_CHANGED" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+								<object class="sizeritem">
+									<object class="wxStaticBoxSizer" variable="StaticBoxSizer6" member="no">
+										<label>Mode</label>
+										<orient>wxVERTICAL</orient>
+										<object class="sizeritem">
+											<object class="wxChoice" name="ID_CHOICEMODE" variable="m_pChoiceMode" member="yes">
+												<content>
+													<item>Normal Mode</item>
+													<item>Combination Mode</item>
+													<item>Operation Mode</item>
+													<item>Multichannel Mode</item>
+													<item>Multichannel Mode Poly=0</item>
+													<item>Multichannel Mode Poly=1</item>
+												</content>
+												<tooltip>Select VZ mode</tooltip>
+												<handler function="OnMode" entry="EVT_CHOICE" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+											<option>1</option>
+										</object>
+										<object class="sizeritem">
+											<object class="wxRadioBox" name="ID_RADIOBOXCARDBANK" variable="m_pRadioCardbank" member="yes">
+												<label>Card Bank</label>
+												<content>
+													<item>1</item>
+													<item>2</item>
+													<item>3</item>
+													<item>4</item>
+												</content>
+												<default>-1</default>
+												<tooltip>Select card bank</tooltip>
+												<handler function="OnCardBank" entry="EVT_RADIOBOX" />
+											</object>
+											<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+											<border>5</border>
+										</object>
+									</object>
+									<flag>wxALL</flag>
+									<border>5</border>
+									<option>1</option>
+								</object>
+							</object>
+						</object>
+						<label>Misc</label>
+					</object>
 				</object>
-				<flag>wxALL|wxEXPAND</flag>
+				<flag>wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND</flag>
 				<border>5</border>
 				<option>1</option>
 			</object>
 			<object class="sizeritem">
 				<object class="wxBoxSizer" variable="m_pSizerKeyboard" member="yes">
 					<object class="sizeritem">
-						<object class="wxBoxSizer" variable="BoxSizer21" member="no">
-							<orient>wxVERTICAL</orient>
-							<object class="sizeritem">
-								<object class="wxStaticText" name="ID_STATICTEXT14" variable="StaticText13" member="yes">
-									<label>MIDI Channel</label>
+						<object class="wxPanel" name="ID_PANEL2" variable="Panel2" member="yes">
+							<object class="wxBoxSizer" variable="BoxSizer21" member="no">
+								<orient>wxVERTICAL</orient>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT14" variable="StaticText13" member="yes">
+										<label>MIDI Channel</label>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
 								</object>
-								<flag>wxALL|wxEXPAND</flag>
-								<border>5</border>
-							</object>
-							<object class="sizeritem">
-								<object class="wxSpinCtrl" name="ID_SPIN_KEYCHAN" variable="m_pSpnKeyChannel" member="yes">
-									<value>1</value>
-									<min>1</min>
-									<max>16</max>
-									<handler function="OnKeyChan" entry="EVT_SPINCTRL" />
+								<object class="sizeritem">
+									<object class="wxSpinCtrl" name="ID_SPIN_KEYCHAN" variable="m_pSpnKeyChannel" member="yes">
+										<value>1</value>
+										<min>1</min>
+										<max>16</max>
+										<handler function="OnKeyChan" entry="EVT_SPINCTRL" />
+									</object>
+									<flag>wxALL</flag>
+									<border>5</border>
 								</object>
-								<flag>wxALL</flag>
-								<border>5</border>
-							</object>
-							<object class="sizeritem">
-								<object class="wxStaticText" name="ID_STATICTEXT15" variable="StaticText14" member="yes">
-									<label>Program</label>
+								<object class="sizeritem">
+									<object class="wxStaticText" name="ID_STATICTEXT15" variable="StaticText14" member="yes">
+										<label>Program</label>
+									</object>
+									<flag>wxALL|wxEXPAND</flag>
+									<border>5</border>
 								</object>
-								<flag>wxALL|wxEXPAND</flag>
-								<border>5</border>
-							</object>
-							<object class="sizeritem">
-								<object class="wxSpinCtrl" name="ID_SPINCTRL1" variable="m_pSpnProgram" member="yes">
-									<value>1</value>
-									<min>1</min>
-									<max>128</max>
-									<handler function="OnKeyProgram" entry="EVT_SPINCTRL" />
+								<object class="sizeritem">
+									<object class="wxSpinCtrl" name="ID_SPINCTRL1" variable="m_pSpnProgram" member="yes">
+										<value>1</value>
+										<min>1</min>
+										<max>128</max>
+										<handler function="OnKeyProgram" entry="EVT_SPINCTRL" />
+									</object>
+									<flag>wxALL</flag>
+									<border>5</border>
 								</object>
-								<flag>wxALL</flag>
-								<border>5</border>
 							</object>
 						</object>
 						<flag>wxALL|wxEXPAND</flag>
@@ -853,6 +990,45 @@
 					<accel>Alt-F4</accel>
 					<help>Quit the application</help>
 					<handler function="OnQuit" entry="EVT_MENU" />
+				</object>
+			</object>
+			<object class="wxMenu" variable="Menu3" member="yes">
+				<label>&amp;View</label>
+				<object class="wxMenuItem" name="ID_MENU_HEADER" variable="MenuItem7" member="yes">
+					<label>&amp;Header</label>
+					<accel>ALT+0</accel>
+					<help>Move focus to header</help>
+					<handler function="OnMenuShow" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENU_LIBRARY" variable="Menu4" member="yes">
+					<label>&amp;Library</label>
+					<accel>ALT+1</accel>
+					<help>Show library editor</help>
+					<handler function="OnMenuShow" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENU_VOICE" variable="MenuItem5" member="yes">
+					<label>&amp;Voice</label>
+					<accel>ALT+2</accel>
+					<help>Show voice editor</help>
+					<handler function="OnMenuShow" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENU_OPERATION" variable="MenuItem6" member="yes">
+					<label>&amp;Operation</label>
+					<accel>ALT+3</accel>
+					<help>Show operation editor</help>
+					<handler function="OnMenuShow" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENU_MISC" variable="MenuItem9" member="yes">
+					<label>&amp;Misc</label>
+					<accel>ALT+4</accel>
+					<help>Show miscelaneous control panel</help>
+					<handler function="OnMenuShow" entry="EVT_MENU" />
+				</object>
+				<object class="wxMenuItem" name="ID_MENU_KEYBOARD" variable="MenuItem8" member="yes">
+					<label>&amp;Keyboard</label>
+					<accel>ALT+K</accel>
+					<help>Show on-screen MIDI keyboard</help>
+					<handler function="OnMenuShow" entry="EVT_MENU" />
 				</object>
 			</object>
 			<object class="wxMenu" variable="Menu2" member="no">

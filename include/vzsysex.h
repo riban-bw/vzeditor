@@ -96,6 +96,20 @@ public:
     */
     unsigned int GetSize(bool bPayload = false);
 
+    /** @brief  Set filename
+    *   @param  sFilename Absolute or relative filename
+    */
+    void SetFilename(wxString sFilename) { m_sFilename = sFilename; };
+
+    /** @brief  Get filename
+    *   @retval wxString Filename
+    */
+    wxString GetFilename() { return m_sFilename; };
+
+    /** @brief  Create a zip archive of sysex data
+    */
+    void Archive();
+
 protected:
     wxByte* m_pSysEx; //Raw sysex operation data
     unsigned int m_nPayloadSize; //Quantity of bytes in payload
@@ -108,5 +122,6 @@ protected:
     bool m_bModified; //True if any fields have changed since last validate / save ***We don't really mean save
 
 private:
+    wxString m_sFilename; //Filename of last file loaded into saved from this voice
 
 };

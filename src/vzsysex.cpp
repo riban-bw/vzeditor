@@ -9,6 +9,9 @@
 
 #include "vzsysex.h"
 #include <cstring>
+#include <wx/zipstrm.h>
+#include <wx/wfstream.h>
+#include <wx/txtstrm.h>
 
 static const unsigned int VZ_PAYLOAD_START = 7;
 
@@ -144,4 +147,28 @@ unsigned int VZSysex::GetSize(bool bPayload)
         return m_nPayloadSize;
     else
         return VZ_HEADER_SIZE + m_nPayloadSize + 2; //Sysex header, payload, checksum + sysex end
+}
+
+//!@todo Move this to library
+void VZSysex::Archive()
+{
+    // Create a file output stream
+    wxFileName fnFilename(m_sFilename);
+    fnFilename.SetExt("zip");
+    wxString sFilename = fnFilename.GetFullPath();
+
+    // Create stream to write to file
+	wxFFileOutputStream  fileout(sFilename);
+	// Create a zip output stream targetted at the file
+	wxZipOutputStream zipout(fileout);
+    // Create a zip entry for this data
+    wxZipEntry* zipEntry =  new wxZipEntry(GetFilename());
+    // Add the zip entry to the zip file
+    zipout.PutNextEntry(zipEntry);
+    // Write our raw data to stram
+    zipout.Write(m_pSysEx, GetSize());
+	zipout.CloseEntry();
+	zipout.Close();
+	fileout.Close();
+//	delete zipEntry;
 }

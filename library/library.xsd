@@ -1,18 +1,30 @@
 <?xml version="1.0" encoding="UTF-8"?>
+<!-- Schema describes the structure of a library configuration for riban VZEditor
+     See github.com/riban-bw/vzeditor
+-->
 <xs:schema xmlns:xs="http://www.w3.org/2001/XMLSchema" elementFormDefault="qualified">
   <xs:element name="vzlibrary">
     <xs:complexType>
       <xs:sequence>
-        <xs:element maxOccurs="unbounded" ref="vzvoice"/>
+        <xs:element maxOccurs="unbounded" ref="vzvoice"/> <!-- One entry per VZ Tone within the library-->
+        <xs:element maxOccurs="unbounded" ref="vzoperation"/>  <!-- One entry per VZ Operation within the library-->
       </xs:sequence>
     </xs:complexType>
   </xs:element>
   <xs:element name="vzvoice">
     <xs:complexType>
-      <xs:attribute name="description" use="required"/>
-      <xs:attribute name="filename" use="required"/>
-      <xs:attribute name="group" use="required" type="xs:NCName"/>
-      <xs:attribute name="name" use="required"/>
+      <xs:attribute name="name" use="required"/> <!-- Name of the VZ Tone as displayed in the VZ synth-->
+      <xs:attribute name="description" use="required"/> <!-- User defined description-->
+      <xs:attribute name="filename" use="required"/> <!-- Absolute or relative filename of file containing Tone SysEx-->
+      <xs:attribute name="group" use="required"/> <!-- User defined group-->
+    </xs:complexType>
+  </xs:element>
+  <xs:element name="vzoperation">
+    <xs:complexType>
+      <xs:attribute name="name" use="required"/> <!-- Name of the VZ Operation as displayed in the VZ synth-->
+      <xs:attribute name="description" use="required"/> <!-- User defined description-->
+      <xs:attribute name="filename" use="required"/> <!-- Absolute or relative filename of file containing Operation SysEx-->
+      <xs:attribute name="group" use="required"/> <!-- User defined group-->
     </xs:complexType>
   </xs:element>
 </xs:schema>

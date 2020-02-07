@@ -94,11 +94,18 @@ private:
     void Onm_pChkKeyboardClick(wxCommandEvent& event);
     void Onm_pCmbOutPortSelect(wxCommandEvent& event);
     void OnTimer1s(wxTimerEvent& event);
-    void OnLibToolAdd(wxCommandEvent& event);
     void OnTxtLibEntryDescription(wxCommandEvent& event);
     void OnCmbLibEntryGroup(wxCommandEvent& event);
+    void OnLibToolAdd(wxCommandEvent& event);
     void OnLibToolDelete(wxCommandEvent& event);
     void OnCmbLibEntryGroupDropdown(wxCommandEvent& event);
+    void OnMenuShow(wxCommandEvent& event);
+    void OnMasterVolume(wxScrollEvent& event);
+    void OnMasterTune(wxScrollEvent& event);
+    void OnTranspose(wxScrollEvent& event);
+    void OnCzBendRange(wxScrollEvent& event);
+    void OnMode(wxCommandEvent& event);
+    void OnCardBank(wxCommandEvent& event);
     //*)
     void OnGridSort(wxCommandEvent& event);
     void OnLibSort(wxListEvent& event);
@@ -115,6 +122,7 @@ private:
     static const long ID_BTNGETVOICE;
     static const long ID_BTNGETOPERATION;
     static const long ID_BTNSAVEDUMP;
+    static const long ID_PANEL1;
     static const long ID_BITMAPBUTTONLIBTOOLADD;
     static const long ID_BITMAPBUTTONLIBTOOLDELETE;
     static const long ID_BITMAPBUTTONLIBTOOLSAVE;
@@ -170,15 +178,29 @@ private:
     static const long ID_SCROLLEDWINDOW4;
     static const long ID_SPLITTERWINDOW2;
     static const long ID_PNLOPERATION;
+    static const long ID_SLIDERVOLUME;
+    static const long ID_SLIDERMASTERTUNE;
+    static const long ID_SLIDERTRANSPOSE;
+    static const long ID_SLIDERCZBENDRANGE;
+    static const long ID_CHOICEMODE;
+    static const long ID_RADIOBOXCARDBANK;
+    static const long ID_PANELMISC;
     static const long ID_NOTEBOOK;
     static const long ID_STATICTEXT14;
     static const long ID_SPIN_KEYCHAN;
     static const long ID_STATICTEXT15;
     static const long ID_SPINCTRL1;
+    static const long ID_PANEL2;
     static const long ID_KBD;
     static const long idMenuOpen;
     static const long idMenuSave;
     static const long idMenuQuit;
+    static const long ID_MENU_HEADER;
+    static const long ID_MENU_LIBRARY;
+    static const long ID_MENU_VOICE;
+    static const long ID_MENU_OPERATION;
+    static const long ID_MENU_MISC;
+    static const long ID_MENU_KEYBOARD;
     static const long idMenuAbout;
     static const long ID_STATUSBAR1;
     static const long ID_TIMER1S;
@@ -206,16 +228,28 @@ private:
     wxButton* m_pBtnSend;
     wxCheckBox* m_pChkAutoUpdate;
     wxCheckBox* m_pChkKeyboard;
+    wxChoice* m_pChoiceMode;
     wxChoice* m_pCmbInPort;
     wxChoice* m_pCmbOutPort;
     wxChoice* m_pCmbVelCurve;
     wxComboBox* m_pCmbLibEntryGroup;
+    wxMenu* Menu3;
+    wxMenuItem* Menu4;
     wxMenuItem* MenuItem3;
     wxMenuItem* MenuItem4;
+    wxMenuItem* MenuItem5;
+    wxMenuItem* MenuItem6;
+    wxMenuItem* MenuItem7;
+    wxMenuItem* MenuItem8;
+    wxMenuItem* MenuItem9;
     wxNotebook* m_pNotebook;
+    wxPanel* Panel1;
+    wxPanel* Panel2;
     wxPanel* m_pPnlLibrary;
+    wxPanel* m_pPnlMisc;
     wxPanel* m_pPnlOperation;
     wxPanel* m_pPnlVoice;
+    wxRadioBox* m_pRadioCardbank;
     wxRadioBox* m_pRadioTremeloMulti;
     wxRadioBox* m_pRadioTremeloWaveform;
     wxRadioBox* m_pRadioVibratoMulti;
@@ -224,8 +258,11 @@ private:
     wxScrolledWindow* ScrolledWindow2;
     wxScrolledWindow* m_pScrollWinVoiceEditor;
     wxScrolledWindow* m_pScrollwindowGlobalParameters;
+    wxSlider* m_pSliderCZBendRange;
     wxSlider* m_pSliderLevel;
+    wxSlider* m_pSliderMasterTune;
     wxSlider* m_pSliderOctave;
+    wxSlider* m_pSliderTranspose;
     wxSlider* m_pSliderTremeloDelay;
     wxSlider* m_pSliderTremeloDepth;
     wxSlider* m_pSliderTremeloRate;
@@ -233,6 +270,7 @@ private:
     wxSlider* m_pSliderVibratoDelay;
     wxSlider* m_pSliderVibratoDepth;
     wxSlider* m_pSliderVibratoRate;
+    wxSlider* m_pSliderVolume;
     wxSpinCtrl* m_pSpnKeyChannel;
     wxSpinCtrl* m_pSpnProgram;
     wxSplitterWindow* SplitterWindow2;
@@ -268,7 +306,7 @@ private:
 
     void CloseInput(); //!< Open MIDI input port
     void CloseOutput(); //!< Close MIDI input port
-    void Save(unsigned int nType); //!< Save file (nType = type of file to save)
+    void Save(unsigned int nType, wxString sFilename = wxEmptyString); //!< Save file (nType = type of file to save)
     bool LoadFile(wxString sFilename = wxEmptyString);
     void Send();
     void GetVoice();
@@ -302,6 +340,7 @@ private:
     wxByte m_acRawVoiceMidi[VZ_HEADER_SIZE + VZ_VOICE_PAYLOAD_SIZE + 1]; //Buffer to hold raw sysex voice received via MIDI
     wxByte m_acRawOperationMidi[VZ_HEADER_SIZE + VZ_OPERATION_PAYLOAD_SIZE + 1]; //Buffer to hold raw sysex operation data received via MIDI
     VZLibrary* m_pvzLib; //Library
+    unsigned int m_anProgram[16]; //Last selected MIDI program for each MIDI channel
 
     DECLARE_EVENT_TABLE()
 };
