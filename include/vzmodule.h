@@ -107,8 +107,8 @@ private:
     void OnSensitivity(wxScrollEvent& event);
     //*)
     void EnableControls(bool bEnable);
-    void OnAmpEnvChange(wxCommandEvent& event);
-    void OnKeyEnvChange(wxCommandEvent& event);
+    void OnAmpEnvChange(wxCommandEvent& event); //Handle amplitude envelope gui change
+    void OnKeyEnvChange(wxCommandEvent& event); //Handle key follow envelope gui change
 
     DECLARE_EVENT_TABLE()
 };

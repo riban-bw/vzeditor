@@ -244,6 +244,7 @@ bool VZVoice::UpdateDCAEnvelope(wxByte nModule)
 {
     if(nModule > 7)
         return false;
+    InhibitEvents(true);
     Envelope* pEnv = &m_envDCA[nModule];
     for(wxByte nStep = 0; nStep < pEnv->GetSteps(); ++nStep)
     {
@@ -255,6 +256,8 @@ bool VZVoice::UpdateDCAEnvelope(wxByte nModule)
     SetValue(165 + nModule, 0x70, pEnv->GetLastStep());
     SetValue(165 + nModule, 0x07, pEnv->GetAmpSens());
     SetValue(175 + nModule, 0x7F, pEnv->GetDepth());
+    InhibitEvents(false);
+    SendEvent();
     return true;
 }
 
@@ -277,6 +280,7 @@ Envelope* VZVoice::GetDCOEnvelope()
 
 bool VZVoice::UpdateDCOEnvelope()
 {
+    InhibitEvents();
     Envelope* pEnv = &m_envDCO;
     for(wxByte nStep = 0; nStep < pEnv->GetSteps(); ++ nStep)
     {
@@ -288,6 +292,8 @@ bool VZVoice::UpdateDCOEnvelope()
     SetValue(173, 0x70, pEnv->GetLastStep());
     SetValue(173, 0x07, pEnv->GetAmpSens());
     SetValue(182, 0x3F, pEnv->GetDepth());
+    InhibitEvents(false);
+    SendEvent();
     return true;
 }
 

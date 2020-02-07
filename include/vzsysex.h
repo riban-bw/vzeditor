@@ -17,6 +17,8 @@
 #define VZ_HEADER_TYPE 5
 #define VZ_HEADER_SUBTYPE 6
 
+wxDECLARE_EVENT(SYSEX_EVENT, wxCommandEvent);
+
 /** Provides interface to VZ SysEx data
 *   @note   Data is stored as raw SysEx data
 */
@@ -110,6 +112,16 @@ public:
     */
     void Archive();
 
+    /** @brief  Set the object that will handle change of value events
+    *   @param  pHandler Pointer to event handler
+    */
+    void SetEventHandler(wxEvtHandler* pHandler);
+
+    /** @brief  Inhibit or allow events to be sent when values change
+    *   @param  bInhibit True to inhibit events
+    */
+    void InhibitEvents(bool bInhibit = true);
+
 protected:
     wxByte* m_pSysEx; //Raw sysex operation data
     unsigned int m_nPayloadSize; //Quantity of bytes in payload
@@ -120,8 +132,10 @@ protected:
     wxByte GetByteFromSysex(unsigned int nOffset); //!< Decode a byte of data from the position in SysEx payload pointed to by cursor
     bool PutByteToSysex(unsigned int nOffset, wxByte nValue); //!< Encode a byte of data into position in SysEx payload pointed to by cursor
     bool m_bModified; //True if any fields have changed since last validate / save ***We don't really mean save
+    void SendEvent(); // Send an event to indicate a parameter has changed
 
 private:
     wxString m_sFilename; //Filename of last file loaded into saved from this voice
-
+    wxEvtHandler* m_pEventHandler = NULL; //Pointer to a handler for change events
+    bool m_bInhibitEvent = false; //True to inhibit sending events on value change
 };

@@ -13,6 +13,8 @@
 #include <wx/wfstream.h>
 #include <wx/txtstrm.h>
 
+wxDEFINE_EVENT(SYSEX_EVENT, wxCommandEvent);
+
 static const unsigned int VZ_PAYLOAD_START = 7;
 
 VZSysex::VZSysex(unsigned int nPayloadSize, wxByte* pData, bool bPayload) :
@@ -55,6 +57,7 @@ void VZSysex::SetValue(unsigned int nOffset, wxByte nMask, wxByte nValue)
         if(nMask & (1 << nShift))
             break;
     PutByteToSysex(nOffset, ((nValue << nShift) & nMask) | (GetByteFromSysex(nOffset) & ~nMask));
+    SendEvent();
 }
 
 bool VZSysex::IsModified()
@@ -171,4 +174,22 @@ void VZSysex::Archive()
 	zipout.Close();
 	fileout.Close();
 //	delete zipEntry;
+}
+
+void VZSysex::SendEvent()
+{
+    if(!m_pEventHandler || m_bInhibitEvent)
+        return;
+    wxCommandEvent event(SYSEX_EVENT);
+    wxPostEvent(m_pEventHandler, event);
+}
+
+void VZSysex::SetEventHandler(wxEvtHandler* pHandler)
+{
+    m_pEventHandler = pHandler;
+}
+
+void VZSysex::InhibitEvents(bool bInhibit)
+{
+    m_bInhibitEvent = bInhibit;
 }

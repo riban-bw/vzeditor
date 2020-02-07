@@ -323,6 +323,7 @@ private:
     void OnVzSave();
     void OnKeyboardNoteOn(wxCommandEvent& event); // Handle on-screen MIDI keyboard note-on events
     void OnKeyboardNoteOff(wxCommandEvent& event); // Handle on-screen MIDI keyboard note-off events
+    void OnModuleEvent(wxCommandEvent& event); // Handle module change events
     void OnLibEntrySelected(wxListEvent& event);
     void PopulateLibraryGroups();
 

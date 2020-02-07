@@ -226,6 +226,7 @@ void VZModule::UpdateGui()
         unsigned int nY = m_pGraphDCA->GetMaxHeight() - pKeyFollow->GetLevel(nNode);
         m_pGraphKeyfollow->AddNode(wxPoint(nX, nY));
     }
+    m_pChkEnable->SetValue(m_pVoice->IsModuleEnabled(m_nModule));
     EnableControls(m_pVoice->IsModuleEnabled(m_nModule));
     m_pGraphDCA->InhibitUpdates(false);
     m_pGraphKeyfollow->InhibitUpdates(false);
@@ -338,6 +339,7 @@ void VZModule::OnAmpEnvChange(wxCommandEvent& event)
     }
     pEnvelope->SetLastStep(nNode);
     pEnvelope->SetSustainStep(m_pGraphDCA->GetSustain());
+    m_pVoice->UpdateDCAEnvelope(m_nModule);
 }
 
 void VZModule::OnKeyEnvChange(wxCommandEvent& event)
@@ -351,4 +353,6 @@ void VZModule::OnKeyEnvChange(wxCommandEvent& event)
         pKeyFollow->SetLevel(nNode, m_pGraphKeyfollow->GetMaxHeight() - m_pGraphKeyfollow->GetNode(nNode).y);
         pKeyFollow->SetKey(nNode, m_pGraphKeyfollow->GetNode(nNode).x); //!@todo Scale key follow
     }
+    m_pVoice->UpdateDCAKeyFollow(m_nModule);
 }
+

@@ -391,7 +391,7 @@
 																		<min>-2</min>
 																		<max>2</max>
 																		<tooltip>Set DCO octave</tooltip>
-																		<style>wxSL_HORIZONTAL</style>
+																		<style>wxSL_HORIZONTAL|wxSL_INVERSE</style>
 																		<handler function="OnOctaveChanged" entry="EVT_COMMAND_SCROLL_CHANGED" />
 																	</object>
 																	<flag>wxALL|wxEXPAND</flag>

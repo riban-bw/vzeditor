@@ -128,6 +128,7 @@ BEGIN_EVENT_TABLE(VZEditorFrame,wxFrame)
     //*)
     EVT_COMMAND(ID_KBD, KEYBOARD_NOTE_ON_EVENT, VZEditorFrame::OnKeyboardNoteOn)
     EVT_COMMAND(ID_KBD, KEYBOARD_NOTE_OFF_EVENT, VZEditorFrame::OnKeyboardNoteOff)
+    EVT_COMMAND(wxID_ANY, SYSEX_EVENT, VZEditorFrame::OnModuleEvent)
 END_EVENT_TABLE()
 
 VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
@@ -319,7 +320,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     FlexGridSizer6->AddGrowableCol(1);
     StaticText10 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT10, _("Octave"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
     FlexGridSizer6->Add(StaticText10, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pSliderOctave = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDEROCTAVE, 0, -2, 2, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL, wxDefaultValidator, _T("ID_SLIDEROCTAVE"));
+    m_pSliderOctave = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDEROCTAVE, 0, -2, 2, wxDefaultPosition, wxDefaultSize, wxSL_HORIZONTAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDEROCTAVE"));
     m_pSliderOctave->SetToolTip(_("Set DCO octave"));
     FlexGridSizer6->Add(m_pSliderOctave, 1, wxALL|wxEXPAND, 5);
     StaticText11 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT11, _("Velocity\nSensitivity"), wxDefaultPosition, wxDefaultSize, wxALIGN_CENTRE, _T("ID_STATICTEXT11"));
@@ -677,7 +678,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
             nX = m_pCmbInPort->GetCount() - 1;
         wxCommandEvent event;
         m_pCmbInPort->Select(nX);
-        event.SetClientData(m_pCmbInPort->GetClientData(0));
+        event.SetClientData(m_pCmbInPort->GetClientData(nX));
         OnInPortSelect(event);
     }
     configPersist.Read("persist/midi_out", &nX, 0);
@@ -687,9 +688,12 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
             nX = m_pCmbOutPort->GetCount() - 1;
         wxCommandEvent event;
         m_pCmbOutPort->Select(nX);
-        event.SetClientData(m_pCmbOutPort->GetClientData(0));
+        event.SetClientData(m_pCmbOutPort->GetClientData(nX));
         OnOutPortSelect(event);
     }
+    configPersist.Read("persist/keyboard_midi_channel", &nX, 0);
+    m_pSpnKeyChannel->SetValue(nX + 1);
+    m_pKeyboard->SetSendChannel(nX);
     bool bAuto;
     configPersist.Read("persist/auto_update", &bAuto, false);
     m_pChkAutoUpdate->SetValue(bAuto);
@@ -698,8 +702,10 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
 //    PopulateLibraryGroups();
 
     m_pVoice = new VZVoice();
+    m_pVoice->SetEventHandler(this);
     m_pVoiceMidi = new VZVoice();
     m_pOperation = new VZOperation();
+    m_pOperation->SetEventHandler(this);
     m_pOperationMidi = new VZOperation();
 
     m_pLine1->SetVoice(m_pVoice);
@@ -721,6 +727,8 @@ void VZEditorFrame::OnClose(wxCloseEvent& event)
     configPersist.Write("persist/midi_in", m_pCmbInPort->GetSelection());
     configPersist.Write("persist/maximised", IsMaximized());
     configPersist.Write("persist/keyboard", m_pChkKeyboard->IsChecked());
+    configPersist.Write("persist/keyboard_midi_channel", m_pSpnKeyChannel->GetValue() - 1);
+
     if(!IsMaximized() && !IsIconized())
     {
         configPersist.Write("persist/width", GetSize().GetWidth());
@@ -1157,6 +1165,7 @@ void VZEditorFrame::OnLibActivate(wxListEvent& event)
     wxString sFilename = m_pLstLib->GetItemFilename(event.GetIndex());
     wxString sType = m_pLstLib->GetItemType(event.GetIndex());
     LoadFile("library/" + sFilename);
+    AutoSend();
 }
 
 void VZEditorFrame::OnBtnGetVoice(wxCommandEvent& event)
@@ -1470,7 +1479,7 @@ void VZEditorFrame::OnMasterVolume(wxScrollEvent& event)
 {
     if(!m_pMidiOut)
         return;
-    wxMidiShortMessage msg(0xB0, 0x07, event.GetInt());
+    wxMidiShortMessage msg(0xB0 | (m_pSpnKeyChannel->GetValue() - 1), 0x07, event.GetInt());
     m_pMidiOut->Write(&msg);
 }
 
@@ -1535,4 +1544,9 @@ void VZEditorFrame::OnCardBank(wxCommandEvent& event)
     wxByte acMsg[] = {0xF0, 0x44, 0x03, 0x00, cChan, 0x51, cData, 0xF7};
     wxMidiSysExMessage msg(acMsg);
     m_pMidiOut->Write(&msg);
+}
+
+void VZEditorFrame::OnModuleEvent(wxCommandEvent& event)
+{
+    AutoSend();
 }
