@@ -1103,37 +1103,31 @@ void VZEditorFrame::OnBtnSendClick(wxCommandEvent& event)
 void VZEditorFrame::OnTxtVoiceNameText(wxCommandEvent& event)
 {
     m_pVoice->SetName(m_pTxtVoiceName->GetValue());
-    AutoSend();
 }
 
 void VZEditorFrame::OnRadioTremeloMultiSelect(wxCommandEvent& event)
 {
     m_pVoice->EnableTremeloMulti(event.GetInt() == 1);
-    AutoSend();
 }
 
 void VZEditorFrame::OnCmbVelCurveSelect(wxCommandEvent& event)
 {
     m_pVoice->SetPitchVelCurve(event.GetSelection());
-    AutoSend();
 }
 
 void VZEditorFrame::OnRadioTremeloWaveformSelect(wxCommandEvent& event)
 {
     m_pVoice->SetTremeloWaveform(event.GetInt());
-    AutoSend();
 }
 
 void VZEditorFrame::OnRadioVibratoMultiSelect(wxCommandEvent& event)
 {
     m_pVoice->EnableVibratoMulti(event.GetInt() == 1);
-    AutoSend();
 }
 
 void VZEditorFrame::OnRadioVibratoWaveformSelect(wxCommandEvent& event)
 {
     m_pVoice->SetVibratoWaveform(event.GetInt());
-    AutoSend();
 }
 
 void VZEditorFrame::OnOpenFile(wxCommandEvent& event)
@@ -1165,7 +1159,6 @@ void VZEditorFrame::OnLibActivate(wxListEvent& event)
     wxString sFilename = m_pLstLib->GetItemFilename(event.GetIndex());
     wxString sType = m_pLstLib->GetItemType(event.GetIndex());
     LoadFile("library/" + sFilename);
-    AutoSend();
 }
 
 void VZEditorFrame::OnBtnGetVoice(wxCommandEvent& event)
@@ -1226,56 +1219,47 @@ void VZEditorFrame::AutoSend()
 void VZEditorFrame::OnLevelChanged(wxScrollEvent& event)
 {
     m_pVoice->SetLevel(event.GetInt());
-    AutoSend();
 }
 
 void VZEditorFrame::OnOctaveChanged(wxScrollEvent& event)
 {
     m_pVoice->SetOctave(event.GetInt());
-    AutoSend();
 }
 
 void VZEditorFrame::OnDcoVelSensChange(wxScrollEvent& event)
 {
     m_pVoice->SetPitchVelSens(event.GetInt());
-    AutoSend();
 }
 
 
 void VZEditorFrame::OnTremeloDepthChanged(wxScrollEvent& event)
 {
     m_pVoice->SetTremeloDepth(event.GetInt());
-    AutoSend();
 }
 
 void VZEditorFrame::OnTremeloRateChanged(wxScrollEvent& event)
 {
     m_pVoice->SetTremeloRate(event.GetInt());
-    AutoSend();
 }
 
 void VZEditorFrame::OnTremeloDelayChanged(wxScrollEvent& event)
 {
     m_pVoice->SetTremeloDelay(event.GetInt());
-    AutoSend();
 }
 
 void VZEditorFrame::OnVibratoDepthChanged(wxScrollEvent& event)
 {
     m_pVoice->SetVibratoDepth(event.GetInt());
-    AutoSend();
 }
 
 void VZEditorFrame::OnVibratoRateChanged(wxScrollEvent& event)
 {
     m_pVoice->SetVibratoRate(event.GetInt());
-    AutoSend();
 }
 
 void VZEditorFrame::OnVibratoDelayChanged(wxScrollEvent& event)
 {
     m_pVoice->SetVibratoDelay(event.GetInt());
-    AutoSend();
 }
 
 
