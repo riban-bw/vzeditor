@@ -35,12 +35,12 @@ VZLine::VZLine(wxWindow* parent, wxByte line) :
     Create(parent, wxID_ANY, wxDefaultPosition, wxSize(-1,-1), wxTAB_TRAVERSAL, _T("wxID_ANY"));
     SetMinSize(wxSize(-1,-1));
     m_pSizerLine = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Internal Line"));
-    m_pCmbLine = new wxChoice(this, ID_CHOICE1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
-    m_pCmbLine->Append(_("MIX"));
-    m_pCmbLine->Append(_("RING"));
-    m_pCmbLine->Append(_("PHASE"));
-    m_pCmbLine->SetToolTip(_("Select line phase"));
-    m_pSizerLine->Add(m_pCmbLine, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pChoiceLine = new wxChoice(this, ID_CHOICE1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
+    m_pChoiceLine->Append(_("MIX"));
+    m_pChoiceLine->Append(_("RING"));
+    m_pChoiceLine->Append(_("PHASE"));
+    m_pChoiceLine->SetToolTip(_("Select line phase"));
+    m_pSizerLine->Add(m_pChoiceLine, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer2 = new wxBoxSizer(wxVERTICAL);
     m_pVzModule1 = new VZModule(this,ID_VZMODULE1,wxDefaultPosition,wxDefaultSize);
     BoxSizer2->Add(m_pVzModule1, 1, wxALL|wxEXPAND, 5);
@@ -76,7 +76,7 @@ void VZLine::UpdateGui()
     m_pVzModule1->UpdateGui();
     m_pVzModule2->UpdateGui();
     if(m_pvzVoice)
-        m_pCmbLine->SetSelection(m_pvzVoice->GetLine(m_nLine));
+        m_pChoiceLine->SetSelection(m_pvzVoice->GetLine(m_nLine));
 }
 
 void VZLine::OnLine(wxCommandEvent& event)

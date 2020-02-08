@@ -52,8 +52,8 @@ public:
     wxCheckBox* m_pChkExtPhase;
     wxCheckBox* m_pChkFixedFreq;
     wxCheckBox* m_pChkX16;
-    wxChoice* m_pCmbKeyVelCurve;
-    wxChoice* m_pCmbWaveform;
+    wxChoice* m_pChoiceKeyVelCurve;
+    wxChoice* m_pChoiceWaveform;
     wxSlider* m_pSliderAmpSens;
     wxSlider* m_pSliderDetuneFine;
     wxSlider* m_pSliderDetuneOctave;

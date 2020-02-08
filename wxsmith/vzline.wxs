@@ -7,7 +7,7 @@
 		<object class="wxStaticBoxSizer" variable="m_pSizerLine" member="yes">
 			<label>Internal Line</label>
 			<object class="sizeritem">
-				<object class="wxChoice" name="ID_CHOICE1" variable="m_pCmbLine" member="yes">
+				<object class="wxChoice" name="ID_CHOICE1" variable="m_pChoiceLine" member="yes">
 					<content>
 						<item>MIX</item>
 						<item>RING</item>

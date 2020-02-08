@@ -47,7 +47,7 @@
 								<border>5</border>
 							</object>
 							<object class="sizeritem">
-								<object class="wxChoice" name="ID_CMBWAVEFORM" variable="m_pCmbWaveform" member="yes">
+								<object class="wxChoice" name="ID_CMBWAVEFORM" variable="m_pChoiceWaveform" member="yes">
 									<content>
 										<item>Sine</item>
 										<item>Saw 1</item>
@@ -195,7 +195,7 @@
 											<label>Key Velocity</label>
 											<orient>wxVERTICAL</orient>
 											<object class="sizeritem">
-												<object class="wxChoice" name="ID_CMBKEYVELCURVE" variable="m_pCmbKeyVelCurve" member="yes">
+												<object class="wxChoice" name="ID_CMBKEYVELCURVE" variable="m_pChoiceKeyVelCurve" member="yes">
 													<content>
 														<item>Curve 1</item>
 														<item>Curve 2</item>

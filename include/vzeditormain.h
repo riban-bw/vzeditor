@@ -228,10 +228,10 @@ private:
     wxButton* m_pBtnSend;
     wxCheckBox* m_pChkAutoUpdate;
     wxCheckBox* m_pChkKeyboard;
+    wxChoice* m_pChoiceInPort;
     wxChoice* m_pChoiceMode;
-    wxChoice* m_pCmbInPort;
-    wxChoice* m_pCmbOutPort;
-    wxChoice* m_pCmbVelCurve;
+    wxChoice* m_pChoiceOutPort;
+    wxChoice* m_pChoiceVelCurve;
     wxComboBox* m_pCmbLibEntryGroup;
     wxMenu* Menu3;
     wxMenuItem* Menu4;

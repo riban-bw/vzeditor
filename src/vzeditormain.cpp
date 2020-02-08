@@ -198,14 +198,14 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     BoxSizer22 = new wxBoxSizer(wxHORIZONTAL);
     m_pLblMidiInputPort = new wxStaticText(Panel1, ID_STATICTEXTMIDIINPUT, _("MIDI Input"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXTMIDIINPUT"));
     BoxSizer22->Add(m_pLblMidiInputPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pCmbInPort = new wxChoice(Panel1, ID_CMBINPORT, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBINPORT"));
-    m_pCmbInPort->SetToolTip(_("Select MIDI input port"));
-    BoxSizer22->Add(m_pCmbInPort, 0, wxALL, 5);
+    m_pChoiceInPort = new wxChoice(Panel1, ID_CMBINPORT, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBINPORT"));
+    m_pChoiceInPort->SetToolTip(_("Select MIDI input port"));
+    BoxSizer22->Add(m_pChoiceInPort, 0, wxALL, 5);
     m_pLblMidiOutputPort = new wxStaticText(Panel1, ID_STATICTEXTMIDIOUTPUT, _("MIDI Output"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXTMIDIOUTPUT"));
     BoxSizer22->Add(m_pLblMidiOutputPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pCmbOutPort = new wxChoice(Panel1, ID_CMBOUTPORT, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBOUTPORT"));
-    m_pCmbOutPort->SetToolTip(_("Select MIDI output port"));
-    BoxSizer22->Add(m_pCmbOutPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    m_pChoiceOutPort = new wxChoice(Panel1, ID_CMBOUTPORT, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBOUTPORT"));
+    m_pChoiceOutPort->SetToolTip(_("Select MIDI output port"));
+    BoxSizer22->Add(m_pChoiceOutPort, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pChkKeyboard = new wxCheckBox(Panel1, ID_CHECKBOXKEYBOARD, _("Keyboard"), wxDefaultPosition, wxDefaultSize, 0, wxDefaultValidator, _T("ID_CHECKBOXKEYBOARD"));
     m_pChkKeyboard->SetValue(false);
     BoxSizer22->Add(m_pChkKeyboard, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
@@ -330,17 +330,17 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     FlexGridSizer6->Add(m_pSliderVelSens, 1, wxALL|wxEXPAND, 5);
     m_pLblVelCurve = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT12, _("Curve"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT12"));
     FlexGridSizer6->Add(m_pLblVelCurve, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pCmbVelCurve = new wxChoice(m_pScrollwindowGlobalParameters, ID_CMBVELCURVE, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBVELCURVE"));
-    m_pCmbVelCurve->SetSelection( m_pCmbVelCurve->Append(_("Curve 1")) );
-    m_pCmbVelCurve->Append(_("Curve 2"));
-    m_pCmbVelCurve->Append(_("Curve 3"));
-    m_pCmbVelCurve->Append(_("Curve 4"));
-    m_pCmbVelCurve->Append(_("Curve 5"));
-    m_pCmbVelCurve->Append(_("Curve 6"));
-    m_pCmbVelCurve->Append(_("Curve 7"));
-    m_pCmbVelCurve->Append(_("Curve 8"));
-    m_pCmbVelCurve->SetToolTip(_("Select DCO curve"));
-    FlexGridSizer6->Add(m_pCmbVelCurve, 1, wxALL|wxEXPAND, 5);
+    m_pChoiceVelCurve = new wxChoice(m_pScrollwindowGlobalParameters, ID_CMBVELCURVE, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CMBVELCURVE"));
+    m_pChoiceVelCurve->SetSelection( m_pChoiceVelCurve->Append(_("Curve 1")) );
+    m_pChoiceVelCurve->Append(_("Curve 2"));
+    m_pChoiceVelCurve->Append(_("Curve 3"));
+    m_pChoiceVelCurve->Append(_("Curve 4"));
+    m_pChoiceVelCurve->Append(_("Curve 5"));
+    m_pChoiceVelCurve->Append(_("Curve 6"));
+    m_pChoiceVelCurve->Append(_("Curve 7"));
+    m_pChoiceVelCurve->Append(_("Curve 8"));
+    m_pChoiceVelCurve->SetToolTip(_("Select DCO curve"));
+    FlexGridSizer6->Add(m_pChoiceVelCurve, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer3->Add(FlexGridSizer6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pFlexgridGlobalParameters->Add(StaticBoxSizer3, 0, wxALL|wxEXPAND, 5);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("Tremelo"));
@@ -672,23 +672,23 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     UpdateMidiPorts();
 
     configPersist.Read("persist/midi_in", &nX, 0);
-    if(m_pCmbInPort->GetCount())
+    if(m_pChoiceInPort->GetCount())
     {
-        if((int)m_pCmbInPort->GetCount() - 1 < nX)
-            nX = m_pCmbInPort->GetCount() - 1;
+        if((int)m_pChoiceInPort->GetCount() - 1 < nX)
+            nX = m_pChoiceInPort->GetCount() - 1;
         wxCommandEvent event;
-        m_pCmbInPort->Select(nX);
-        event.SetClientData(m_pCmbInPort->GetClientData(nX));
+        m_pChoiceInPort->Select(nX);
+        event.SetClientData(m_pChoiceInPort->GetClientData(nX));
         OnInPortSelect(event);
     }
     configPersist.Read("persist/midi_out", &nX, 0);
-    if(m_pCmbOutPort->GetCount())
+    if(m_pChoiceOutPort->GetCount())
     {
-        if((int)m_pCmbOutPort->GetCount() - 1 < nX)
-            nX = m_pCmbOutPort->GetCount() - 1;
+        if((int)m_pChoiceOutPort->GetCount() - 1 < nX)
+            nX = m_pChoiceOutPort->GetCount() - 1;
         wxCommandEvent event;
-        m_pCmbOutPort->Select(nX);
-        event.SetClientData(m_pCmbOutPort->GetClientData(nX));
+        m_pChoiceOutPort->Select(nX);
+        event.SetClientData(m_pChoiceOutPort->GetClientData(nX));
         OnOutPortSelect(event);
     }
     configPersist.Read("persist/keyboard_midi_channel", &nX, 0);
@@ -722,9 +722,9 @@ VZEditorFrame::~VZEditorFrame()
 void VZEditorFrame::OnClose(wxCloseEvent& event)
 {
     wxConfig configPersist(wxTheApp->GetAppName(), "riban",wxEmptyString, wxEmptyString, wxCONFIG_USE_LOCAL_FILE);
-    configPersist.Write("persist/midi_out", m_pCmbOutPort->GetSelection());
+    configPersist.Write("persist/midi_out", m_pChoiceOutPort->GetSelection());
     configPersist.Write("persist/auto_update", m_pChkAutoUpdate->IsChecked());
-    configPersist.Write("persist/midi_in", m_pCmbInPort->GetSelection());
+    configPersist.Write("persist/midi_in", m_pChoiceInPort->GetSelection());
     configPersist.Write("persist/maximised", IsMaximized());
     configPersist.Write("persist/keyboard", m_pChkKeyboard->IsChecked());
     configPersist.Write("persist/keyboard_midi_channel", m_pSpnKeyChannel->GetValue() - 1);
@@ -1072,7 +1072,7 @@ void VZEditorFrame::UpdateVoiceGui()
     m_pSliderLevel->SetValue(m_pVoice->GetLevel());
     m_pSliderOctave->SetValue(m_pVoice->GetOctave());
     m_pSliderVelSens->SetValue(m_pVoice->GetPitchVelSens());
-    m_pCmbVelCurve->SetSelection(m_pVoice->GetPitchVelCurve());
+    m_pChoiceVelCurve->SetSelection(m_pVoice->GetPitchVelCurve());
     m_pRadioTremeloMulti->SetSelection(m_pVoice->IsTremeloMulti()?1:0);
     m_pRadioTremeloWaveform->SetSelection(m_pVoice->GetTremeloWaveform());
     m_pSliderTremeloDepth->SetValue(m_pVoice->GetTremeloDepth());
@@ -1198,21 +1198,21 @@ void VZEditorFrame::OnSaveFile(wxCommandEvent& event)
 
 void VZEditorFrame::UpdateMidiPorts()
 {
-    m_pCmbInPort->Clear();
-    m_pCmbOutPort->Clear();
+    m_pChoiceInPort->Clear();
+    m_pChoiceOutPort->Clear();
     int nDevices = Pm_CountDevices();
     for(int i = 0; i < nDevices; ++i)
     {
         const PmDeviceInfo* pInfo = Pm_GetDeviceInfo(i);
         if(pInfo->input)
         {
-            int nIndex = m_pCmbInPort->Append(wxString::FromUTF8(pInfo->name));
-            m_pCmbInPort->SetClientData(nIndex, (void*)pInfo);
+            int nIndex = m_pChoiceInPort->Append(wxString::FromUTF8(pInfo->name));
+            m_pChoiceInPort->SetClientData(nIndex, (void*)pInfo);
         }
         if(pInfo->output)
         {
-            int nIndex = m_pCmbOutPort->Append(wxString::FromUTF8(pInfo->name));
-            m_pCmbOutPort->SetClientData(nIndex, (void*)pInfo);
+            int nIndex = m_pChoiceOutPort->Append(wxString::FromUTF8(pInfo->name));
+            m_pChoiceOutPort->SetClientData(nIndex, (void*)pInfo);
         }
     }
 }
@@ -1454,7 +1454,7 @@ void VZEditorFrame::OnCmbLibEntryGroupDropdown(wxCommandEvent& event)
 void VZEditorFrame::OnMenuShow(wxCommandEvent& event)
 {
     if(event.GetId() == ID_MENU_HEADER)
-        m_pCmbInPort->SetFocus();
+        m_pChoiceInPort->SetFocus();
     else if(event.GetId() == ID_MENU_LIBRARY)
     {
         m_pNotebook->SetSelection(0);

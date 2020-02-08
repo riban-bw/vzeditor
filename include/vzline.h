@@ -44,7 +44,7 @@ public:
     //(*Declarations(VZLine)
     VZModule* m_pVzModule1;
     VZModule* m_pVzModule2;
-    wxChoice* m_pCmbLine;
+    wxChoice* m_pChoiceLine;
     wxStaticBoxSizer* m_pSizerLine;
     //*)
 

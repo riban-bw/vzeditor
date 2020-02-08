@@ -21,7 +21,7 @@
 							<border>5</border>
 						</object>
 						<object class="sizeritem">
-							<object class="wxChoice" name="ID_CMBINPORT" variable="m_pCmbInPort" member="yes">
+							<object class="wxChoice" name="ID_CMBINPORT" variable="m_pChoiceInPort" member="yes">
 								<tooltip>Select MIDI input port</tooltip>
 								<handler function="OnInPortSelect" entry="EVT_CHOICE" />
 							</object>
@@ -36,7 +36,7 @@
 							<border>5</border>
 						</object>
 						<object class="sizeritem">
-							<object class="wxChoice" name="ID_CMBOUTPORT" variable="m_pCmbOutPort" member="yes">
+							<object class="wxChoice" name="ID_CMBOUTPORT" variable="m_pChoiceOutPort" member="yes">
 								<tooltip>Select MIDI output port</tooltip>
 								<handler function="OnOutPortSelect" entry="EVT_CHOICE" />
 							</object>
@@ -427,7 +427,7 @@
 																	<option>1</option>
 																</object>
 																<object class="sizeritem">
-																	<object class="wxChoice" name="ID_CMBVELCURVE" variable="m_pCmbVelCurve" member="yes">
+																	<object class="wxChoice" name="ID_CMBVELCURVE" variable="m_pChoiceVelCurve" member="yes">
 																		<content>
 																			<item>Curve 1</item>
 																			<item>Curve 2</item>
