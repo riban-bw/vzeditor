@@ -113,7 +113,7 @@ VZModule::VZModule(wxWindow* parent,wxWindowID id,const wxPoint& pos,const wxSiz
     m_pGraphDCA = new EnvelopeGraph(this,ID_ENVELOPEAMP);
     StaticBoxSizer4->Add(m_pGraphDCA, 1, wxALL|wxEXPAND, 5);
     m_pSliderEnvDepth = new wxSlider(this, ID_SLIDERENVDEPTH, 99, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERENVDEPTH"));
-    m_pSliderEnvDepth->SetToolTip(_("Set DCA amplitued envelope depth"));
+    m_pSliderEnvDepth->SetToolTip(_("Set DCA amplitude envelope depth"));
     StaticBoxSizer4->Add(m_pSliderEnvDepth, 0, wxALL|wxEXPAND|wxFIXED_MINSIZE, 5);
     BoxSizer4->Add(StaticBoxSizer4, 1, wxALL|wxEXPAND, 5);
     StaticBoxSizer5 = new wxStaticBoxSizer(wxVERTICAL, this, _("Key Follow"));

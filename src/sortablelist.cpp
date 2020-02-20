@@ -20,20 +20,11 @@ SortableList::SortableList(wxWindow* parent, wxWindowID id):
     InsertColumn(0, col0);
     wxListItem col1;
     col1.SetId(1);
-    col1.SetText("Description");
-    col1.SetWidth(400);
+    col1.SetText("Type");
+    col1.SetWidth(200);
     InsertColumn(1, col1);
-    wxListItem col2;
-    col2.SetId(2);
-    col2.SetText("Group");
-    col2.SetWidth(200);
-    InsertColumn(2, col2);
-    wxListItem col3;
-    col3.SetId(3);
-    col3.SetText("Type");
-    col3.SetWidth(200);
-    InsertColumn(3, col3);
     Connect(wxEVT_KEY_UP, (wxObjectEventFunction)&SortableList::OnKeyUp);
+    Connect(id, wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&SortableList::OnColClick);
 }
 
 void SortableList::SetData(VZLibrary* pData)
@@ -60,10 +51,6 @@ wxString SortableList::OnGetItemText(long row, long column) const
         case 0:
             return pData->name;
         case 1:
-            return pData->description;
-        case 2:
-            return pData->group;
-        case 3:
             return pData->type;
         }
     }
@@ -73,16 +60,6 @@ wxString SortableList::OnGetItemText(long row, long column) const
 wxString SortableList::GetItemName(long row)
 {
     return OnGetItemText(row, 0);
-}
-
-wxString SortableList::GetItemDescription(long row)
-{
-    return OnGetItemText(row, 1);
-}
-
-wxString SortableList::GetItemGroup(long row)
-{
-    return OnGetItemText(row, 2);
 }
 
 wxString SortableList::GetItemType(long row)
@@ -95,31 +72,6 @@ wxString SortableList::GetItemFilename(long row)
     return OnGetItemText(row, -1);
 }
 
-unsigned long SortableList::SetItemDescription(wxString sDescription)
-{
-    long lIndex = -1;
-    long lCount = 0;
-    while ((lIndex = GetNextItem(lIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND)
-    {
-        m_pData->SetEntryDescription(lIndex, sDescription);
-        ++lCount;
-    }
-    Refresh();
-    return lCount;
-}
-
-unsigned long SortableList::SetItemGroup(wxString sGroup)
-{
-    long lIndex = -1;
-    long lCount = 0;
-    while ((lIndex = GetNextItem(lIndex, wxLIST_NEXT_ALL, wxLIST_STATE_SELECTED)) != wxNOT_FOUND)
-    {
-        m_pData->SetEntryGroup(lIndex, sGroup);
-        ++lCount;
-    }
-    Refresh();
-    return lCount;
-}
 
 unsigned long SortableList::RemoveItems()
 {
@@ -149,14 +101,8 @@ void SortableList::Sort(long column)
     col.SetText("Name");
     SetColumn(0, col);
     GetColumn(1, col);
-    col.SetText("Description");
-    SetColumn(1, col);
-    GetColumn(2, col);
-    col.SetText("Group");
-    SetColumn(2, col);
-    GetColumn(3, col);
     col.SetText("Type");
-    SetColumn(3, col);
+    SetColumn(1, col);
     GetColumn(column, col);
     switch(column)
     {
@@ -166,16 +112,6 @@ void SortableList::Sort(long column)
         SetColumn(column, col);
         break;
     case 1:
-        m_pData->Sort("description", bAscending);
-        col.SetText(wxString::FromUTF8(bAscending?"▲ Description":"▼ Description"));
-        SetColumn(column, col);
-        break;
-    case 2:
-        m_pData->Sort("group", bAscending);
-        col.SetText(wxString::FromUTF8(bAscending?"▲ Group":"▼ Group"));
-        SetColumn(column, col);
-        break;
-    case 3:
         m_pData->Sort("type", bAscending);
         col.SetText(wxString::FromUTF8(bAscending?"▲ Type":"▼ Type"));
         SetColumn(column, col);
@@ -203,4 +139,9 @@ long SortableList::GetSelected()
     if(lCount > 1)
         lIndex = -1;
     return lIndex;
+}
+
+void SortableList::OnColClick(wxListEvent& event)
+{
+    Sort(event.GetColumn());
 }

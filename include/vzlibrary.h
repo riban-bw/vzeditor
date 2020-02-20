@@ -157,8 +157,62 @@ public:
     */
     void Sort(wxString sColumn, bool bAscending);
 
+    /** @brief  Get library filename
+    *   @retval wxString Filename
+    */
+    wxString GetFilename();
 
+    /** @brief  Clear all entries from library
+    */
     void ClearData();
+
+    /** @brief  Set the name of a tone
+    *   @param  nIndex Index of tone [0..63]
+    *   @param  sName Name of tone
+    */
+    void SetToneName(unsigned int nIndex, wxString sName);
+
+    /** @brief  Get the name of a tone
+    *   @param  nIndex Index of tone [0..63]
+    *   @retval wxString Name of tone
+    */
+    wxString GetToneName(unsigned int nIndex);
+
+    /** @brief  Set the filename of a tone
+    *   @param  nIndex Index of tone [0..63]
+    *   @param  sName Filename of tone
+    */
+    void SetToneFilename(unsigned int nIndex, wxString sFilename);
+
+    /** @brief  Get the filename of a tone
+    *   @param  nIndex Index of tone [0..63]
+    *   @retval wxString Filename of tone
+    */
+    wxString GetToneFilename(unsigned int nIndex);
+
+    /** @brief  Set the name of an operation
+    *   @param  nIndex Index of operation [0..63]
+    *   @param  sName Name of operation
+    */
+    void SetOperationName(unsigned int nIndex, wxString sName);
+
+    /** @brief  Get the name of a operation
+    *   @param  nIndex Index of operation [0..63]
+    *   @retval wxString Name of operation
+    */
+    wxString GetOperationName(unsigned int nIndex);
+
+    /** @brief  Set the filename of an operation
+    *   @param  nIndex Index of operation [0..63]
+    *   @param  sName Filename of operation
+    */
+    void SetOperationFilename(unsigned int nIndex, wxString sFilename);
+
+    /** @brief  Get the filename of a operation
+    *   @param  nIndex Index of operation [0..63]
+    *   @retval wxString Filename of operation
+    */
+    wxString GetOperationFilename(unsigned int nIndex);
 
 protected:
 
@@ -167,4 +221,8 @@ private:
     vector<vzLibEntry*> m_vEntries; // Vector of library entries
     bool m_bDirty; //True if there are unsaved changes
     bool m_bValid; //True if a valid XML file is open
+    wxString m_asToneName[64];
+    wxString m_asToneFilename[64];
+    wxString m_asOperatorName[64];
+    wxString m_asOperatorFilename[64];
 };

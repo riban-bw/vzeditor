@@ -169,96 +169,68 @@
 									<border>5</border>
 								</object>
 								<object class="sizeritem">
-									<object class="wxBoxSizer" variable="BoxSizer20" member="no">
+									<object class="wxBoxSizer" variable="BoxSizer23" member="no">
 										<object class="sizeritem">
-											<object class="Custom" name="ID_LSTLIB" subclass="SortableList" variable="m_pLstLib" member="yes">
-												<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
-												<include_file>sortablelist.h</include_file>
-												<local_include>1</local_include>
-												<style></style>
+											<object class="wxBoxSizer" variable="BoxSizer24" member="no">
+												<orient>wxVERTICAL</orient>
+												<object class="sizeritem">
+													<object class="wxListBox" name="ID_LISTBOXLIBRARY" variable="m_pLstLibrary" member="yes">
+														<default>-1</default>
+														<handler function="OnLstLibrary" entry="EVT_LISTBOX" />
+														<handler function="OnLibDClick" entry="EVT_LISTBOX_DCLICK" />
+													</object>
+													<flag>wxALL|wxEXPAND</flag>
+													<border>5</border>
+													<option>1</option>
+												</object>
+											</object>
+											<flag>wxALL|wxEXPAND</flag>
+											<border>5</border>
+										</object>
+										<object class="sizeritem">
+											<object class="wxBoxSizer" variable="BoxSizer20" member="no">
+												<orient>wxVERTICAL</orient>
+												<object class="sizeritem">
+													<object class="wxGrid" name="ID_GRIDCONFIG" variable="m_pGridConfig" member="yes">
+														<cols>8</cols>
+														<rows>16</rows>
+														<readonly>1</readonly>
+														<defaultcolsize>120</defaultcolsize>
+														<rowlabels>
+															<item>Tone 1</item>
+															<item>Tone 2</item>
+															<item>Tone 3</item>
+															<item>Tone 4</item>
+															<item>Tone 5</item>
+															<item>Tone 6</item>
+															<item>Tone 7</item>
+															<item>Tone 8</item>
+															<item>Operation 1</item>
+															<item>Operation 2</item>
+															<item>Operation 3</item>
+															<item>Operation 4</item>
+															<item>Operation 5</item>
+															<item>Operation 6</item>
+															<item>Operation 7</item>
+															<item>Operation 8</item>
+														</rowlabels>
+														<handler function="OnToneGridDClick" entry="EVT_CMD_GRID_CELL_LEFT_DCLICK" />
+													</object>
+													<flag>wxALL</flag>
+													<border>5</border>
+												</object>
 											</object>
 											<flag>wxALL|wxEXPAND</flag>
 											<border>5</border>
 											<option>1</option>
 										</object>
-										<object class="sizeritem">
-											<object class="wxFlexGridSizer" variable="FlexGridSizer1" member="no">
-												<cols>2</cols>
-												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXT1" variable="StaticText1" member="yes">
-														<label>Name</label>
-													</object>
-													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-													<border>5</border>
-												</object>
-												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXTLIBENTRYNAME" variable="m_pLblLibEntryName" member="yes">
-														<label></label>
-													</object>
-													<flag>wxALL|wxEXPAND</flag>
-													<border>5</border>
-													<option>1</option>
-												</object>
-												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXT2" variable="StaticText2" member="yes">
-														<label>Description</label>
-													</object>
-													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-													<border>5</border>
-												</object>
-												<object class="sizeritem">
-													<object class="wxTextCtrl" name="ID_TEXTCTRL2" variable="m_pTxtLibEntryDescription" member="yes">
-														<style>wxTE_MULTILINE|wxTE_WORDWRAP</style>
-														<handler function="OnTxtLibEntryDescription" entry="EVT_TEXT" />
-													</object>
-													<flag>wxALL|wxEXPAND</flag>
-													<border>5</border>
-													<option>1</option>
-												</object>
-												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXT16" variable="StaticText15" member="yes">
-														<label>Group</label>
-													</object>
-													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-													<border>5</border>
-												</object>
-												<object class="sizeritem">
-													<object class="wxComboBox" name="ID_COMBOBOX1" variable="m_pCmbLibEntryGroup" member="yes">
-														<handler function="OnCmbLibEntryGroup" entry="EVT_COMBOBOX" />
-														<handler function="OnCmbLibEntryGroupDropdown" entry="EVT_COMBOBOX_DROPDOWN" />
-														<handler function="OnCmbLibEntryGroup" entry="EVT_TEXT" />
-													</object>
-													<flag>wxALL|wxEXPAND</flag>
-													<border>5</border>
-													<option>1</option>
-												</object>
-												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXT17" variable="StaticText16" member="yes">
-														<label>Type</label>
-													</object>
-													<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
-													<border>5</border>
-												</object>
-												<object class="sizeritem">
-													<object class="wxStaticText" name="ID_STATICTEXT18" variable="m_pLblLibEntryType" member="yes">
-														<label></label>
-													</object>
-													<flag>wxALL|wxEXPAND</flag>
-													<border>5</border>
-													<option>1</option>
-												</object>
-											</object>
-											<flag>wxALL|wxEXPAND</flag>
-											<border>5</border>
-										</object>
 									</object>
 									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
-									<option>1</option>
 								</object>
 							</object>
 						</object>
-						<label>Voice Library</label>
+						<label>Library</label>
 					</object>
 					<object class="notebookpage">
 						<object class="wxPanel" name="ID_PNLVOICE" variable="m_pPnlVoice" member="yes">
@@ -326,7 +298,7 @@
 													<object class="wxBoxSizer" variable="BoxSizer9" member="no">
 														<object class="sizeritem">
 															<object class="wxStaticText" name="ID_STATICTEXT3" variable="StaticText3" member="yes">
-																<label>Voice Name</label>
+																<label>Tone Name</label>
 															</object>
 															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
 															<border>5</border>
@@ -374,6 +346,35 @@
 												<object class="sizeritem">
 													<object class="wxStaticBoxSizer" variable="StaticBoxSizer3" member="no">
 														<label>DCO</label>
+														<orient>wxVERTICAL</orient>
+														<object class="sizeritem">
+															<object class="wxStaticBoxSizer" variable="StaticBoxSizer9" member="no">
+																<label>Amplitude Envelope</label>
+																<object class="sizeritem">
+																	<object class="Custom" name="ID_ENVELOPEDCO" subclass="EnvelopeGraph" variable="m_pGraphDCO" member="yes">
+																		<creating_code>$(THIS) = new $(CLASS)($(PARENT),$(ID));</creating_code>
+																		<include_file>envelopegraph.h</include_file>
+																		<local_include>1</local_include>
+																		<style></style>
+																	</object>
+																	<flag>wxALL|wxEXPAND</flag>
+																	<border>5</border>
+																	<option>1</option>
+																</object>
+																<object class="sizeritem">
+																	<object class="wxSlider" name="ID_SLIDERDCOENVDEPTH" variable="m_pSliderDCOEnvDepth" member="yes">
+																		<value>99</value>
+																		<max>99</max>
+																		<tooltip>Set DCA amplitude envelope depth</tooltip>
+																		<style>wxSL_VERTICAL|wxSL_INVERSE</style>
+																	</object>
+																	<flag>wxALL|wxEXPAND|wxFIXED_MINSIZE</flag>
+																	<border>5</border>
+																</object>
+															</object>
+															<flag>wxALL|wxEXPAND</flag>
+															<border>5</border>
+														</object>
 														<object class="sizeritem">
 															<object class="wxFlexGridSizer" variable="FlexGridSizer6" member="no">
 																<cols>2</cols>
@@ -447,9 +448,8 @@
 																	<option>1</option>
 																</object>
 															</object>
-															<flag>wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL</flag>
+															<flag>wxALL|wxEXPAND</flag>
 															<border>5</border>
-															<option>1</option>
 														</object>
 													</object>
 													<flag>wxALL|wxEXPAND</flag>
@@ -718,7 +718,7 @@
 								</object>
 							</object>
 						</object>
-						<label>Voice Editor</label>
+						<label>Tone Editor</label>
 					</object>
 					<object class="notebookpage">
 						<object class="wxPanel" name="ID_PNLOPERATION" variable="m_pPnlOperation" member="yes">
@@ -772,6 +772,10 @@
 							</object>
 						</object>
 						<label>Operation Editor</label>
+					</object>
+					<object class="notebookpage">
+						<object class="wxPanel" name="ID_PANELMULTICHANNEL" variable="m_pPnlMultichannel" member="yes" />
+						<label>Multi-channel Editor</label>
 					</object>
 					<object class="notebookpage">
 						<object class="wxPanel" name="ID_PANELMISC" variable="m_pPnlMisc" member="yes">
@@ -985,6 +989,11 @@
 					<help>Save voice data to file</help>
 					<handler function="OnSaveFile" entry="EVT_MENU" />
 				</object>
+				<object class="wxMenuItem" name="ID_MENU_SAVEAS" variable="MenuItem10" member="yes">
+					<label>Save &amp;As</label>
+					<help>Save with new filename</help>
+					<handler function="OnSaveAs" entry="EVT_MENU" />
+				</object>
 				<object class="wxMenuItem" name="idMenuQuit" variable="MenuItem1" member="no">
 					<label>Quit</label>
 					<accel>Alt-F4</accel>
@@ -1018,9 +1027,15 @@
 					<help>Show operation editor</help>
 					<handler function="OnMenuShow" entry="EVT_MENU" />
 				</object>
+				<object class="wxMenuItem" name="ID_MENU_MULTICHANNEL" variable="MenuItem11" member="yes">
+					<label>Multi-&amp;channel</label>
+					<accel>ALT+4</accel>
+					<help>Show multi-channel editor</help>
+					<handler function="OnMenuShow" entry="EVT_MENU" />
+				</object>
 				<object class="wxMenuItem" name="ID_MENU_MISC" variable="MenuItem9" member="yes">
 					<label>&amp;Misc</label>
-					<accel>ALT+4</accel>
+					<accel>ALT+5</accel>
 					<help>Show miscelaneous control panel</help>
 					<handler function="OnMenuShow" entry="EVT_MENU" />
 				</object>

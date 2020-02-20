@@ -16,6 +16,7 @@
 #include <wx/config.h>
 #include <wx/display.h>
 #include <wx/utils.h>
+#include <wx/dir.h>
 #include <list>
 #include <complex>
 
@@ -45,15 +46,8 @@ const long VZEditorFrame::ID_BITMAPBUTTONLIBTOOLDELETE = wxNewId();
 const long VZEditorFrame::ID_BITMAPBUTTONLIBTOOLSAVE = wxNewId();
 const long VZEditorFrame::ID_BITMAPBUTTONLIBTOOLSAVEAS = wxNewId();
 const long VZEditorFrame::ID_BITMAPBUTTONLIBTOOLOPRN = wxNewId();
-const long VZEditorFrame::ID_LSTLIB = wxNewId();
-const long VZEditorFrame::ID_STATICTEXT1 = wxNewId();
-const long VZEditorFrame::ID_STATICTEXTLIBENTRYNAME = wxNewId();
-const long VZEditorFrame::ID_STATICTEXT2 = wxNewId();
-const long VZEditorFrame::ID_TEXTCTRL2 = wxNewId();
-const long VZEditorFrame::ID_STATICTEXT16 = wxNewId();
-const long VZEditorFrame::ID_COMBOBOX1 = wxNewId();
-const long VZEditorFrame::ID_STATICTEXT17 = wxNewId();
-const long VZEditorFrame::ID_STATICTEXT18 = wxNewId();
+const long VZEditorFrame::ID_LISTBOXLIBRARY = wxNewId();
+const long VZEditorFrame::ID_GRIDCONFIG = wxNewId();
 const long VZEditorFrame::ID_PNLLIBRARY = wxNewId();
 const long VZEditorFrame::ID_LINE1 = wxNewId();
 const long VZEditorFrame::ID_LINE2 = wxNewId();
@@ -64,6 +58,8 @@ const long VZEditorFrame::ID_STATICTEXT3 = wxNewId();
 const long VZEditorFrame::ID_TEXTCTRL1 = wxNewId();
 const long VZEditorFrame::ID_STATICTEXT30 = wxNewId();
 const long VZEditorFrame::ID_SLIDERLEVEL = wxNewId();
+const long VZEditorFrame::ID_ENVELOPEDCO = wxNewId();
+const long VZEditorFrame::ID_SLIDERDCOENVDEPTH = wxNewId();
 const long VZEditorFrame::ID_STATICTEXT10 = wxNewId();
 const long VZEditorFrame::ID_SLIDEROCTAVE = wxNewId();
 const long VZEditorFrame::ID_STATICTEXT11 = wxNewId();
@@ -95,6 +91,7 @@ const long VZEditorFrame::ID_TXTOPERATIONNAME = wxNewId();
 const long VZEditorFrame::ID_SCROLLEDWINDOW4 = wxNewId();
 const long VZEditorFrame::ID_SPLITTERWINDOW2 = wxNewId();
 const long VZEditorFrame::ID_PNLOPERATION = wxNewId();
+const long VZEditorFrame::ID_PANELMULTICHANNEL = wxNewId();
 const long VZEditorFrame::ID_SLIDERVOLUME = wxNewId();
 const long VZEditorFrame::ID_SLIDERMASTERTUNE = wxNewId();
 const long VZEditorFrame::ID_SLIDERTRANSPOSE = wxNewId();
@@ -111,11 +108,13 @@ const long VZEditorFrame::ID_PANEL2 = wxNewId();
 const long VZEditorFrame::ID_KBD = wxNewId();
 const long VZEditorFrame::idMenuOpen = wxNewId();
 const long VZEditorFrame::idMenuSave = wxNewId();
+const long VZEditorFrame::ID_MENU_SAVEAS = wxNewId();
 const long VZEditorFrame::idMenuQuit = wxNewId();
 const long VZEditorFrame::ID_MENU_HEADER = wxNewId();
 const long VZEditorFrame::ID_MENU_LIBRARY = wxNewId();
 const long VZEditorFrame::ID_MENU_VOICE = wxNewId();
 const long VZEditorFrame::ID_MENU_OPERATION = wxNewId();
+const long VZEditorFrame::ID_MENU_MULTICHANNEL = wxNewId();
 const long VZEditorFrame::ID_MENU_MISC = wxNewId();
 const long VZEditorFrame::ID_MENU_KEYBOARD = wxNewId();
 const long VZEditorFrame::idMenuAbout = wxNewId();
@@ -129,6 +128,7 @@ BEGIN_EVENT_TABLE(VZEditorFrame,wxFrame)
     EVT_COMMAND(ID_KBD, KEYBOARD_NOTE_ON_EVENT, VZEditorFrame::OnKeyboardNoteOn)
     EVT_COMMAND(ID_KBD, KEYBOARD_NOTE_OFF_EVENT, VZEditorFrame::OnKeyboardNoteOff)
     EVT_COMMAND(wxID_ANY, SYSEX_EVENT, VZEditorFrame::OnModuleEvent)
+    EVT_GRID_CELL_BEGIN_DRAG(VZEditorFrame::OnGridStartDrag)
 END_EVENT_TABLE()
 
 VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
@@ -161,6 +161,8 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer20;
     wxBoxSizer* BoxSizer21;
     wxBoxSizer* BoxSizer22;
+    wxBoxSizer* BoxSizer23;
+    wxBoxSizer* BoxSizer24;
     wxBoxSizer* BoxSizer2;
     wxBoxSizer* BoxSizer3;
     wxBoxSizer* BoxSizer4;
@@ -169,7 +171,6 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     wxBoxSizer* BoxSizer7;
     wxBoxSizer* BoxSizer8;
     wxBoxSizer* BoxSizer9;
-    wxFlexGridSizer* FlexGridSizer1;
     wxFlexGridSizer* FlexGridSizer6;
     wxMenu* Menu1;
     wxMenu* Menu2;
@@ -184,6 +185,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     wxStaticBoxSizer* StaticBoxSizer6;
     wxStaticBoxSizer* StaticBoxSizer7;
     wxStaticBoxSizer* StaticBoxSizer8;
+    wxStaticBoxSizer* StaticBoxSizer9;
 
     Create(parent, wxID_ANY, _("riban Casio VZ-x Voice Editor and Library"), wxDefaultPosition, wxDefaultSize, wxDEFAULT_FRAME_STYLE|wxTAB_TRAVERSAL, _T("wxID_ANY"));
     SetClientSize(wxSize(-1,-1));
@@ -254,28 +256,38 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pBtnLibToolOpen->SetHelpText(_("Open another library"));
     BoxSizer3->Add(m_pBtnLibToolOpen, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer2->Add(BoxSizer3, 0, wxALL|wxEXPAND, 5);
-    BoxSizer20 = new wxBoxSizer(wxHORIZONTAL);
-    m_pLstLib = new SortableList(m_pPnlLibrary,ID_LSTLIB);
-    BoxSizer20->Add(m_pLstLib, 1, wxALL|wxEXPAND, 5);
-    FlexGridSizer1 = new wxFlexGridSizer(0, 2, 0, 0);
-    StaticText1 = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT1, _("Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT1"));
-    FlexGridSizer1->Add(StaticText1, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pLblLibEntryName = new wxStaticText(m_pPnlLibrary, ID_STATICTEXTLIBENTRYNAME, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXTLIBENTRYNAME"));
-    FlexGridSizer1->Add(m_pLblLibEntryName, 1, wxALL|wxEXPAND, 5);
-    StaticText2 = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT2, _("Description"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT2"));
-    FlexGridSizer1->Add(StaticText2, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pTxtLibEntryDescription = new wxTextCtrl(m_pPnlLibrary, ID_TEXTCTRL2, wxEmptyString, wxDefaultPosition, wxDefaultSize, wxTE_MULTILINE|wxTE_WORDWRAP, wxDefaultValidator, _T("ID_TEXTCTRL2"));
-    FlexGridSizer1->Add(m_pTxtLibEntryDescription, 1, wxALL|wxEXPAND, 5);
-    StaticText15 = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT16, _("Group"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT16"));
-    FlexGridSizer1->Add(StaticText15, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pCmbLibEntryGroup = new wxComboBox(m_pPnlLibrary, ID_COMBOBOX1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_COMBOBOX1"));
-    FlexGridSizer1->Add(m_pCmbLibEntryGroup, 1, wxALL|wxEXPAND, 5);
-    StaticText16 = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT17, _("Type"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT17"));
-    FlexGridSizer1->Add(StaticText16, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
-    m_pLblLibEntryType = new wxStaticText(m_pPnlLibrary, ID_STATICTEXT18, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT18"));
-    FlexGridSizer1->Add(m_pLblLibEntryType, 1, wxALL|wxEXPAND, 5);
-    BoxSizer20->Add(FlexGridSizer1, 0, wxALL|wxEXPAND, 5);
-    BoxSizer2->Add(BoxSizer20, 1, wxALL|wxEXPAND, 5);
+    BoxSizer23 = new wxBoxSizer(wxHORIZONTAL);
+    BoxSizer24 = new wxBoxSizer(wxVERTICAL);
+    m_pLstLibrary = new wxListBox(m_pPnlLibrary, ID_LISTBOXLIBRARY, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_LISTBOXLIBRARY"));
+    BoxSizer24->Add(m_pLstLibrary, 1, wxALL|wxEXPAND, 5);
+    BoxSizer23->Add(BoxSizer24, 0, wxALL|wxEXPAND, 5);
+    BoxSizer20 = new wxBoxSizer(wxVERTICAL);
+    m_pGridConfig = new wxGrid(m_pPnlLibrary, ID_GRIDCONFIG, wxDefaultPosition, wxDefaultSize, 0, _T("ID_GRIDCONFIG"));
+    m_pGridConfig->CreateGrid(16,8);
+    m_pGridConfig->EnableEditing(false);
+    m_pGridConfig->EnableGridLines(true);
+    m_pGridConfig->SetDefaultColSize(120, true);
+    m_pGridConfig->SetRowLabelValue(0, _("Tone 1"));
+    m_pGridConfig->SetRowLabelValue(1, _("Tone 2"));
+    m_pGridConfig->SetRowLabelValue(2, _("Tone 3"));
+    m_pGridConfig->SetRowLabelValue(3, _("Tone 4"));
+    m_pGridConfig->SetRowLabelValue(4, _("Tone 5"));
+    m_pGridConfig->SetRowLabelValue(5, _("Tone 6"));
+    m_pGridConfig->SetRowLabelValue(6, _("Tone 7"));
+    m_pGridConfig->SetRowLabelValue(7, _("Tone 8"));
+    m_pGridConfig->SetRowLabelValue(8, _("Operation 1"));
+    m_pGridConfig->SetRowLabelValue(9, _("Operation 2"));
+    m_pGridConfig->SetRowLabelValue(10, _("Operation 3"));
+    m_pGridConfig->SetRowLabelValue(11, _("Operation 4"));
+    m_pGridConfig->SetRowLabelValue(12, _("Operation 5"));
+    m_pGridConfig->SetRowLabelValue(13, _("Operation 6"));
+    m_pGridConfig->SetRowLabelValue(14, _("Operation 7"));
+    m_pGridConfig->SetRowLabelValue(15, _("Operation 8"));
+    m_pGridConfig->SetDefaultCellFont( m_pGridConfig->GetFont() );
+    m_pGridConfig->SetDefaultCellTextColour( m_pGridConfig->GetForegroundColour() );
+    BoxSizer20->Add(m_pGridConfig, 0, wxALL, 5);
+    BoxSizer23->Add(BoxSizer20, 1, wxALL|wxEXPAND, 5);
+    BoxSizer2->Add(BoxSizer23, 0, wxALL|wxEXPAND, 5);
     m_pPnlLibrary->SetSizer(BoxSizer2);
     BoxSizer2->Fit(m_pPnlLibrary);
     BoxSizer2->SetSizeHints(m_pPnlLibrary);
@@ -301,7 +313,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pScrollwindowGlobalParameters = new wxScrolledWindow(m_pSplitterMain, ID_SCROLLEDWINDOW2, wxDefaultPosition, wxDefaultSize, wxVSCROLL, _T("ID_SCROLLEDWINDOW2"));
     m_pFlexgridGlobalParameters = new wxBoxSizer(wxVERTICAL);
     BoxSizer9 = new wxBoxSizer(wxHORIZONTAL);
-    StaticText3 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT3, _("Voice Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
+    StaticText3 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT3, _("Tone Name"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT3"));
     BoxSizer9->Add(StaticText3, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     m_pTxtVoiceName = new wxTextCtrl(m_pScrollwindowGlobalParameters, ID_TEXTCTRL1, wxEmptyString, wxDefaultPosition, wxDefaultSize, 0, m_validateVoiceName, _T("ID_TEXTCTRL1"));
     m_pTxtVoiceName->SetMaxLength(12);
@@ -315,7 +327,14 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pSliderLevel->SetToolTip(_("Set voice output level"));
     BoxSizer10->Add(m_pSliderLevel, 1, wxALL|wxEXPAND, 5);
     m_pFlexgridGlobalParameters->Add(BoxSizer10, 0, wxALL|wxEXPAND, 5);
-    StaticBoxSizer3 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("DCO"));
+    StaticBoxSizer3 = new wxStaticBoxSizer(wxVERTICAL, m_pScrollwindowGlobalParameters, _("DCO"));
+    StaticBoxSizer9 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("Amplitude Envelope"));
+    m_pGraphDCO = new EnvelopeGraph(m_pScrollwindowGlobalParameters,ID_ENVELOPEDCO);
+    StaticBoxSizer9->Add(m_pGraphDCO, 1, wxALL|wxEXPAND, 5);
+    m_pSliderDCOEnvDepth = new wxSlider(m_pScrollwindowGlobalParameters, ID_SLIDERDCOENVDEPTH, 99, 0, 99, wxDefaultPosition, wxDefaultSize, wxSL_VERTICAL|wxSL_INVERSE, wxDefaultValidator, _T("ID_SLIDERDCOENVDEPTH"));
+    m_pSliderDCOEnvDepth->SetToolTip(_("Set DCA amplitude envelope depth"));
+    StaticBoxSizer9->Add(m_pSliderDCOEnvDepth, 0, wxALL|wxEXPAND|wxFIXED_MINSIZE, 5);
+    StaticBoxSizer3->Add(StaticBoxSizer9, 0, wxALL|wxEXPAND, 5);
     FlexGridSizer6 = new wxFlexGridSizer(0, 2, 0, 0);
     FlexGridSizer6->AddGrowableCol(1);
     StaticText10 = new wxStaticText(m_pScrollwindowGlobalParameters, ID_STATICTEXT10, _("Octave"), wxDefaultPosition, wxDefaultSize, 0, _T("ID_STATICTEXT10"));
@@ -341,7 +360,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pChoiceVelCurve->Append(_("Curve 8"));
     m_pChoiceVelCurve->SetToolTip(_("Select DCO curve"));
     FlexGridSizer6->Add(m_pChoiceVelCurve, 1, wxALL|wxEXPAND, 5);
-    StaticBoxSizer3->Add(FlexGridSizer6, 1, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
+    StaticBoxSizer3->Add(FlexGridSizer6, 0, wxALL|wxEXPAND, 5);
     m_pFlexgridGlobalParameters->Add(StaticBoxSizer3, 0, wxALL|wxEXPAND, 5);
     StaticBoxSizer1 = new wxStaticBoxSizer(wxHORIZONTAL, m_pScrollwindowGlobalParameters, _("Tremelo"));
     BoxSizer11 = new wxBoxSizer(wxVERTICAL);
@@ -468,6 +487,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pPnlOperation->SetSizer(BoxSizer5);
     BoxSizer5->Fit(m_pPnlOperation);
     BoxSizer5->SetSizeHints(m_pPnlOperation);
+    m_pPnlMultichannel = new wxPanel(m_pNotebook, ID_PANELMULTICHANNEL, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANELMULTICHANNEL"));
     m_pPnlMisc = new wxPanel(m_pNotebook, ID_PANELMISC, wxDefaultPosition, wxDefaultSize, wxTAB_TRAVERSAL, _T("ID_PANELMISC"));
     BoxSizer8 = new wxBoxSizer(wxHORIZONTAL);
     StaticBoxSizer8 = new wxStaticBoxSizer(wxVERTICAL, m_pPnlMisc, _("Master Volume"));
@@ -513,9 +533,10 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pPnlMisc->SetSizer(BoxSizer8);
     BoxSizer8->Fit(m_pPnlMisc);
     BoxSizer8->SetSizeHints(m_pPnlMisc);
-    m_pNotebook->AddPage(m_pPnlLibrary, _("Voice Library"), false);
-    m_pNotebook->AddPage(m_pPnlVoice, _("Voice Editor"), false);
+    m_pNotebook->AddPage(m_pPnlLibrary, _("Library"), false);
+    m_pNotebook->AddPage(m_pPnlVoice, _("Tone Editor"), false);
     m_pNotebook->AddPage(m_pPnlOperation, _("Operation Editor"), false);
+    m_pNotebook->AddPage(m_pPnlMultichannel, _("Multi-channel Editor"), false);
     m_pNotebook->AddPage(m_pPnlMisc, _("Misc"), false);
     m_pSizerMain->Add(m_pNotebook, 1, wxBOTTOM|wxLEFT|wxRIGHT|wxEXPAND, 5);
     m_pSizerKeyboard = new wxBoxSizer(wxHORIZONTAL);
@@ -545,6 +566,8 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     Menu1->Append(MenuItem3);
     MenuItem4 = new wxMenuItem(Menu1, idMenuSave, _("&Save\tCtrl+S"), _("Save voice data to file"), wxITEM_NORMAL);
     Menu1->Append(MenuItem4);
+    MenuItem10 = new wxMenuItem(Menu1, ID_MENU_SAVEAS, _("Save &As"), _("Save with new filename"), wxITEM_NORMAL);
+    Menu1->Append(MenuItem10);
     MenuItem1 = new wxMenuItem(Menu1, idMenuQuit, _("Quit\tAlt-F4"), _("Quit the application"), wxITEM_NORMAL);
     Menu1->Append(MenuItem1);
     MenuBar1->Append(Menu1, _("&File"));
@@ -557,7 +580,9 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     Menu3->Append(MenuItem5);
     MenuItem6 = new wxMenuItem(Menu3, ID_MENU_OPERATION, _("&Operation\tALT+3"), _("Show operation editor"), wxITEM_NORMAL);
     Menu3->Append(MenuItem6);
-    MenuItem9 = new wxMenuItem(Menu3, ID_MENU_MISC, _("&Misc\tALT+4"), _("Show miscelaneous control panel"), wxITEM_NORMAL);
+    MenuItem11 = new wxMenuItem(Menu3, ID_MENU_MULTICHANNEL, _("Multi-&channel\tALT+4"), _("Show multi-channel editor"), wxITEM_NORMAL);
+    Menu3->Append(MenuItem11);
+    MenuItem9 = new wxMenuItem(Menu3, ID_MENU_MISC, _("&Misc\tALT+5"), _("Show miscelaneous control panel"), wxITEM_NORMAL);
     Menu3->Append(MenuItem9);
     MenuItem8 = new wxMenuItem(Menu3, ID_MENU_KEYBOARD, _("&Keyboard\tALT+K"), _("Show on-screen MIDI keyboard"), wxITEM_NORMAL);
     Menu3->Append(MenuItem8);
@@ -592,10 +617,9 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BITMAPBUTTONLIBTOOLSAVE,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnSaveFile);
     Connect(ID_BITMAPBUTTONLIBTOOLSAVEAS,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnSaveFile);
     Connect(ID_BITMAPBUTTONLIBTOOLOPRN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnOpenFile);
-    Connect(ID_TEXTCTRL2,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZEditorFrame::OnTxtLibEntryDescription);
-    Connect(ID_COMBOBOX1,wxEVT_COMMAND_COMBOBOX_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnCmbLibEntryGroup);
-    Connect(ID_COMBOBOX1,wxEVT_COMMAND_COMBOBOX_DROPDOWN,(wxObjectEventFunction)&VZEditorFrame::OnCmbLibEntryGroupDropdown);
-    Connect(ID_COMBOBOX1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZEditorFrame::OnCmbLibEntryGroup);
+    Connect(ID_LISTBOXLIBRARY,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnLstLibrary);
+    Connect(ID_LISTBOXLIBRARY,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,(wxObjectEventFunction)&VZEditorFrame::OnLibDClick);
+    Connect(ID_GRIDCONFIG,wxEVT_GRID_CELL_LEFT_DCLICK,(wxObjectEventFunction)&VZEditorFrame::OnToneGridDClick);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZEditorFrame::OnTxtVoiceNameText);
     Connect(ID_SLIDERLEVEL,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZEditorFrame::OnLevelChanged);
     Connect(ID_SLIDEROCTAVE,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZEditorFrame::OnOctaveChanged);
@@ -622,11 +646,13 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_SPINCTRL1,wxEVT_COMMAND_SPINCTRL_UPDATED,(wxObjectEventFunction)&VZEditorFrame::OnKeyProgram);
     Connect(idMenuOpen,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnOpenFile);
     Connect(idMenuSave,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnSaveFile);
+    Connect(ID_MENU_SAVEAS,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnSaveAs);
     Connect(idMenuQuit,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnQuit);
     Connect(ID_MENU_HEADER,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnMenuShow);
     Connect(ID_MENU_LIBRARY,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnMenuShow);
     Connect(ID_MENU_VOICE,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnMenuShow);
     Connect(ID_MENU_OPERATION,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnMenuShow);
+    Connect(ID_MENU_MULTICHANNEL,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnMenuShow);
     Connect(ID_MENU_MISC,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnMenuShow);
     Connect(ID_MENU_KEYBOARD,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnMenuShow);
     Connect(idMenuAbout,wxEVT_COMMAND_MENU_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnAbout);
@@ -634,9 +660,10 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     //*)
     m_pScrollWinVoiceEditor->SetScrollRate(10,10);
     m_pScrollwindowGlobalParameters->SetScrollRate(0, 10);
-    Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_COL_CLICK,(wxObjectEventFunction)&VZEditorFrame::OnLibSort);
-    Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_ITEM_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnLibEntrySelected);
-    Connect(ID_LSTLIB,wxEVT_COMMAND_LIST_ITEM_ACTIVATED,(wxObjectEventFunction)&VZEditorFrame::OnLibActivate);
+
+    m_pGridConfig->SetSelectionMode(wxGrid::wxGridSelectionModes::wxGridSelectRowsOrColumns);
+    m_pGridConfig->EnableDragCell();
+
     Connect(wxID_ANY, wxEVT_MIDI_INPUT,(wxObjectEventFunction)&VZEditorFrame::OnMidiReceive);
     Connect(wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&VZEditorFrame::OnClose);
 
@@ -663,7 +690,6 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     if(bCanSee)
         Move(nX, nY);
 
-
     //Get MIDI interfaces
     //!@todo React to MIDI ports appearing and disappearing, e.g. USB plugged in - maybe using wxMidiDevice::HasHostError()
     m_pMidi = wxMidiSystem::GetInstance();
@@ -676,6 +702,8 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     {
         if((int)m_pChoiceInPort->GetCount() - 1 < nX)
             nX = m_pChoiceInPort->GetCount() - 1;
+        if(nX < 0)
+            nX = 0;
         wxCommandEvent event;
         m_pChoiceInPort->Select(nX);
         event.SetClientData(m_pChoiceInPort->GetClientData(nX));
@@ -686,6 +714,8 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     {
         if((int)m_pChoiceOutPort->GetCount() - 1 < nX)
             nX = m_pChoiceOutPort->GetCount() - 1;
+        if(nX < 0)
+            nX = 0;
         wxCommandEvent event;
         m_pChoiceOutPort->Select(nX);
         event.SetClientData(m_pChoiceOutPort->GetClientData(nX));
@@ -697,10 +727,10 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     bool bAuto;
     configPersist.Read("persist/auto_update", &bAuto, false);
     m_pChkAutoUpdate->SetValue(bAuto);
+    wxString sFilename;
+    configPersist.Read("persist/library", &sFilename);
     m_pvzLib = new VZLibrary();
-    m_pLstLib->SetData(m_pvzLib);
-//    PopulateLibraryGroups();
-
+    LoadFile(sFilename);
     m_pVoice = new VZVoice();
     m_pVoice->SetEventHandler(this);
     m_pVoiceMidi = new VZVoice();
@@ -713,6 +743,13 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pLine3->SetVoice(m_pVoice);
     m_pLine4->SetVoice(m_pVoice);
     m_bInhibitUpdate = false;
+
+    // Configure drag and drop of library elements
+    m_pLstLibrary->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(VZEditorFrame::onLstLibLeftDown), NULL, this);
+    m_pLstLibrary->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(VZEditorFrame::onLstLibLeftUp), NULL, this);
+    m_pGridConfig->SetDropTarget(new VZDropTarget(m_pGridConfig));
+
+    LoadLibrary();
 }
 
 VZEditorFrame::~VZEditorFrame()
@@ -728,6 +765,7 @@ void VZEditorFrame::OnClose(wxCloseEvent& event)
     configPersist.Write("persist/maximised", IsMaximized());
     configPersist.Write("persist/keyboard", m_pChkKeyboard->IsChecked());
     configPersist.Write("persist/keyboard_midi_channel", m_pSpnKeyChannel->GetValue() - 1);
+    configPersist.Write("persist/library", m_pvzLib->GetFilename());
 
     if(!IsMaximized() && !IsIconized())
     {
@@ -977,6 +1015,25 @@ bool VZEditorFrame::LoadFile(wxString sFilename)
         wxMessageBox("File does not exist", "Error", wxICON_ERROR);
         return false;
     }
+    wxFileName fnFilename(sFilename);
+    if(fnFilename.GetExt().Lower().IsSameAs("xml"))
+    {
+        if(m_pvzLib->IsDirty())
+        {
+            //!@todo Handle dirty library should probably be before here
+            if(wxMessageBox("Library has changed. Save before loading new library?", "Warning", wxYES_NO|wxICON_WARNING) == wxYES)
+                m_pvzLib->Save();
+        }
+        m_pvzLib->Load(sFilename);
+        m_pGridConfig->ClearGrid();
+        for(unsigned int nRow = 0; nRow < 8; ++ nRow)
+            for(unsigned int nColumn = 0; nColumn < 8; ++ nColumn)
+            {
+                m_pGridConfig->SetCellValue(nRow, nColumn, m_pvzLib->GetToneName(nRow + nColumn * 8));
+                m_pGridConfig->SetCellValue(nRow + 8, nColumn, m_pvzLib->GetOperationName(nRow + nColumn * 8));
+            }
+        return true;
+    }
     wxFile file(sFilename, wxFile::read);
     if(!file.IsOpened())
     {
@@ -1029,7 +1086,7 @@ bool VZEditorFrame::LoadFile(wxString sFilename)
 
 void VZEditorFrame::Send()
 {
-    if(!m_pMidiOut)
+    if(CheckHostError())
         return;
     VZSysex* pSysex = NULL;
     switch(m_pNotebook->GetSelection())
@@ -1137,28 +1194,7 @@ void VZEditorFrame::OnOpenFile(wxCommandEvent& event)
     if(dlg.ShowModal() == wxID_CANCEL)
         return;
     wxFileName fnFilename(dlg.GetPath());
-    if(fnFilename.GetExt().Lower().IsSameAs("xml"))
-    {
-        if(m_pvzLib->IsDirty())
-            ; //!@todo Handle dirty library
-        m_pvzLib->Load(dlg.GetPath());
-        m_pLstLib->SetData(m_pvzLib);
-        //PopulateLibraryGroups();
-        return;
-    }
     LoadFile(dlg.GetPath());
-}
-
-void VZEditorFrame::OnLibSort(wxListEvent& event)
-{
-    m_pLstLib->Sort(event.GetColumn());
-}
-
-void VZEditorFrame::OnLibActivate(wxListEvent& event)
-{
-    wxString sFilename = m_pLstLib->GetItemFilename(event.GetIndex());
-    wxString sType = m_pLstLib->GetItemType(event.GetIndex());
-    LoadFile("library/" + sFilename);
 }
 
 void VZEditorFrame::OnBtnGetVoice(wxCommandEvent& event)
@@ -1178,7 +1214,7 @@ void VZEditorFrame::OnSaveFile(wxCommandEvent& event)
     switch(m_pNotebook->GetSelection())
     {
     case 0:
-        Save(VZ_TYPE_LIBRARY);
+        Save(VZ_TYPE_LIBRARY, m_pvzLib->GetFilename());
         break;
     case 1:
         Save(VZ_TYPE_TONE, m_pVoice->GetFilename());
@@ -1279,8 +1315,10 @@ void VZEditorFrame::OnChkKeyboard(wxCommandEvent& event)
 
 void VZEditorFrame::OnKeyboardNoteOn(wxCommandEvent& event)
 {
+    if(CheckHostError())
+        return;
     KeyboardEventData* pData = (KeyboardEventData*)event.GetClientData();
-    if(m_pMidiOut && pData)
+    if(pData)
     {
         m_pMidiOut->NoteOn(pData->channel, pData->note, pData->velocity);
         m_pStatusbar->SetStatusText(wxString::Format("Note on: channel %d, note %d, velocity %d", pData->channel, pData->note, pData->velocity));
@@ -1289,9 +1327,11 @@ void VZEditorFrame::OnKeyboardNoteOn(wxCommandEvent& event)
 
 void VZEditorFrame::OnKeyboardNoteOff(wxCommandEvent& event)
 {
+    if(CheckHostError())
+        return;
     m_pStatusbar->SetStatusText(wxString::Format("Note off: %d", event.GetInt()));
     KeyboardEventData* pData = (KeyboardEventData*)event.GetClientData();
-    if(m_pMidiOut && pData)
+    if(pData)
         m_pMidiOut->NoteOff(pData->channel, pData->note, pData->velocity);
 }
 
@@ -1303,7 +1343,7 @@ void VZEditorFrame::OnKeyChan(wxSpinEvent& event)
 
 void VZEditorFrame::OnKeyProgram(wxSpinEvent& event)
 {
-    if(m_pMidiOut)
+    if(CheckHostError())
         m_pMidiOut->ProgramChange(m_pKeyboard->GetSendChannel(), event.GetValue() - 1);
     m_anProgram[m_pSpnKeyChannel->GetValue() - 1] = event.GetValue();
 }
@@ -1373,66 +1413,12 @@ void VZEditorFrame::OnLibToolAdd(wxCommandEvent& event)
     }
     if(sName.IsEmpty())
         return;
-    m_pvzLib->AddEntry(sName, dlg.GetFilename(), sName, "Default", sType); //!@todo Should we add items to the list rather than the underlying data obect?
-    m_pLstLib->SetData(m_pvzLib);
     m_pBtnLibToolSave->Enable(m_pvzLib->IsDirty());
 }
-
-void VZEditorFrame::OnLibEntrySelected(wxListEvent& event)
-{
-    m_bInhibitUpdate = true;
-    m_pLblLibEntryName->SetLabel(m_pLstLib->GetItemName(event.GetIndex()));
-    m_pTxtLibEntryDescription->SetValue(m_pLstLib->GetItemDescription(event.GetIndex()));
-    m_pCmbLibEntryGroup->SetValue(m_pLstLib->GetItemGroup(event.GetIndex()));
-    m_pLblLibEntryType->SetLabel(m_pLstLib->GetItemType(event.GetIndex()));
-    m_bInhibitUpdate = false;
-    m_pStatusbar->SetStatusText(wxString::Format("Library entry: %s (%s)", m_pLstLib->GetItemName(event.GetIndex()).c_str(), m_pLstLib->GetItemFilename(event.GetIndex()).c_str()));
-}
-
-void VZEditorFrame::PopulateLibraryGroups()
-{
-    bool bTemp = m_bInhibitUpdate;
-    wxString sCurrentValue = m_pCmbLibEntryGroup->GetValue();
-    m_bInhibitUpdate = true;
-    list<wxString> listGroups;
-    for(int nIndex = 0; nIndex < m_pLstLib->GetItemCount(); ++nIndex)
-        listGroups.push_back(m_pLstLib->GetItemGroup(nIndex));
-    listGroups.sort();
-    listGroups.unique();
-    m_pCmbLibEntryGroup->Clear();
-    for(auto it = listGroups.begin(); it != listGroups.end(); ++it)
-        m_pCmbLibEntryGroup->Append(*it);
-    m_pCmbLibEntryGroup->SetValue(sCurrentValue);
-    m_bInhibitUpdate = bTemp;
-}
-
-void VZEditorFrame::OnTxtLibEntryDescription(wxCommandEvent& event)
-{
-    if(m_bInhibitUpdate)
-        return;
-    m_pLstLib->SetItemDescription(event.GetString());
-    m_pBtnLibToolSave->Enable(m_pvzLib->IsDirty());
-}
-
-void VZEditorFrame::OnCmbLibEntryGroup(wxCommandEvent& event)
-{
-    if(m_bInhibitUpdate)
-        return;
-    m_pLstLib->SetItemGroup(event.GetString());
-    m_pBtnLibToolSave->Enable(m_pvzLib->IsDirty());
-}
-
 
 void VZEditorFrame::OnLibToolDelete(wxCommandEvent& event)
 {
-    m_pLstLib->RemoveItems();
     m_pBtnLibToolSave->Enable(m_pvzLib->IsDirty());
-    m_pBtnLibToolSave->Enable(m_pvzLib->IsDirty());
-}
-
-void VZEditorFrame::OnCmbLibEntryGroupDropdown(wxCommandEvent& event)
-{
-    PopulateLibraryGroups();
 }
 
 void VZEditorFrame::OnMenuShow(wxCommandEvent& event)
@@ -1442,7 +1428,7 @@ void VZEditorFrame::OnMenuShow(wxCommandEvent& event)
     else if(event.GetId() == ID_MENU_LIBRARY)
     {
         m_pNotebook->SetSelection(0);
-        m_pLstLib->SetFocus();
+        m_pGridConfig->SetFocus();
     }
     else if(event.GetId() == ID_MENU_VOICE)
         m_pNotebook->SetSelection(1);
@@ -1455,13 +1441,15 @@ void VZEditorFrame::OnMenuShow(wxCommandEvent& event)
         m_pSizerMain->Layout();
         m_pSpnKeyChannel->SetFocus();
     }
-    else if(event.GetId() == ID_MENU_MISC)
+    else if(event.GetId() == ID_MENU_MULTICHANNEL)
         m_pNotebook->SetSelection(3);
+    else if(event.GetId() == ID_MENU_MISC)
+        m_pNotebook->SetSelection(4);
 }
 
 void VZEditorFrame::OnMasterVolume(wxScrollEvent& event)
 {
-    if(!m_pMidiOut)
+    if(CheckHostError())
         return;
     wxMidiShortMessage msg(0xB0 | (m_pSpnKeyChannel->GetValue() - 1), 0x07, event.GetInt());
     m_pMidiOut->Write(&msg);
@@ -1469,7 +1457,7 @@ void VZEditorFrame::OnMasterVolume(wxScrollEvent& event)
 
 void VZEditorFrame::OnMasterTune(wxScrollEvent& event)
 {
-    if(!m_pMidiOut)
+    if(CheckHostError())
         return;
     wxByte cChan = 0x70 | (m_pSpnKeyChannel->GetValue() - 1);
     wxByte cData = abs(m_pSliderMasterTune->GetValue());
@@ -1484,7 +1472,7 @@ void VZEditorFrame::OnMasterTune(wxScrollEvent& event)
 
 void VZEditorFrame::OnTranspose(wxScrollEvent& event)
 {
-    if(!m_pMidiOut)
+    if(CheckHostError())
         return;
     wxByte cChan = 0x70 | (m_pSpnKeyChannel->GetValue() - 1);
     wxByte cData = abs(m_pSliderTranspose->GetValue());
@@ -1499,7 +1487,7 @@ void VZEditorFrame::OnTranspose(wxScrollEvent& event)
 
 void VZEditorFrame::OnCzBendRange(wxScrollEvent& event)
 {
-    if(!m_pMidiOut)
+    if(CheckHostError())
         return;
     wxByte cChan = 0x70 | (m_pSpnKeyChannel->GetValue() - 1);
     wxByte cData = m_pSliderCZBendRange->GetValue();
@@ -1510,7 +1498,7 @@ void VZEditorFrame::OnCzBendRange(wxScrollEvent& event)
 
 void VZEditorFrame::OnMode(wxCommandEvent& event)
 {
-    if(!m_pMidiOut)
+    if(CheckHostError())
         return;
     wxByte cChan = 0x70 | (m_pSpnKeyChannel->GetValue() - 1);
     wxByte cData = m_pChoiceMode->GetSelection();
@@ -1521,7 +1509,7 @@ void VZEditorFrame::OnMode(wxCommandEvent& event)
 
 void VZEditorFrame::OnCardBank(wxCommandEvent& event)
 {
-    if(!m_pMidiOut)
+    if(CheckHostError())
         return;
     wxByte cChan = 0x70 | (m_pSpnKeyChannel->GetValue() - 1);
     wxByte cData = m_pRadioCardbank->GetSelection();
@@ -1534,3 +1522,178 @@ void VZEditorFrame::OnModuleEvent(wxCommandEvent& event)
 {
     AutoSend();
 }
+
+bool VZEditorFrame::CheckHostError()
+{
+    // The idea was to capture errors like removal of MIDI port but does not seem to work so should probably remove
+    if(!m_pMidiOut)
+        return true;
+    if(m_pMidiOut->HasHostError() == 0)
+        return false;
+    //!@todo Be less brutal with output port host errors
+    CloseOutput();
+    UpdateMidiPorts();
+    //!@todo Check selection of MIDI ports after refreshing
+    return true;
+}
+
+void VZEditorFrame::OnSaveAs(wxCommandEvent& event)
+{
+    unsigned int nType = 0;
+    switch(m_pNotebook->GetSelection())
+    {
+    case 0:
+        nType = VZ_TYPE_LIBRARY;
+        break;
+    case 1:
+        nType = VZ_TYPE_TONE;
+        break;
+    case 2:
+        nType = VZ_TYPE_OPERATION;
+        break;
+    }
+    Save(nType);
+}
+
+void VZEditorFrame::OnToneGridDClick(wxGridEvent& event)
+{
+    int nRow = event.GetRow();
+    int nCol = event.GetCol();
+    if(nRow < 8)
+        LoadFile(m_pvzLib->GetToneFilename(nRow + nCol * 8));
+    else
+        LoadFile(m_pvzLib->GetOperationFilename(nRow - 8 + nCol * 8));
+}
+
+bool VZEditorFrame::SetConfigVoice(unsigned int nIndex, wxString sFilename)
+{
+    if(nIndex > 63)
+        return false;
+    wxFile file(sFilename, wxFile::read);
+    if(!file.IsOpened())
+    {
+        wxMessageBox("Failed to open file", "Error", wxICON_ERROR);
+        return false;
+    }
+    wxByte acSysex[file.Length()];
+    if(file.Length() < VZ_HEADER_SIZE || file.Length() != file.Read(acSysex, file.Length()))
+    {
+        wxMessageBox("Failed to read file", "Error", wxICON_ERROR);
+        file.Close();
+        return false;
+    }
+    file.Close();
+    if(acSysex[VZ_HEADER_TYPE] != VZ_TYPE_TONE)
+    {
+        wxMessageBox("Not a VZ Tone data file");
+        return false;
+    }
+    VZVoice voiceTemp;
+    if(voiceTemp.SetSysEx(acSysex))
+    {
+        wxMessageBox("Failed to load file - corrupt tone data", "Error", wxICON_ERROR);
+        return false;
+    }
+    m_pvzLib->SetToneName(nIndex, voiceTemp.GetName());
+    m_pvzLib->SetToneFilename(nIndex, sFilename);
+    m_pGridConfig->SetCellValue(nIndex % 8, nIndex / 8, voiceTemp.GetName());
+    m_pBtnLibToolSave->Enable(m_pvzLib->IsDirty());
+    return true;
+}
+
+bool VZEditorFrame::SetConfigOperation(unsigned int nIndex, wxString sFilename)
+{
+    if(nIndex > 63)
+        return false;
+    wxFile file(sFilename, wxFile::read);
+    if(!file.IsOpened())
+    {
+        wxMessageBox("Failed to open file", "Error", wxICON_ERROR);
+        return false;
+    }
+    wxByte acSysex[file.Length()];
+    if(file.Length() < VZ_HEADER_SIZE || file.Length() != file.Read(acSysex, file.Length()))
+    {
+        wxMessageBox("Failed to read file", "Error", wxICON_ERROR);
+        file.Close();
+        return false;
+    }
+    file.Close();
+    if(acSysex[VZ_HEADER_TYPE] != VZ_TYPE_OPERATION)
+    {
+        wxMessageBox("Not a VZ Operation data file");
+        return false;
+    }
+    VZOperation opTemp;
+    if(opTemp.SetSysEx(acSysex))
+    {
+        wxMessageBox("Failed to load file - corrupt operation data", "Error", wxICON_ERROR);
+        return false;
+    }
+    m_pvzLib->SetOperationName(nIndex, opTemp.GetName());
+    m_pvzLib->SetOperationFilename(nIndex, sFilename);
+    m_pGridConfig->SetCellValue(nIndex % 8 + 8, nIndex / 8, opTemp.GetName());
+    m_pBtnLibToolSave->Enable(m_pvzLib->IsDirty());
+    return true;
+}
+
+void VZEditorFrame::OnGridStartDrag(wxGridEvent& event)
+{
+    m_nDragSource = event.GetRow() + event.GetCol() * 8;
+}
+
+void VZEditorFrame::LoadLibrary()
+{
+    wxDir dir;
+    wxArrayString asFiles;
+    dir.GetAllFiles("library", &asFiles, "*.vzt");
+    dir.GetAllFiles("library", &asFiles, "*.vzo");
+    for(size_t nIndex = 0; nIndex < asFiles.GetCount(); ++nIndex)
+        m_pLstLibrary->Append(asFiles[nIndex]);
+}
+
+void VZEditorFrame::OnLibDClick(wxCommandEvent& event)
+{
+    LoadFile(event.GetString());
+}
+
+void VZEditorFrame::OnLstLibrary(wxCommandEvent& event)
+{
+}
+
+void VZEditorFrame::onLstLibLeftDown(wxMouseEvent& event)
+{
+    int nIndex = m_pLstLibrary->HitTest(event.GetPosition());
+    if(nIndex == wxNOT_FOUND)
+        return;
+    wxFileDataObject myData;
+    myData.AddFile(m_pLstLibrary->GetString(nIndex));
+    wxDropSource dragSource(this);
+    dragSource.SetData(myData);
+    wxDragResult result = dragSource.DoDragDrop(true);
+}
+
+
+void VZEditorFrame::onLstLibLeftUp(wxMouseEvent& event)
+{
+    int nIndex = m_pLstLibrary->HitTest(event.GetPosition());
+    if(nIndex == wxNOT_FOUND)
+        return;
+    m_pLstLibrary->SetSelection(nIndex);
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

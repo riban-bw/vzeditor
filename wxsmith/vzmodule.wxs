@@ -150,7 +150,7 @@
 												<object class="wxSlider" name="ID_SLIDERENVDEPTH" variable="m_pSliderEnvDepth" member="yes">
 													<value>99</value>
 													<max>99</max>
-													<tooltip>Set DCA amplitued envelope depth</tooltip>
+													<tooltip>Set DCA amplitude envelope depth</tooltip>
 													<style>wxSL_VERTICAL|wxSL_INVERSE</style>
 													<handler function="OnEnvDepth" entry="EVT_COMMAND_SCROLL_CHANGED" />
 												</object>

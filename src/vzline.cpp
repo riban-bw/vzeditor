@@ -37,8 +37,8 @@ VZLine::VZLine(wxWindow* parent, wxByte line) :
     m_pSizerLine = new wxStaticBoxSizer(wxHORIZONTAL, this, _("Internal Line"));
     m_pChoiceLine = new wxChoice(this, ID_CHOICE1, wxDefaultPosition, wxDefaultSize, 0, 0, 0, wxDefaultValidator, _T("ID_CHOICE1"));
     m_pChoiceLine->Append(_("MIX"));
-    m_pChoiceLine->Append(_("RING"));
     m_pChoiceLine->Append(_("PHASE"));
+    m_pChoiceLine->Append(_("RING"));
     m_pChoiceLine->SetToolTip(_("Select line phase"));
     m_pSizerLine->Add(m_pChoiceLine, 0, wxALL|wxALIGN_CENTER_HORIZONTAL|wxALIGN_CENTER_VERTICAL, 5);
     BoxSizer2 = new wxBoxSizer(wxVERTICAL);

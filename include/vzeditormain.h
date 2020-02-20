@@ -10,15 +10,16 @@
 #pragma once
 
 //(*Headers(VZEditorFrame)
+#include "envelopegraph.h"
 #include "keyboard.h"
-#include "sortablelist.h"
 #include "vzline.h"
 #include <wx/bmpbuttn.h>
 #include <wx/button.h>
 #include <wx/checkbox.h>
 #include <wx/choice.h>
-#include <wx/combobox.h>
 #include <wx/frame.h>
+#include <wx/grid.h>
+#include <wx/listbox.h>
 #include <wx/menu.h>
 #include <wx/notebook.h>
 #include <wx/panel.h>
@@ -38,6 +39,7 @@
 #include "vzoperation.h"
 #include "vzlibrary.h"
 #include "vzsave.h"
+#include <wx/dnd.h>
 
 static const unsigned int MESSAGE_TYPE_VOICE            = 0;
 static const unsigned int MESSAGE_TYPE_OPERATION        = 1;
@@ -58,6 +60,9 @@ public:
     VZEditorFrame(wxWindow* parent,wxWindowID id = -1);
     virtual ~VZEditorFrame();
     wxString OnGetItemText(long item, long column) const;
+    bool LoadFile(wxString sFilename = wxEmptyString);
+    bool SetConfigVoice(unsigned int nIndex, wxString sFilename);
+    bool SetConfigOperation(unsigned int nIndex, wxString sFilename);
 
 private:
 
@@ -74,7 +79,6 @@ private:
     void OnRadioVibratoMultiSelect(wxCommandEvent& event);
     void OnRadioVibratoWaveformSelect(wxCommandEvent& event);
     void OnOpenFile(wxCommandEvent& event);
-    void OnListCtrl1ColumnClick(wxListEvent& event);
     void OnBtnGetVoice(wxCommandEvent& event);
     void OnSaveFile(wxCommandEvent& event);
     void OnLevelChanged(wxScrollEvent& event);
@@ -106,10 +110,12 @@ private:
     void OnCzBendRange(wxScrollEvent& event);
     void OnMode(wxCommandEvent& event);
     void OnCardBank(wxCommandEvent& event);
+    void OnSaveAs(wxCommandEvent& event);
+    void OnToneGridDClick(wxGridEvent& event);
+    void OnLibDClick(wxCommandEvent& event);
+    void OnLstLibrary(wxCommandEvent& event);
     //*)
     void OnGridSort(wxCommandEvent& event);
-    void OnLibSort(wxListEvent& event);
-    void OnLibActivate(wxListEvent& event);
 
     //(*Identifiers(VZEditorFrame)
     static const long ID_STATICTEXTMIDIINPUT;
@@ -128,15 +134,8 @@ private:
     static const long ID_BITMAPBUTTONLIBTOOLSAVE;
     static const long ID_BITMAPBUTTONLIBTOOLSAVEAS;
     static const long ID_BITMAPBUTTONLIBTOOLOPRN;
-    static const long ID_LSTLIB;
-    static const long ID_STATICTEXT1;
-    static const long ID_STATICTEXTLIBENTRYNAME;
-    static const long ID_STATICTEXT2;
-    static const long ID_TEXTCTRL2;
-    static const long ID_STATICTEXT16;
-    static const long ID_COMBOBOX1;
-    static const long ID_STATICTEXT17;
-    static const long ID_STATICTEXT18;
+    static const long ID_LISTBOXLIBRARY;
+    static const long ID_GRIDCONFIG;
     static const long ID_PNLLIBRARY;
     static const long ID_LINE1;
     static const long ID_LINE2;
@@ -147,6 +146,8 @@ private:
     static const long ID_TEXTCTRL1;
     static const long ID_STATICTEXT30;
     static const long ID_SLIDERLEVEL;
+    static const long ID_ENVELOPEDCO;
+    static const long ID_SLIDERDCOENVDEPTH;
     static const long ID_STATICTEXT10;
     static const long ID_SLIDEROCTAVE;
     static const long ID_STATICTEXT11;
@@ -178,6 +179,7 @@ private:
     static const long ID_SCROLLEDWINDOW4;
     static const long ID_SPLITTERWINDOW2;
     static const long ID_PNLOPERATION;
+    static const long ID_PANELMULTICHANNEL;
     static const long ID_SLIDERVOLUME;
     static const long ID_SLIDERMASTERTUNE;
     static const long ID_SLIDERTRANSPOSE;
@@ -194,11 +196,13 @@ private:
     static const long ID_KBD;
     static const long idMenuOpen;
     static const long idMenuSave;
+    static const long ID_MENU_SAVEAS;
     static const long idMenuQuit;
     static const long ID_MENU_HEADER;
     static const long ID_MENU_LIBRARY;
     static const long ID_MENU_VOICE;
     static const long ID_MENU_OPERATION;
+    static const long ID_MENU_MULTICHANNEL;
     static const long ID_MENU_MISC;
     static const long ID_MENU_KEYBOARD;
     static const long idMenuAbout;
@@ -207,8 +211,8 @@ private:
     //*)
 
     //(*Declarations(VZEditorFrame)
+    EnvelopeGraph* m_pGraphDCO;
     Keyboard* m_pKeyboard;
-    SortableList* m_pLstLib;
     VZLine* m_pLine1;
     VZLine* m_pLine2;
     VZLine* m_pLine3;
@@ -232,9 +236,12 @@ private:
     wxChoice* m_pChoiceMode;
     wxChoice* m_pChoiceOutPort;
     wxChoice* m_pChoiceVelCurve;
-    wxComboBox* m_pCmbLibEntryGroup;
+    wxGrid* m_pGridConfig;
+    wxListBox* m_pLstLibrary;
     wxMenu* Menu3;
     wxMenuItem* Menu4;
+    wxMenuItem* MenuItem10;
+    wxMenuItem* MenuItem11;
     wxMenuItem* MenuItem3;
     wxMenuItem* MenuItem4;
     wxMenuItem* MenuItem5;
@@ -247,6 +254,7 @@ private:
     wxPanel* Panel2;
     wxPanel* m_pPnlLibrary;
     wxPanel* m_pPnlMisc;
+    wxPanel* m_pPnlMultichannel;
     wxPanel* m_pPnlOperation;
     wxPanel* m_pPnlVoice;
     wxRadioBox* m_pRadioCardbank;
@@ -259,6 +267,7 @@ private:
     wxScrolledWindow* m_pScrollWinVoiceEditor;
     wxScrolledWindow* m_pScrollwindowGlobalParameters;
     wxSlider* m_pSliderCZBendRange;
+    wxSlider* m_pSliderDCOEnvDepth;
     wxSlider* m_pSliderLevel;
     wxSlider* m_pSliderMasterTune;
     wxSlider* m_pSliderOctave;
@@ -280,10 +289,6 @@ private:
     wxStaticText* StaticText12;
     wxStaticText* StaticText13;
     wxStaticText* StaticText14;
-    wxStaticText* StaticText15;
-    wxStaticText* StaticText16;
-    wxStaticText* StaticText1;
-    wxStaticText* StaticText2;
     wxStaticText* StaticText30;
     wxStaticText* StaticText3;
     wxStaticText* StaticText4;
@@ -292,13 +297,10 @@ private:
     wxStaticText* StaticText7;
     wxStaticText* StaticText8;
     wxStaticText* StaticText9;
-    wxStaticText* m_pLblLibEntryName;
-    wxStaticText* m_pLblLibEntryType;
     wxStaticText* m_pLblMidiInputPort;
     wxStaticText* m_pLblMidiOutputPort;
     wxStaticText* m_pLblVelCurve;
     wxStatusBar* m_pStatusbar;
-    wxTextCtrl* m_pTxtLibEntryDescription;
     wxTextCtrl* m_pTxtOperationName;
     wxTextCtrl* m_pTxtVoiceName;
     wxTimer m_timer1s;
@@ -307,7 +309,6 @@ private:
     void CloseInput(); //!< Open MIDI input port
     void CloseOutput(); //!< Close MIDI input port
     void Save(unsigned int nType, wxString sFilename = wxEmptyString); //!< Save file (nType = type of file to save)
-    bool LoadFile(wxString sFilename = wxEmptyString);
     void Send();
     void GetVoice();
     void GetOperation();
@@ -324,8 +325,12 @@ private:
     void OnKeyboardNoteOn(wxCommandEvent& event); // Handle on-screen MIDI keyboard note-on events
     void OnKeyboardNoteOff(wxCommandEvent& event); // Handle on-screen MIDI keyboard note-off events
     void OnModuleEvent(wxCommandEvent& event); // Handle module change events
-    void OnLibEntrySelected(wxListEvent& event);
     void PopulateLibraryGroups();
+    bool CheckHostError(); //Handles host errors and returns true on error
+    void OnGridStartDrag(wxGridEvent& event); //Handle start of drag and drop within grid
+    void LoadLibrary(); // Populate library list from .vzt & .vzo filenames
+    void onLstLibLeftDown(wxMouseEvent& event);
+    void onLstLibLeftUp(wxMouseEvent& event);
 
     void OnMidiReceive(wxCommandEvent& event); //!< Handle MIDI receive events
     wxMidiSystem* m_pMidi;
@@ -342,6 +347,35 @@ private:
     wxByte m_acRawOperationMidi[VZ_HEADER_SIZE + VZ_OPERATION_PAYLOAD_SIZE + 1]; //Buffer to hold raw sysex operation data received via MIDI
     VZLibrary* m_pvzLib; //Library
     unsigned int m_anProgram[16]; //Last selected MIDI program for each MIDI channel
+    unsigned int m_nDragSource; //Index of drag source
 
     DECLARE_EVENT_TABLE()
+};
+
+
+class VZDropTarget: public wxFileDropTarget
+{
+public:
+    VZDropTarget(wxGrid* pGrid) :
+        m_pGrid(pGrid)
+    {
+    }
+
+    bool OnDropFiles(wxCoord x, wxCoord y, const wxArrayString& filenames)
+    {
+        if(!filenames.GetCount())
+            return false;
+        VZEditorFrame* pFrame = dynamic_cast<VZEditorFrame*>(wxTheApp->GetTopWindow());
+        if(!pFrame)
+            return false;
+        int nRow = m_pGrid->YToRow(y);
+        int nCol = m_pGrid->XToCol(x);
+        if(nRow < 8)
+            pFrame->SetConfigVoice(nRow + nCol * 8, filenames[0]);
+        else
+            pFrame->SetConfigOperation(nRow - 8 + nCol * 8, filenames[0]);
+        return true;
+    };
+private:
+    wxGrid* m_pGrid;
 };

@@ -10,8 +10,8 @@
 				<object class="wxChoice" name="ID_CHOICE1" variable="m_pChoiceLine" member="yes">
 					<content>
 						<item>MIX</item>
-						<item>RING</item>
 						<item>PHASE</item>
+						<item>RING</item>
 					</content>
 					<tooltip>Select line phase</tooltip>
 					<handler function="OnLine" entry="EVT_CHOICE" />

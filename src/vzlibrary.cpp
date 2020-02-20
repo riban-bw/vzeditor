@@ -73,6 +73,7 @@ VZLibrary::VZLibrary(const wxString &sFilename) :
     m_bValid(false)
 {
     m_bValid = Load(sFilename);
+
 }
 
 VZLibrary::~VZLibrary()
@@ -92,25 +93,34 @@ bool VZLibrary::Load(const wxString &sFilename)
 {
     wxXmlDocument xmlDoc;
     if(!wxFileExists(sFilename))
-    {
-        wxXmlNode nodeRoot(NULL, wxXML_ELEMENT_NODE, "vzlibrary");
-        xmlDoc.SetRoot(&nodeRoot);
-        if(!xmlDoc.Save(sFilename))
-            return false;
-    }
-    else if(!xmlDoc.Load(sFilename))
+        return false;
+    if(!xmlDoc.Load(sFilename))
         return false;
     Close();
     wxXmlNode* pNode = xmlDoc.GetRoot()->GetChildren();
+    wxString sValue;
     while(pNode)
     {
-        vzLibEntry* pEntry = new vzLibEntry;
-        pEntry->type = pNode->GetName();
-        pEntry->name = pNode->GetAttribute("name", "New Voice");
-        pEntry->description = pNode->GetAttribute("description", wxEmptyString);
-        pEntry->group = pNode->GetAttribute("group", wxEmptyString);
-        pEntry->filename = pNode->GetAttribute("filename", wxString::Format("%s.syx", pEntry->name.c_str()));
-        m_vEntries.push_back(pEntry);
+        sValue = pNode->GetAttribute("index", wxEmptyString);
+        if(sValue.IsEmpty())
+            continue;
+        unsigned int nIndex = wxAtoi(sValue);
+        if(nIndex > 63)
+            continue;
+        if(pNode->GetName() == "vztone")
+        {
+             sValue = pNode->GetAttribute("name", "UNKNOWN");
+             m_asToneName[nIndex] = sValue;
+             sValue = pNode->GetAttribute("filename", "UNKNOWN");
+             m_asToneFilename[nIndex] = sValue;
+        }
+        else if(pNode->GetName() == "vzoperation")
+        {
+             sValue = pNode->GetAttribute("name", "UNKNOWN");
+             m_asOperatorName[nIndex] = sValue;
+             sValue = pNode->GetAttribute("filename", "UNKNOWN");
+             m_asOperatorFilename[nIndex] = sValue;
+        }
         pNode = pNode->GetNext();
     }
     m_sFilename = sFilename;
@@ -120,19 +130,23 @@ bool VZLibrary::Load(const wxString &sFilename)
 
 bool VZLibrary::Save(wxString sFilename)
 {
-    //!@todo Use filename as parameter
     wxXmlDocument xmlDoc;
     wxXmlNode* pNode = new wxXmlNode(NULL, wxXML_ELEMENT_NODE, "vzlibrary");
     xmlDoc.SetRoot(pNode);
     //iterate in reverse because we are adding each node to the root so it ends up at start of document
-    for(vector<vzLibEntry*>::reverse_iterator it = m_vEntries.rbegin(); it != m_vEntries.rend(); ++it)
+    for(int nIndex = 63; nIndex >= 0; --nIndex)
     {
-        vzLibEntry* pEntry = *it;
-        pNode = new wxXmlNode(xmlDoc.GetRoot(), wxXML_ELEMENT_NODE, pEntry->type);
-        pNode->AddAttribute("name", pEntry->name);
-        pNode->AddAttribute("group", pEntry->group);
-        pNode->AddAttribute("description", pEntry->description);
-        pNode->AddAttribute("filename", pEntry->filename);
+        pNode = new wxXmlNode(xmlDoc.GetRoot(), wxXML_ELEMENT_NODE, "vztone");
+        pNode->AddAttribute("index", wxString::Format(wxT("%i"), nIndex));
+        pNode->AddAttribute("name", m_asToneName[nIndex]);
+        pNode->AddAttribute("filename", m_asToneFilename[nIndex]);
+    }
+    for(int nIndex = 63; nIndex >= 0; --nIndex)
+    {
+        pNode = new wxXmlNode(xmlDoc.GetRoot(), wxXML_ELEMENT_NODE, "vzoperation");
+        pNode->AddAttribute("index", wxString::Format(wxT("%i"), nIndex));
+        pNode->AddAttribute("name", m_asOperatorName[nIndex]);
+        pNode->AddAttribute("filename", m_asOperatorFilename[nIndex]);
     }
     if(!sFilename.IsEmpty())
         m_sFilename = sFilename;
@@ -289,3 +303,69 @@ void VZLibrary::Sort(wxString sColumn, bool bAscending)
         sort(m_vEntries.begin(), m_vEntries.end(), bAscending?SortByGroupAsc:SortByGroupDesc);
 
 }
+
+wxString VZLibrary::GetFilename()
+{
+    return m_sFilename;
+}
+
+void VZLibrary::SetToneName(unsigned int nIndex, wxString sName)
+{
+    if(nIndex > 63)
+        return;
+    m_asToneName[nIndex] = sName;
+    m_bDirty = true;
+}
+
+wxString VZLibrary::GetToneName(unsigned int nIndex)
+{
+    if(nIndex > 63)
+        return wxEmptyString;
+    return m_asToneName[nIndex];
+}
+
+void VZLibrary::SetToneFilename(unsigned int nIndex, wxString sFilename)
+{
+    if(nIndex > 63)
+        return;
+    m_asToneFilename[nIndex] = sFilename;
+    m_bDirty = true;
+}
+
+wxString VZLibrary::GetToneFilename(unsigned int nIndex)
+{
+    if(nIndex > 63)
+        return wxEmptyString;
+    return m_asToneFilename[nIndex];
+}
+
+void VZLibrary::SetOperationName(unsigned int nIndex, wxString sName)
+{
+    if(nIndex > 63)
+        return;
+    m_asOperatorName[nIndex] = sName;
+    m_bDirty = true;
+}
+
+wxString VZLibrary::GetOperationName(unsigned int nIndex)
+{
+    if(nIndex > 63)
+        return wxEmptyString;
+    return m_asOperatorName[nIndex];
+}
+
+void VZLibrary::SetOperationFilename(unsigned int nIndex, wxString sFilename)
+{
+    if(nIndex > 63)
+        return;
+    m_asOperatorFilename[nIndex] = sFilename;
+    m_bDirty = true;
+}
+
+wxString VZLibrary::GetOperationFilename(unsigned int nIndex)
+{
+    if(nIndex > 63)
+        return wxEmptyString;
+    return m_asOperatorFilename[nIndex];
+}
+

@@ -59,30 +59,6 @@ public:
     */
     wxString GetItemName(long row);
 
-    /** @brief  Get library entry description
-    *   @param  row Index of row
-    *   @retval wxString Description
-    */
-    wxString GetItemDescription(long row);
-
-    /** @brief  Get library entry group
-    *   @param  row Index of row
-    *   @retval wxString Group
-    */
-    wxString GetItemGroup(long row);
-
-    /** @brief  Set the description of all selected entries
-    *   @param  sDescription Description
-    *   @retval long Quantity of entries changed
-    */
-    unsigned long SetItemDescription(wxString sDescription);
-
-    /** @brief  Set the group of all selected entries
-    *   @param  sGroup Description
-    *   @retval long Quantity of entries changed
-    */
-    unsigned long SetItemGroup(wxString sGroup);
-
     /** @brief  Handle key up event
     *   @param  event Key event
     */
@@ -99,4 +75,6 @@ private:
     long m_lSortColumn;
 //        vector<vzLibEntry*>* m_pvData; // Pointer to vector of library entries
     VZLibrary* m_pData; // Pointer to the data source
+
+    void OnColClick(wxListEvent& event); // Handle column heading click
 };

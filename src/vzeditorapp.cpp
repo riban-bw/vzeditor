@@ -18,6 +18,8 @@ IMPLEMENT_APP(VZEditorApp);
 
 bool VZEditorApp::OnInit()
 {
+    if(LoadLibraryA("exchndl.dll"))
+        wxLogDebug("Loaded JIT excetion handler");
     //(*AppInitialize
     bool wxsOK = true;
     wxInitAllImageHandlers();
@@ -26,6 +28,11 @@ bool VZEditorApp::OnInit()
         VZEditorFrame* Frame = new VZEditorFrame(0);
         Frame->Show();
         SetTopWindow(Frame);
+        if(argc > 1)
+        {
+            wxString sFilename = argv[1];
+            Frame->LoadFile(sFilename);
+        }
     }
     //*)
 
