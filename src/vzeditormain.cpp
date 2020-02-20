@@ -17,6 +17,7 @@
 #include <wx/display.h>
 #include <wx/utils.h>
 #include <wx/dir.h>
+#include <wx/mousemanager.h>
 #include <list>
 #include <complex>
 
@@ -746,7 +747,6 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
 
     // Configure drag and drop of library elements
     m_pLstLibrary->Connect(wxEVT_LEFT_DOWN, wxMouseEventHandler(VZEditorFrame::onLstLibLeftDown), NULL, this);
-    m_pLstLibrary->Connect(wxEVT_LEFT_UP, wxMouseEventHandler(VZEditorFrame::onLstLibLeftUp), NULL, this);
     m_pGridConfig->SetDropTarget(new VZDropTarget(m_pGridConfig));
 
     LoadLibrary();
@@ -1670,17 +1670,9 @@ void VZEditorFrame::onLstLibLeftDown(wxMouseEvent& event)
     myData.AddFile(m_pLstLibrary->GetString(nIndex));
     wxDropSource dragSource(this);
     dragSource.SetData(myData);
-    wxDragResult result = dragSource.DoDragDrop(true);
+    dragSource.DoDragDrop(true);
 }
 
-
-void VZEditorFrame::onLstLibLeftUp(wxMouseEvent& event)
-{
-    int nIndex = m_pLstLibrary->HitTest(event.GetPosition());
-    if(nIndex == wxNOT_FOUND)
-        return;
-    m_pLstLibrary->SetSelection(nIndex);
-}
 
 
 

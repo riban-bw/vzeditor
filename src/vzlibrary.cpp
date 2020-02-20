@@ -99,14 +99,27 @@ bool VZLibrary::Load(const wxString &sFilename)
     Close();
     wxXmlNode* pNode = xmlDoc.GetRoot()->GetChildren();
     wxString sValue;
+    for(unsigned int nIndex = 0; nIndex < 64; ++nIndex)
+    {
+        m_asToneName[nIndex] = wxEmptyString;
+        m_asToneFilename[nIndex] = wxEmptyString;
+        m_asOperatorName[nIndex] = wxEmptyString;
+        m_asOperatorFilename[nIndex] = wxEmptyString;
+    }
     while(pNode)
     {
         sValue = pNode->GetAttribute("index", wxEmptyString);
         if(sValue.IsEmpty())
+        {
+            pNode = pNode->GetNext();
             continue;
+        }
         unsigned int nIndex = wxAtoi(sValue);
         if(nIndex > 63)
+        {
+            pNode = pNode->GetNext();
             continue;
+        }
         if(pNode->GetName() == "vztone")
         {
              sValue = pNode->GetAttribute("name", "UNKNOWN");
