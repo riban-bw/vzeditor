@@ -288,7 +288,7 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pGridConfig->SetDefaultCellTextColour( m_pGridConfig->GetForegroundColour() );
     BoxSizer20->Add(m_pGridConfig, 0, wxALL, 5);
     BoxSizer23->Add(BoxSizer20, 1, wxALL|wxEXPAND, 5);
-    BoxSizer2->Add(BoxSizer23, 0, wxALL|wxEXPAND, 5);
+    BoxSizer2->Add(BoxSizer23, 1, wxALL|wxEXPAND, 5);
     m_pPnlLibrary->SetSizer(BoxSizer2);
     BoxSizer2->Fit(m_pPnlLibrary);
     BoxSizer2->SetSizeHints(m_pPnlLibrary);
@@ -620,7 +620,9 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     Connect(ID_BITMAPBUTTONLIBTOOLOPRN,wxEVT_COMMAND_BUTTON_CLICKED,(wxObjectEventFunction)&VZEditorFrame::OnOpenFile);
     Connect(ID_LISTBOXLIBRARY,wxEVT_COMMAND_LISTBOX_SELECTED,(wxObjectEventFunction)&VZEditorFrame::OnLstLibrary);
     Connect(ID_LISTBOXLIBRARY,wxEVT_COMMAND_LISTBOX_DOUBLECLICKED,(wxObjectEventFunction)&VZEditorFrame::OnLibDClick);
-    Connect(ID_GRIDCONFIG,wxEVT_GRID_CELL_LEFT_DCLICK,(wxObjectEventFunction)&VZEditorFrame::OnToneGridDClick);
+    Connect(ID_GRIDCONFIG,wxEVT_GRID_CELL_LEFT_DCLICK,(wxObjectEventFunction)&VZEditorFrame::OnGridConfigDClick);
+    m_pGridConfig->Connect(wxEVT_KEY_DOWN,(wxObjectEventFunction)&VZEditorFrame::OnGridConfigKeyDown,0,this);
+    m_pGridConfig->Connect(wxEVT_KEY_UP,(wxObjectEventFunction)&VZEditorFrame::OnGridConfigKeyUp,0,this);
     Connect(ID_TEXTCTRL1,wxEVT_COMMAND_TEXT_UPDATED,(wxObjectEventFunction)&VZEditorFrame::OnTxtVoiceNameText);
     Connect(ID_SLIDERLEVEL,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZEditorFrame::OnLevelChanged);
     Connect(ID_SLIDEROCTAVE,wxEVT_SCROLL_CHANGED,(wxObjectEventFunction)&VZEditorFrame::OnOctaveChanged);
@@ -662,9 +664,19 @@ VZEditorFrame::VZEditorFrame(wxWindow* parent,wxWindowID id)
     m_pScrollWinVoiceEditor->SetScrollRate(10,10);
     m_pScrollwindowGlobalParameters->SetScrollRate(0, 10);
 
-    m_pGridConfig->SetSelectionMode(wxGrid::wxGridSelectionModes::wxGridSelectRowsOrColumns);
-    m_pGridConfig->EnableDragCell();
-
+//    m_pGridConfig->SetSelectionMode(wxGrid::wxGridSelectionModes::wxGridSelectRowsOrColumns);
+//    m_pGridConfig->EnableDragCell();
+    for(unsigned int nRow = 0; nRow < 8; ++ nRow)
+    {
+        m_pGridConfig->DisableRowResize(nRow);
+        m_pGridConfig->DisableRowResize(nRow + 8);
+        for(unsigned int nCol = 0; nCol < 8; ++nCol)
+        {
+            m_pGridConfig->SetCellBackgroundColour(nRow, nCol, wxColour(200, 210, 220));
+            m_pGridConfig->SetCellBackgroundColour(nRow + 8, nCol, wxColour(220, 210, 200));
+            m_pGridConfig->DisableColResize(nCol);
+        }
+    }
     Connect(wxID_ANY, wxEVT_MIDI_INPUT,(wxObjectEventFunction)&VZEditorFrame::OnMidiReceive);
     Connect(wxEVT_CLOSE_WINDOW,(wxObjectEventFunction)&VZEditorFrame::OnClose);
 
@@ -1555,14 +1567,24 @@ void VZEditorFrame::OnSaveAs(wxCommandEvent& event)
     Save(nType);
 }
 
-void VZEditorFrame::OnToneGridDClick(wxGridEvent& event)
+void VZEditorFrame::OnGridConfigDClick(wxGridEvent& event)
 {
     int nRow = event.GetRow();
     int nCol = event.GetCol();
     if(nRow < 8)
-        LoadFile(m_pvzLib->GetToneFilename(nRow + nCol * 8));
+    {
+        int nIndex = nRow + nCol * 8;
+        if(m_pvzLib->GetToneName(nIndex).IsEmpty())
+            return;
+        LoadFile(m_pvzLib->GetToneFilename(nIndex));
+    }
     else
-        LoadFile(m_pvzLib->GetOperationFilename(nRow - 8 + nCol * 8));
+    {
+        int nIndex = nRow -8 + nCol * 8;
+        if(m_pvzLib->GetOperationName(nIndex).IsEmpty())
+            return;
+        LoadFile(m_pvzLib->GetOperationFilename(nIndex));
+    }
 }
 
 bool VZEditorFrame::SetConfigVoice(unsigned int nIndex, wxString sFilename)
@@ -1673,19 +1695,34 @@ void VZEditorFrame::onLstLibLeftDown(wxMouseEvent& event)
     dragSource.DoDragDrop(true);
 }
 
+void VZEditorFrame::OnGridConfigKeyUp(wxKeyEvent& event)
+{
+    if(event.GetKeyCode() == WXK_RETURN)
+    {
+        int nRow = m_pGridConfig->GetGridCursorRow();
+        int nCol = m_pGridConfig->GetGridCursorCol();
+        if(nRow == wxNOT_FOUND || nCol == wxNOT_FOUND)
+            return;
+        if(nRow < 8)
+        {
+            int nIndex = nRow + nCol * 8;
+            if(m_pvzLib->GetToneName(nIndex).IsEmpty())
+                return;
+            LoadFile(m_pvzLib->GetToneFilename(nIndex));
+        }
+        else
+        {
+            int nIndex = nRow -8 + nCol * 8;
+            if(m_pvzLib->GetOperationName(nIndex).IsEmpty())
+                return;
+            LoadFile(m_pvzLib->GetOperationFilename(nIndex));
+        }
+    }
+}
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+void VZEditorFrame::OnGridConfigKeyDown(wxKeyEvent& event)
+{
+    if(event.GetKeyCode() == WXK_RETURN)
+        return;
+    event.Skip();
+}

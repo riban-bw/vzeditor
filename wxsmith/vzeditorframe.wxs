@@ -214,7 +214,9 @@
 															<item>Operation 7</item>
 															<item>Operation 8</item>
 														</rowlabels>
-														<handler function="OnToneGridDClick" entry="EVT_CMD_GRID_CELL_LEFT_DCLICK" />
+														<handler function="OnGridConfigDClick" entry="EVT_CMD_GRID_CELL_LEFT_DCLICK" />
+														<handler function="OnGridConfigKeyDown" entry="EVT_KEY_DOWN" />
+														<handler function="OnGridConfigKeyUp" entry="EVT_KEY_UP" />
 													</object>
 													<flag>wxALL</flag>
 													<border>5</border>
@@ -227,6 +229,7 @@
 									</object>
 									<flag>wxALL|wxEXPAND</flag>
 									<border>5</border>
+									<option>1</option>
 								</object>
 							</object>
 						</object>

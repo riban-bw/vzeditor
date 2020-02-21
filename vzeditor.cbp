@@ -74,7 +74,6 @@
 		<Unit filename="include/pmwinmm.h" />
 		<Unit filename="include/portmidi.h" />
 		<Unit filename="include/porttime.h" />
-		<Unit filename="include/sortablelist.h" />
 		<Unit filename="include/vzeditorapp.h" />
 		<Unit filename="include/vzeditormain.h" />
 		<Unit filename="include/vzlibrary.h" />
@@ -107,7 +106,6 @@
 		<Unit filename="src/ptwinmm.c">
 			<Option compilerVar="CC" />
 		</Unit>
-		<Unit filename="src/sortablelist.cpp" />
 		<Unit filename="src/vzeditorapp.cpp" />
 		<Unit filename="src/vzeditormain.cpp" />
 		<Unit filename="src/vzlibrary.cpp" />

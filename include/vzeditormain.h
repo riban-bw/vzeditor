@@ -111,9 +111,11 @@ private:
     void OnMode(wxCommandEvent& event);
     void OnCardBank(wxCommandEvent& event);
     void OnSaveAs(wxCommandEvent& event);
-    void OnToneGridDClick(wxGridEvent& event);
+    void OnGridConfigDClick(wxGridEvent& event);
     void OnLibDClick(wxCommandEvent& event);
     void OnLstLibrary(wxCommandEvent& event);
+    void OnGridConfigKeyUp(wxKeyEvent& event);
+    void OnGridConfigKeyDown(wxKeyEvent& event);
     //*)
     void OnGridSort(wxCommandEvent& event);
 
