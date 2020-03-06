@@ -17,6 +17,12 @@ This is open source software, released under the GPL V3. Copyright riban (Brian 
 
 # Building
 
+The repository has dependency on other repositories so you will need to checkout submodules, e.g.
+
+```
+git pull --recurse-submodules
+```
+
 The Code::Blocks project should build on Windows with some small tweaks, e.g.
 
 - Set location of wxWidgets in global variable 'wx'
