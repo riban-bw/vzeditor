@@ -1,8 +1,8 @@
-src = $(wildcard src/*.cpp)
+src = $(wildcard */*.cpp)
 obj = $(src:.cpp=.o)
 
 LDFLAGS = `wx-config --libs` -lportmidi
-CXXFLAGS = `wx-config --cxxflags` -Iinclude -O2
+CXXFLAGS = `wx-config --cxxflags` -Iinclude -IwxEnvelopeGraph/include -IwxEnvelopeGraph -O2
 
 vzeditor: $(obj)
 	$(CXX) -o $@ $^ $(LDFLAGS) $(CXFLAGS)

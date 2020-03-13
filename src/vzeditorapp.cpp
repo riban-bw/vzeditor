@@ -18,8 +18,11 @@ IMPLEMENT_APP(VZEditorApp);
 
 bool VZEditorApp::OnInit()
 {
+#ifdef __WXMSW__
     if(LoadLibraryA("exchndl.dll"))
         wxLogDebug("Loaded JIT excetion handler");
+#endif // __WXMSW__
+
     //(*AppInitialize
     bool wxsOK = true;
     wxInitAllImageHandlers();
