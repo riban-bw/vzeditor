@@ -7,7 +7,7 @@
  * License:   GPL3
  **************************************************************/
 
-#include "VZVoice.h"
+#include "vzvoice.h"
 #include <cstring>
 
 VZVoice::VZVoice() :

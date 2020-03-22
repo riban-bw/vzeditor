@@ -1,4 +1,4 @@
-src = $(wildcard */*.cpp)
+src = $(wildcard src/*.cpp) $(wildcard wxEnvelopeGraph/src/*.cpp)
 obj = $(src:.cpp=.o)
 
 LDFLAGS = `wx-config --libs` -lportmidi

@@ -19,7 +19,7 @@
 #include <wx/statbmp.h>
 #include <wx/stattext.h>
 //*)
-#include "VZVoice.h"
+#include "vzvoice.h"
 
 /** VZModule class is a graphical control that presents an interface to a module within a VZ tone
 */

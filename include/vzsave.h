@@ -12,7 +12,7 @@
 #define VZ_SAVE_PAYLOAD_SIZE 0 //Size of sysex save / load payload in bytes
 
 #include "vzsysex.h"
-#include "VZVoice.h"
+#include "vzvoice.h"
 #include "vzoperation.h"
 #include <vector>
 

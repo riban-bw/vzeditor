@@ -16,7 +16,7 @@
 #include <wx/panel.h>
 #include <wx/sizer.h>
 //*)
-#include "VZVoice.h"
+#include "vzvoice.h"
 
 class VZLine: public wxPanel
 {
