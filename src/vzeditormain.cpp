@@ -1024,7 +1024,7 @@ bool VZEditorFrame::LoadFile(wxString sFilename)
 {
     if(!wxFileExists(sFilename))
     {
-        wxMessageBox("File does not exist", "Error", wxICON_ERROR);
+        wxMessageBox("File '" + sFilename + "' does not exist", "Error", wxICON_ERROR);
         return false;
     }
     wxFileName fnFilename(sFilename);
