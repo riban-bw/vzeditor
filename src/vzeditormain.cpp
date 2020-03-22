@@ -803,7 +803,7 @@ void VZEditorFrame::OnQuit(wxCommandEvent& event)
 
 void VZEditorFrame::OnAbout(wxCommandEvent& event)
 {
-    wxString sMessage = wxString::Format("VZEditor %l.%l.%l\n\n", AutoVersion::MAJOR, AutoVersion::MINOR, AutoVersion::BUILD);
+    wxString sMessage = wxString::Format("VZEditor %ld.%ld.%ld\n\n", AutoVersion::MAJOR, AutoVersion::MINOR, AutoVersion::BUILD);
     sMessage += "Copyright riban <brian@riban.co.uk> 2014-2020\nLicense: GPL3 <https://www.gnu.org/licenses/gpl-3.0.html>\n";
     sMessage += "wxMidi(c) 2005-2015 Cecilio Salmeron - wxWidgets license, version 3.1\n";
     sMessage += "portmidi (c) 1999-2000 Ross Bencina and Phil Burk, 2001-2006 Roger B. Dannenberg";
