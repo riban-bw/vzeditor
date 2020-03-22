@@ -17,10 +17,16 @@ This is open source software, released under the GPL V3. Copyright riban (Brian 
 
 # Building
 
-The repository has dependency on other repositories so you will need to checkout submodules, e.g.
+The repository has dependency on other repositories so you will need to checkout submodules. This can be done when cloning the git repository:
+
+````
+git clone --recurse-submodules https://github.com/riban-bw/vzediot.git
+``
+
+Or after cloning by running the following command from within thelocal  vzeditor git repository.
 
 ```
-git pull --recurse-submodules
+git submodule update --init
 ```
 
 The Code::Blocks project should build on Windows with some small tweaks, e.g.
