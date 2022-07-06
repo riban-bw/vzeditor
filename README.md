@@ -19,9 +19,9 @@ This is open source software, released under the GPL V3. Copyright riban (Brian 
 
 The repository has dependency on other repositories so you will need to checkout submodules. This can be done when cloning the git repository:
 
-````
-git clone --recurse-submodules https://github.com/riban-bw/vzediot.git
-``
+```
+git clone --recurse-submodules https://github.com/riban-bw/vzeditor.git
+``'
 
 Or after cloning by running the following command from within thelocal  vzeditor git repository.
 
