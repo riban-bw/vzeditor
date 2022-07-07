@@ -23,7 +23,7 @@ The repository has dependency on other repositories so you will need to checkout
 git clone --recurse-submodules https://github.com/riban-bw/vzeditor.git
 ```
 
-Or after cloning by running the following command from within thelocal  vzeditor git repository.
+Or after cloning by running the following command from within the local vzeditor git repository.
 
 ```
 git submodule update --init
