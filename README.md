@@ -13,6 +13,13 @@ The application is developed using cross-platform libraries so should work with 
 
 This application depends on wxWidgets (tested with V3.1) and wxMidi which in turn depends on portmidi (source files included). I use the open source Code::Blocks IDE (project files are stored in version control).
 
+To install wxWidgets and portmidi on a Debian based system use something like:
+
+```
+sudo apt install libwxgtk3.0-gtk3-dev libportmidi-dev
+```
+
+
 This is open source software, released under the GPL V3. Copyright riban (Brian Walton) 2014-2020.
 
 # Building
